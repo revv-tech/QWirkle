@@ -7,6 +7,10 @@ import math
 from pygame.locals import *
 
 pygame.init()
+#PUNTAJE
+p1 = 0
+p2 = 0
+p3 = 0
 
 #TABLERO COLORES
 coloresTablero=[[0, 0, 0, 0, 0, 0, 0],
@@ -25,7 +29,10 @@ signosTablero=[[0, 0, 0, 0, 0, 0, 0],
 
 #VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
 #TABLERO DE FICHAS
-#1 = CRUZ -> 2 = ASTERIZCO -> 3 = CUADRADO -> 4 = ROMBO -> 5 = EQUIS -> 6 = CIRCULO
+#FILAS
+#0 = AZUL -> 1 = CELESTE -> 2 = VERDE -> 3 = AMARILLO -> 4 = NARANJA -> 5 = ROJO
+#COLUMNAS
+#0 = CRUZ -> 1 = ASTERIZCO -> 2 = CUADRADO -> 3 = ROMBO -> 4 = EQUIS -> 5 = CIRCULO
 fichas = [[1,2,3,4,5,6],
             [1,2,3,4,5,6],
             [1,2,3,4,5,6],
@@ -50,15 +57,17 @@ def seleccionadorDeFichas():
     global deckP2
     global deckP1
     global deckP3
-    deckP1 = seleccionadorDeFichasAux(deckP1)
-    deckP2 = seleccionadorDeFichasAux(deckP2)
-    deckP3 = seleccionadorDeFichasAux(deckP3)
-    print(fichasUsadas)
+    deckP1 = seleccionadorDeFichasAux()
+    deckP2 = seleccionadorDeFichasAux()
+    deckP3 = seleccionadorDeFichasAux()
+    print(deckP1)
+
 #Selector Auxiliar
 #E: Una lista de
 #S: No tiene
 #D: Selecciona las fichas del deck
-def seleccionadorDeFichasAux(deck):
+def seleccionadorDeFichasAux():
+    deck = []
     global fichasUsadas
     #Contador que crea el deck del player (6)
     contador = 0
@@ -96,15 +105,76 @@ def fichaFinder(lista):
 #D: Proceso del juego
 
 def juego():
+    # Selecciona los decks de los jugadores al azar
+    seleccionadorDeFichas()
+    global p1
+    global p2
+    global p3
     global coloresTablero
     global signosTablero
-    #Selecciona los decks de los jugadores al azar
-    seleccionadorDeFichas()
     game = True
     #Turno del primer jugador
     turno = 1
+    #Asina fichas
+    seleccionadorDeFichas()
+    while game:
+        print("Colores:")
+        mostrar(coloresTablero)
+        print("Signos:")
+        mostrar(signosTablero)
+        if turno == 1:
+            print("Turno de: " ,turno)
+            print(deckP1)
+            ficha = int(input("Ficha: "))
+            i = int(input("Columna: "))
+            j = int(input("Fila: "))
+            if signosTablero[i][j] == 0 and coloresTablero == 0:
+                #Agregar validaciones
+                coloresTablero[i][j] = ficha[j]
+                signosTablero[i][j] = ficha[i]
+            else:
+                turno = 1
+
+        elif turno == 2:
+            print(deckP2)
+            ficha = int(input("Ficha [0,5]: "))
+            i = int(input("Columna: "))
+            j = int(input("Fila: "))
+
+            if signosTablero[i][j] == 0 and coloresTablero == 0:
+                # Agregar validaciones
+                coloresTablero[i][j] = ficha[j]
+                signosTablero[i][j] = ficha[i]
+            else:
+                turno = 2
+
+        elif turno == 3:
+            print(deckP3)
+            ficha = int(input("Ficha: "))
+            i = int(input("Columna: "))
+            j = int(input("Fila: "))
+            if signosTablero[i][j] == 0 and coloresTablero == 0:
+                # Agregar validaciones
+                coloresTablero[i][j] = ficha[j]
+                signosTablero[i][j] = ficha[i]
+            else:
+                turno = 3
 
 
+# E: Una matriz
+# S: No tiene
+# D: Imprime el tablero
+
+def mostrar(tablero):
+    # tablero = tablero[::-1]
+    for i in range(len(tablero)):
+        for j in range(len(tablero[i])):
+            print(tablero[i][j], end=' ')
+        print()
+    print()
+
+#juego()
+seleccionadorDeFichas()
 
 
 
