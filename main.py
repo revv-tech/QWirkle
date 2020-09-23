@@ -8,9 +8,24 @@ from pygame.locals import *
 
 pygame.init()
 
+#TABLERO COLORES
+coloresTablero=[[0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0]]
+#TABLERO SIGNOS
+signosTablero=[[0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0]]
 
 #VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
 #TABLERO DE FICHAS
+#1 = CRUZ -> 2 = ASTERIZCO -> 3 = CUADRADO -> 4 = ROMBO -> 5 = EQUIS -> 6 = CIRCULO
 fichas = [[1,2,3,4,5,6],
             [1,2,3,4,5,6],
             [1,2,3,4,5,6],
@@ -24,8 +39,6 @@ deckP1 = []
 deckP2 = []
 deckP3 = []
 #---------------------------------------------------------------------------------------
-
-
 #VENTANA GUI
 ventana = pygame.display.set_mode((720, 720))
 #
@@ -77,7 +90,22 @@ def fichaFinder(lista):
     return cont
 #---------------------------------------------------------------------------------------
 
-seleccionadorDeFichas()
+#JUEGO
+#E: No tiene
+#S: No tiene
+#D: Proceso del juego
+
+def juego():
+    global coloresTablero
+    global signosTablero
+    #Selecciona los decks de los jugadores al azar
+    seleccionadorDeFichas()
+    game = True
+    #Turno del primer jugador
+    turno = 1
+
+
+
 
 
 
