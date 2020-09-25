@@ -40,6 +40,37 @@ fichas = [[1, 2, 3, 4, 5, 6],
           [1, 2, 3, 4, 5, 6],
           [1, 2, 3, 4, 5, 6]]
 # FICHAS YA USADAS O EN POSECION DE LOS JUGADORES
+
+#Contador de Fichas
+cont = 108
+#TABLERO COLORES
+coloresTablero=[[0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0]]
+#TABLERO SIGNOS
+signosTablero=[[0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0]]
+
+#VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
+#TABLERO DE FICHAS
+#FILAS
+#0 = AZUL -> 1 = CELESTE -> 2 = VERDE -> 3 = AMARILLO -> 4 = NARANJA -> 5 = ROJO
+#COLUMNAS
+#0 = CRUZ -> 1 = ASTERIZCO -> 2 = CUADRADO -> 3 = ROMBO -> 4 = EQUIS -> 5 = CIRCULO
+fichas = [[1,2,3,4,5,6],
+            [1,2,3,4,5,6],
+            [1,2,3,4,5,6],
+            [1,2,3,4,5,6],
+            [1,2,3,4,5,6],
+            [1,2,3,4,5,6]]
+#FICHAS YA USADAS O EN POSECION DE LOS JUGADORES
 fichasUsadas = []
 # VARIABLES GLOBALES DE LOS DECKS DE CADA JUGADOR
 deckP1 = []
@@ -55,10 +86,15 @@ ventana = pygame.display.set_mode((720, 720))
 # E: No tiene
 # S: No tiene
 # D: Selecciona cada uno de los decks de los jugaores
+#SELECTOR DE FICHAS DE CADA JUGADOR--------------------------------------------------------
+#E: No tiene
+#S: No tiene
+#D: Selecciona cada uno de los decks de los jugaores
 def seleccionadorDeFichas():
     global deckP2
     global deckP1
     global deckP3
+    global cont
     deckP1 = seleccionadorDeFichasAux()
     deckP2 = seleccionadorDeFichasAux()
     deckP3 = seleccionadorDeFichasAux()
@@ -69,10 +105,16 @@ def seleccionadorDeFichas():
 # E: Una lista de
 # S: No tiene
 # D: Selecciona las fichas del deck
+    cont = cont - 18
+#Selector Auxiliar
+#E: Una lista de
+#S: No tiene
+#D: Selecciona las fichas del deck
 def seleccionadorDeFichasAux():
-    deck = []
     global fichasUsadas
     # Contador que crea el deck del player (6)
+    deck = []
+    #Contador que crea el deck del player (6)
     contador = 0
     # Loop hasta completar 6 fichas
     while contador != 6:
@@ -84,12 +126,12 @@ def seleccionadorDeFichasAux():
             deck.append([i, j])
             fichasUsadas.append([i, j])
             contador = contador + 1
+    return deck
 
-
-# AUXILIAR PARA ENCONTAR SI UNA FICHA YA FUE USADA
-# E: Una lista
-# S: Un int
-# D: Verifica la cantidad de veces que se ha usado una ficha
+#AUXILIAR PARA ENCONTAR SI UNA FICHA YA FUE USADA
+#E: Una lista
+#S: Un int
+#D: Verifica la cantidad de veces que se ha usado una ficha
 def fichaFinder(lista):
     i = 0
     cont = 0
@@ -109,28 +151,47 @@ def fichaFinder(lista):
 # S: No tiene
 # D: Proceso del juego
 
+#---------------------------------------------------------------------------------------
+#JUEGO
+#E: No tiene
+#S: No tiene
+#D: Proceso del juego
 def juego():
-    # Selecciona los decks de los jugadores al azar
-    seleccionadorDeFichas()
+    #PUNTAJES
     global p1
     global p2
     global p3
+    #TABLEROS
     global coloresTablero
     global signosTablero
     game = True
     # Turno del primer jugador
     turno = 1
     # Asina fichas
+    # Turno del primer jugador
+    turno = 1
+    #Selecciona los decks de los jugadores al azar
     seleccionadorDeFichas()
+    game = True
     while game:
+        #PRINTS DE TABLEROS
         print("Colores:")
         mostrar(coloresTablero)
         print("Signos:")
         mostrar(signosTablero)
+        print("Cantidad de Fichas: ",cont)
+
         if turno == 1:
             print("Turno de: ", turno)
+
+            #PRINTS SIN IMPORTANCIA
+            print("Turno de: " ,turno)
             print(deckP1)
-            ficha = int(input("Ficha: "))
+            #ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
+            index = int(input("Ficha[0,5]: "))
+            ficha = deckP1[index]
+            print(ficha)
+            #POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Columna: "))
             j = int(input("Fila: "))
             if signosTablero[i][j] == 0 and coloresTablero == 0:
@@ -139,33 +200,66 @@ def juego():
                 signosTablero[i][j] = ficha[i]
             else:
                 turno = 1
-
-        elif turno == 2:
-            print(deckP2)
-            ficha = int(input("Ficha [0,5]: "))
-            i = int(input("Columna: "))
-            j = int(input("Fila: "))
-
-            if signosTablero[i][j] == 0 and coloresTablero == 0:
-                # Agregar validaciones
-                coloresTablero[i][j] = ficha[j]
-                signosTablero[i][j] = ficha[i]
-            else:
+            #VERIFICA SI LA POSICION ESTA VACIA
+            if signosTablero[i][j] == 0 and coloresTablero[i][j] == 0:
+                #Agregar validaciones
+                #PONE LA FICHA EN LOS TABLEROS
+                coloresTablero[i][j] = ficha[0]
+                signosTablero[i][j] = ficha[1]
+                # ELIMINA LA FICHA DEL DECK DEL JUGADOR
+                deckP1.pop(index)
                 turno = 2
 
-        elif turno == 3:
-            print(deckP3)
-            ficha = int(input("Ficha: "))
+
+        elif turno == 2:
+            # PRINTS SIN IMPORTANCIA
+            print("Turno de: ", turno)
+            print(deckP2)
+            # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
+            index = int(input("Ficha[0,5]: "))
+            ficha = deckP2[index]
+            print(ficha)
+            # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Columna: "))
             j = int(input("Fila: "))
-            if signosTablero[i][j] == 0 and coloresTablero == 0:
+            # VERIFICA SI LA POSICION ESTA VACIA
+            if signosTablero[i][j] == 0 and coloresTablero[i][j] == 0:
                 # Agregar validaciones
-                coloresTablero[i][j] = ficha[j]
-                signosTablero[i][j] = ficha[i]
-            else:
+                # PONE LA FICHA EN LOS TABLEROS
+                coloresTablero[i][j] = ficha[0]
+                signosTablero[i][j] = ficha[1]
+                # ELIMINA LA FICHA DEL DECK DEL JUGADOR
+                deckP2.pop(index)
                 turno = 3
 
 
+        elif turno == 3:
+            # PRINTS SIN IMPORTANCIA
+            print("Turno de: ", turno)
+            print(deckP3)
+            # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
+            index = int(input("Ficha[0,5]: "))
+            ficha = deckP3[index]
+            print(ficha)
+            # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
+            i = int(input("Columna: "))
+            j = int(input("Fila: "))
+            # VERIFICA SI LA POSICION ESTA VACIA
+            if signosTablero[i][j] == 0 and coloresTablero[i][j] == 0:
+                # Agregar validaciones
+                # PONE LA FICHA EN LOS TABLEROS
+                coloresTablero[i][j] = ficha[0]
+                signosTablero[i][j] = ficha[1]
+                turno = 1
+                #ELIMINA LA FICHA DEL DECK DEL JUGADOR
+                deckP3.pop(index)
+#VALIDACIONES DE LAS JUGADAS
+#E: Turno (INT), i (fila de la jugada), j (columna de la jugada)
+#S:
+def jugadas(turno,i,j):
+    puntos = 0
+
+#PRINT DEL TABLERO
 # E: Una matriz
 # S: No tiene
 # D: Imprime el tablero
@@ -273,6 +367,11 @@ def verificarJugadaValidaColor(ficha, posicion, matrizColores, matrizSignos):
 
     # Si llega hasta aqui significa que es valida la jugada
     return True
+
+
+
+
+juego()
 
 
 # juego()
