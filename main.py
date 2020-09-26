@@ -554,6 +554,3 @@ signosTablero = [[0, 0, 0, 0, 0, 0, 0],
 
 #print(buscarPosicionesValidas(signosTablero))
 #print(verificarJugadaValidaColor([4, 2], [1, 2], coloresTablero, signosTablero))
-a = [[0,0,0],[0,0,0],[0,0,0,]]
-a[0]+= [0]*6
-print(a)
