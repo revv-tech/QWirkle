@@ -313,6 +313,91 @@ def mostrar(tablero):
     print()
 
 
+# E: matriz del tablero
+# S: Booleano, retorna True si el tablero necesita extenderse hacia arriba
+# D: Revisa la tercera fila del tablero (arriba hacia abajo) si encuentra
+#    una ficha entonces retorna True, en otro caso retorna False
+def revisarTableroArriba(matrizColores):
+
+    for j in range(0, len(matrizColores[2])):  # Revisa la fila 3
+
+        if matrizColores[2][j] != 0:
+            return True
+
+    return False
+
+# E: matriz del tablero
+# S: Booleano, retorna True si el tablero necesita extenderse hacia abajo
+# D: Revisa la tercera fila del tablero (abajo hacia arriba) si encuentra
+#    una ficha entonces retorna True, en otro caso retorna False
+def revisarTableroAbajo(matrizColores):
+
+    i = len(matrizColores)-2  # Revisa 3 filas arriba de la fila final
+
+    for j in range(0, len(matrizColores[i])):  # Revisa la fila 3
+
+        if matrizColores[2][j] != 0:
+            return True
+
+    return False
+
+# E: matriz del tablero
+# S: Booleano, retorna True si el tablero necesita extenderse hacia la izquierda
+# D: Revisa la tercera fila del tablero (izquierda hacia derecha) si encuentra
+#    una ficha entonces retorna True, en otro caso retorna False
+def revisarTableroIzquierda(matrizColores):
+
+    for i in range(0, len(matrizColores)):  # Revisa la columna 3
+
+        if matrizColores[i][2] != 0:
+            return True
+
+    return False
+
+# E: matriz del tablero
+# S: Booleano, retorna True si el tablero necesita extenderse hacia la derecha
+# D: Revisa la tercera fila del tablero (derecha hacia izquierda) si encuentra
+#    una ficha entonces retorna True, en otro caso retorna False
+def revisarTableroDerecha(matrizColores):
+
+    j = len(matrizColores)-2
+
+    for i in range(0, len(matrizColores)):  # Revisa 3 columnas a la izquierda de la columna final
+
+        if matrizColores[i][j] != 0:
+            return True
+
+    return False
+
+
+def checkExtenderTablero(matrizColores):
+
+    if revisarTableroArriba(matrizColores):  # True = necesita extenderse hacia arriba
+
+        for i in range (0, 5):  # Le suma 6 filas
+
+            matrizColores = [[0]*len(matrizColores[0])] + matrizColores  # Suma a la izquierda para que queden "arriba"
+
+    if revisarTableroAbajo(matrizColores):  # True = necesita extenderse hacia abajo
+
+        for i in range(0, 5):  # Le suma 6 filas
+
+            matrizColores = matrizColores + [[0] * len(matrizColores)]  # Suma a la derecha para que queden "abajo"
+
+    if revisarTableroIzquierda(matrizColores):  # True = necesita extenderse hacia la izquierda
+
+        for i in range(0, len(matrizColores)):
+
+            matrizColores[i] += [0]*6  # Suma 6 ceros a cada fila para agregar columnas
+
+    if revisarTableroDerecha(matrizColores):  # True = necesita extenderse hacia la derecha
+
+        for i in range(0, len(matrizColores)):
+
+            matrizColores[i] = [0]*6 + matrizColores[i]  # Suma 6 ceros a cada fila para agregar columnas
+
+
+# BACKTRACKING
 def buscarSoluciones(matrizColores, matrizSignos, deck, posicion, soluciones=[]):
     print("Hola mundo")
 
@@ -337,9 +422,17 @@ def buscarPosicionesValidas(matrizSignos):
 
     return posiciones
 
+
 #E: Dos matrices dos listas
 #S: Booleano
 #D: Verifica la fichas por color
+
+
+# E: ficha = [simbolo, color], posicion = [i, j], dos matrices del tablero
+# S: booleano. True si es valido poner la ficha en la poscion dada, False en caso contrario
+# D: Recibe una ficha, una posicion donde se quiere poner la ficha y las matrices del tablero
+#    este algortimo deteremina si se forma una jugada "igual color diferente simbolo"
+
 def verificarJugadaValidaColor(ficha, posicion, matrizColores, matrizSignos):
 
     i = posicion[0]
@@ -413,13 +506,86 @@ def verificarJugadaValidaColor(ficha, posicion, matrizColores, matrizSignos):
     return True
 
 
+# E: ficha = [simbolo, color], posicion = [i, j], dos matrices del tablero
+# S: booleano. True si es valido poner la ficha en la poscion dada, False en caso contrario
+# D: Recibe una ficha, una posicion donde se quiere poner la ficha y las matrices del tablero
+#    este algortimo deteremina si se forma una jugada "igual simbolo diferente color"
+def verificarJugadaValidaSimbolo(ficha, posicion, matrizColores, matrizSignos):
+
+    i = posicion[0]
+    j = posicion[1]
+    aux1 = i
+    aux2 = j
+
+    # Comparar en todas direcciones si el simbolo es el mismo
+    # Cada if equivale a un direccion
+
+    # Comparaciones segun simbolo igual
+    if matrizColores[i + 1][j] != 0:  # Comparacion hacia abajo
+        aux1 += 1
+        while matrizColores[aux1][aux2] != 0:  # Mientras no se un espacio vacio va a comparar
+
+            if matrizColores[aux1][aux2] == ficha[1]:  # Comparar color
+                return False
+
+            if matrizSignos[aux1][aux2] != ficha[0]:  # Comparar simbolo
+                return False
 
 
-juego()
+            else:
+                aux1 += 1
+        aux1 = i
+
+    if matrizColores[i - 1][j] != 0:  # Comparacion hacia arriba
+        aux1 -= 1
+        while matrizColores[aux1][aux2] != 0:  # Mientras no se un espacio vacio va a comparar
+
+            if matrizColores[aux1][aux2] == ficha[1]:  # Comparar arriba de la pos
+                return False
+
+            if matrizSignos[aux1][aux2] != ficha[0]:
+                return False
+
+            else:
+                aux1 -= 1
+        aux1 = i
+
+    if matrizColores[i][j + 1] != 0:  # Comparacion hacia la derecha
+        aux2 += 1
+        while matrizColores[aux1][aux2] != 0:  # Mientras no se un espacio vacio va a comparar
+
+            if matrizColores[aux1][aux2] == ficha[1]:  # Comparar derecha de la pos
+                return False
+
+            if matrizSignos[aux1][aux2] != ficha[0]:
+                return False
+
+            else:
+                aux2 += 1
+        aux2 = j
+
+    if matrizColores[i][j - 1] != 0:  # Comparacion hacia izquierda
+        aux2 -= 1
+        while matrizColores[aux1][aux2] != 0:  # Mientras no se un espacio vacio va a comparar
+
+            if matrizColores[aux1][aux2] == ficha[1]:  # Comparar izquierda de la pos
+                return False
+
+            if matrizSignos[aux1][aux2] != ficha[0]:
+                return False
+
+            else:
+                aux2 -= 1
+        aux2 = j
+
+    # Si llega hasta aqui significa que es valida la jugada
+    return True
 
 
+#juego()
+# seleccionadorDeFichas()
 
-
+# =================== PRUEBAS PARA EL BACKTRACKING ===================================
 # TABLERO COLORES
 coloresTablero = [[0, 0, 0, 0, 0, 0, 0],
                   [0, 0, 0, 0, 0, 0, 0],
@@ -437,3 +603,11 @@ signosTablero = [[0, 0, 0, 0, 0, 0, 0],
 print()
 #print(buscarPosicionesValidas(signosTablero))
 #print(verificarJugadaValidaColor([4, 2], [1, 2], coloresTablero, signosTablero))
+
+
+#print(buscarPosicionesValidas(signosTablero))
+#print(verificarJugadaValidaColor([4, 2], [1, 2], coloresTablero, signosTablero))
+a = [[0,0,0],[0,0,0],[0,0,0,]]
+a[0]+= [0]*6
+print(a)
+
