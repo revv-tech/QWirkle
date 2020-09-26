@@ -12,20 +12,6 @@ p1 = 0
 p2 = 0
 p3 = 0
 
-# TABLERO COLORES
-coloresTablero = [[0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0]]
-# TABLERO SIGNOS
-signosTablero = [[0, 0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0, 0]]
 
 # VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
 # TABLERO DE FICHAS
@@ -44,19 +30,20 @@ fichas = [[1, 2, 3, 4, 5, 6],
 #Contador de Fichas
 cont = 108
 #TABLERO COLORES
-coloresTablero=[[0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0]]
-#TABLERO SIGNOS
-signosTablero=[[0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0]]
+# TABLERO COLORES
+coloresTablero = [[8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8]]
+# TABLERO SIGNOS
+signosTablero = [[8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8]]
 
 #VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
 #TABLERO DE FICHAS
@@ -99,13 +86,8 @@ def seleccionadorDeFichas():
     deckP2 = seleccionadorDeFichasAux()
     deckP3 = seleccionadorDeFichasAux()
     print(deckP1)
-
-
-# Selector Auxiliar
-# E: Una lista de
-# S: No tiene
-# D: Selecciona las fichas del deck
     cont = cont - 18
+
 #Selector Auxiliar
 #E: Una lista de
 #S: No tiene
@@ -119,12 +101,14 @@ def seleccionadorDeFichasAux():
     # Loop hasta completar 6 fichas
     while contador != 6:
         # Randoms
+        #SIGNO
         i = random.randint(0, 5)
+        #COLOR
         j = random.randint(0, 5)
         # Verifica si la ficha ya fue utilizada, si no la agrega al deck
-        if fichas[i][j] != 0 and fichaFinder([i, j]) != 3:
-            deck.append([i, j])
-            fichasUsadas.append([i, j])
+        if fichas[i][j] != 0 and fichaFinder([j, i]) != 3:
+            deck.append([j, i])
+            fichasUsadas.append([j, i])
             contador = contador + 1
     return deck
 
@@ -142,14 +126,22 @@ def fichaFinder(lista):
             cont += 1
         i += 1
     return cont
-
-
-# ---------------------------------------------------------------------------------------
-
-# JUEGO
-# E: No tiene
-# S: No tiene
-# D: Proceso del juego
+#AGREGA FICHAS A DECK
+#E:  Lista (deck)
+#S:  Lista
+#D: Agrega nueva cartas al deck del jugador despues del turno
+def agregaNuevasFichas(deck):
+    global cont
+    while len(deck) != 6:
+        # Randoms
+        i = random.randint(0, 5)
+        j = random.randint(0, 5)
+        # Verifica si la ficha ya fue utilizada, si no la agrega al deck
+        if fichas[j][i] != 0 and fichaFinder([j, i]) != 3:
+            deck.append([j, i]) #Agrega al deck
+            fichasUsadas.append([j, i]) #Agrega las fichas seleccionadas a la lista de fichas usadas
+            cont = cont - 1
+    return deck
 
 #---------------------------------------------------------------------------------------
 #JUEGO
@@ -164,6 +156,10 @@ def juego():
     #TABLEROS
     global coloresTablero
     global signosTablero
+    #Decks
+    global deckP2
+    global deckP1
+    global deckP3
     game = True
     # Turno del primer jugador
     turno = 1
@@ -182,8 +178,6 @@ def juego():
         print("Cantidad de Fichas: ",cont)
 
         if turno == 1:
-            print("Turno de: ", turno)
-
             #PRINTS SIN IMPORTANCIA
             print("Turno de: " ,turno)
             print(deckP1)
@@ -194,21 +188,30 @@ def juego():
             #POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Columna: "))
             j = int(input("Fila: "))
-            if signosTablero[i][j] == 0 and coloresTablero == 0:
-                # Agregar validaciones
-                coloresTablero[i][j] = ficha[j]
-                signosTablero[i][j] = ficha[i]
-            else:
-                turno = 1
-            #VERIFICA SI LA POSICION ESTA VACIA
-            if signosTablero[i][j] == 0 and coloresTablero[i][j] == 0:
-                #Agregar validaciones
-                #PONE LA FICHA EN LOS TABLEROS
+
+            #VERIFICA SI EL TABLERO ESTA VACAIO
+            if isBoardEmpty(coloresTablero) and isBoardEmpty(signosTablero):
+                # PONE LA FICHA EN LOS TABLEROS
+                coloresTablero[i][j] = ficha[0]
+                signosTablero[i][j] = ficha[1]
+                #ELIMINA LA FICHA DEL DECK DEL JUGADOR
+                deckP1.pop(index)
+
+            #VALIDACIONES DE LA JUGADA
+            elif verificarJugadaValidaColor(ficha,[i,j],coloresTablero,signosTablero):
+                # PONE LA FICHA EN LOS TABLEROS
                 coloresTablero[i][j] = ficha[0]
                 signosTablero[i][j] = ficha[1]
                 # ELIMINA LA FICHA DEL DECK DEL JUGADOR
                 deckP1.pop(index)
+
+            #PREGUNTA SI YA QUIERE ACABAR EL TURNO
+            print(deckP1)
+            finish = int(input("Desea terminar turno(0,1): "))
+            if  finish == 1:
+                deckP1 = agregaNuevasFichas(deckP1) #AGREGA FICHAS AL DECK
                 turno = 2
+
 
 
         elif turno == 2:
@@ -222,14 +225,29 @@ def juego():
             # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Columna: "))
             j = int(input("Fila: "))
-            # VERIFICA SI LA POSICION ESTA VACIA
-            if signosTablero[i][j] == 0 and coloresTablero[i][j] == 0:
-                # Agregar validaciones
+
+            # VERIFICA SI EL TABLERO ESTA VACAIO
+            if isBoardEmpty(coloresTablero) and isBoardEmpty(signosTablero):
                 # PONE LA FICHA EN LOS TABLEROS
                 coloresTablero[i][j] = ficha[0]
                 signosTablero[i][j] = ficha[1]
                 # ELIMINA LA FICHA DEL DECK DEL JUGADOR
                 deckP2.pop(index)
+
+            # VALIDACIONES DE LA JUGADA
+            elif verificarJugadaValidaColor(ficha, [i, j], coloresTablero, signosTablero):
+                # PONE LA FICHA EN LOS TABLEROS
+                coloresTablero[i][j] = ficha[0]
+                signosTablero[i][j] = ficha[1]
+                # ELIMINA LA FICHA DEL DECK DEL JUGADOR
+                deckP2.pop(index)
+
+            # PREGUNTA SI YA QUIERE ACABAR EL TURNO
+            print(deckP2)
+            #PREGUNTA SI YA TERMINO
+            finish = int(input("Desea terminar turno(0,1): "))
+            if finish == 1:
+                deckP2 = agregaNuevasFichas(deckP2)  # AGREGA FICHAS AL DECK
                 turno = 3
 
 
@@ -244,20 +262,42 @@ def juego():
             # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Columna: "))
             j = int(input("Fila: "))
-            # VERIFICA SI LA POSICION ESTA VACIA
-            if signosTablero[i][j] == 0 and coloresTablero[i][j] == 0:
-                # Agregar validaciones
+
+            # VERIFICA SI EL TABLERO ESTA VACAIO
+            if isBoardEmpty(coloresTablero) and isBoardEmpty(signosTablero):
+                # PONE LA FICHA EN LOS TABLEROS
+                coloresTablero[i][j] = ficha[1]
+                signosTablero[i][j] = ficha[0]
+                # ELIMINA LA FICHA DEL DECK DEL JUGADOR
+                deckP3.pop(index)
+
+            # VALIDACIONES DE LA JUGADA
+            elif verificarJugadaValidaColor(ficha, [i, j], coloresTablero, signosTablero):
                 # PONE LA FICHA EN LOS TABLEROS
                 coloresTablero[i][j] = ficha[0]
                 signosTablero[i][j] = ficha[1]
-                turno = 1
-                #ELIMINA LA FICHA DEL DECK DEL JUGADOR
+                # ELIMINA LA FICHA DEL DECK DEL JUGADOR
                 deckP3.pop(index)
-#VALIDACIONES DE LAS JUGADAS
-#E: Turno (INT), i (fila de la jugada), j (columna de la jugada)
-#S:
-def jugadas(turno,i,j):
-    puntos = 0
+
+            # PREGUNTA SI YA QUIERE ACABAR EL TURNO
+            print(deckP3)
+            finish = int(input("Desea terminar turno(0,1): "))
+            if finish == 1:
+                deckP3 = agregaNuevasFichas(deckP3)  # AGREGA FICHAS AL DECK
+                turno = 1
+        #VERIFICA QUE YA NO HAYAN FICHAS DISPONIBLES
+        if deckP1 == deckP2 == deckP3 == []:
+            break
+
+#E: Una matriz
+#S: Un booleano
+#D: Verifica si el tablero esta vacio
+def isBoardEmpty(M):
+    for i in range(len(M)):
+        for j in range(len(M[0])):
+            if M[i][j] != 0:
+                return False
+    return True
 
 #PRINT DEL TABLERO
 # E: Una matriz
@@ -383,10 +423,16 @@ def buscarPosicionesValidas(matrizSignos):
     return posiciones
 
 
+#E: Dos matrices dos listas
+#S: Booleano
+#D: Verifica la fichas por color
+
+
 # E: ficha = [simbolo, color], posicion = [i, j], dos matrices del tablero
 # S: booleano. True si es valido poner la ficha en la poscion dada, False en caso contrario
 # D: Recibe una ficha, una posicion donde se quiere poner la ficha y las matrices del tablero
 #    este algortimo deteremina si se forma una jugada "igual color diferente simbolo"
+
 def verificarJugadaValidaColor(ficha, posicion, matrizColores, matrizSignos):
 
     i = posicion[0]
@@ -398,9 +444,9 @@ def verificarJugadaValidaColor(ficha, posicion, matrizColores, matrizSignos):
     # Cada if equivale a un direccion
 
     # Comparaciones segun color igual
-    if matrizColores[i + 1][j] != 0:  # Comparacion hacia abajo
+    if matrizColores[i + 1][j] != 8:  # Comparacion hacia abajo
         aux1 += 1
-        while matrizColores[aux1][aux2] != 0:  # Mientras no se un espacio vacio va a comparar
+        while matrizColores[aux1][aux2] != 8:  # Mientras no se un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] != ficha[1]:  # Comparar color
                 return False
@@ -412,9 +458,10 @@ def verificarJugadaValidaColor(ficha, posicion, matrizColores, matrizSignos):
                 aux1 += 1
         aux1 = i
 
-    if matrizColores[i - 1][j] != 0:  # Comparacion hacia arriba
+    if matrizColores[i - 1][j] != 8:  # Comparacion hacia arriba
+
         aux1 -= 1
-        while matrizColores[aux1][aux2] != 0:  # Mientras no se un espacio vacio va a comparar
+        while matrizColores[aux1][aux2] != 8:  # Mientras no se un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] != ficha[1]:  # Comparar arriba de la pos
                 return False
@@ -426,9 +473,9 @@ def verificarJugadaValidaColor(ficha, posicion, matrizColores, matrizSignos):
                 aux1 -= 1
         aux1 = i
 
-    if matrizColores[i][j + 1] != 0:  # Comparacion hacia la derecha
+    if matrizColores[i][j + 1] != 8:  # Comparacion hacia la derecha
         aux2 += 1
-        while matrizColores[aux1][aux2] != 0:  # Mientras no se un espacio vacio va a comparar
+        while matrizColores[aux1][aux2] != 8:  # Mientras no se un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] != ficha[1]:  # Comparar derecha de la pos
                 return False
@@ -440,9 +487,9 @@ def verificarJugadaValidaColor(ficha, posicion, matrizColores, matrizSignos):
                 aux2 += 1
         aux2 = j
 
-    if matrizColores[i][j - 1] != 0:  # Comparacion hacia izquierda
+    if matrizColores[i][j - 1] != 8:  # Comparacion hacia izquierda
         aux2 -= 1
-        while matrizColores[aux1][aux2] != 0:  # Mientras no se un espacio vacio va a comparar
+        while matrizColores[aux1][aux2] != 8:  # Mientras no se un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] != ficha[1]:  # Comparar izquierda de la pos
                 return False
@@ -452,6 +499,7 @@ def verificarJugadaValidaColor(ficha, posicion, matrizColores, matrizSignos):
 
             else:
                 aux2 -= 1
+
         aux2 = j
 
     # Si llega hasta aqui significa que es valida la jugada
@@ -482,6 +530,7 @@ def verificarJugadaValidaSimbolo(ficha, posicion, matrizColores, matrizSignos):
 
             if matrizSignos[aux1][aux2] != ficha[0]:  # Comparar simbolo
                 return False
+
 
             else:
                 aux1 += 1
@@ -551,9 +600,14 @@ signosTablero = [[0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 2, 0, 0, 0, 0],
                  [0, 0, 3, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0]]
+print()
+#print(buscarPosicionesValidas(signosTablero))
+#print(verificarJugadaValidaColor([4, 2], [1, 2], coloresTablero, signosTablero))
+
 
 #print(buscarPosicionesValidas(signosTablero))
 #print(verificarJugadaValidaColor([4, 2], [1, 2], coloresTablero, signosTablero))
 a = [[0,0,0],[0,0,0],[0,0,0,]]
 a[0]+= [0]*6
 print(a)
+
