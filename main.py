@@ -168,115 +168,103 @@ def juego():
     turno = 1
     #Selecciona los decks de los jugadores al azar
     seleccionadorDeFichas()
+    # Almacena las jugadas
+    # [[POSICION],[FICHA]]
+    listaJugadas = []
     game = True
     while game:
-        #PRINTS DE TABLEROS
-        print("Colores:")
-        mostrar(coloresTablero)
-        print("Signos:")
-        mostrar(signosTablero)
-        print("Cantidad de Fichas: ",cont)
 
         if turno == 1:
+            # PRINTS DE TABLEROS
+            print("Signos:")
+            mostrar(signosTablero)
+            print("Colores:")
+            mostrar(coloresTablero)
+            print("Cantidad de Fichas: ", cont)
             #PRINTS SIN IMPORTANCIA
             print("Turno de: " ,turno)
             print(deckP1)
             #ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
-            index = int(input("Ficha[0,5]: "))
+            index = int(input("Ficha[0,5][Signos,Colores]: "))
             ficha = deckP1[index]
             print(ficha)
             #POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
-            i = int(input("Columna: "))
-            j = int(input("Fila: "))
-
-            #VERIFICA SI EL TABLERO ESTA VACAIO
-            if isBoardEmpty(coloresTablero) and isBoardEmpty(signosTablero):
-                # PONE LA FICHA EN LOS TABLEROS
-                coloresTablero[i][j] = ficha[0]
-                signosTablero[i][j] = ficha[1]
-                #ELIMINA LA FICHA DEL DECK DEL JUGADOR
-                deckP1.pop(index)
-
+            i = int(input("Fila: "))
+            j = int(input("Columna: "))
             #VALIDACIONES DE LA JUGADA
-            #elif verificarJugadaValidaColor(ficha,[i,j],coloresTablero,signosTablero):
+            if verificarJugadaValida(ficha,[i,j],coloresTablero,signosTablero):
                 # PONE LA FICHA EN LOS TABLEROS
-                coloresTablero[i][j] = ficha[0]
-                signosTablero[i][j] = ficha[1]
+                coloresTablero[i][j] = ficha[1]
+                signosTablero[i][j] = ficha[0]
                 # ELIMINA LA FICHA DEL DECK DEL JUGADOR
                 deckP1.pop(index)
-
+                # AGREGA LA JUGADA A LA LISTA DE JUGADAS
+                listaJugadas.append([[i,j]]+[ficha])
             #PREGUNTA SI YA QUIERE ACABAR EL TURNO
             print(deckP1)
+            print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
             finish = int(input("Desea terminar turno(0,1): "))
             if  finish == 1:
                 deckP1 = agregaNuevasFichas(deckP1) #AGREGA FICHAS AL DECK
                 turno = 2
 
-
-
-        elif turno == 2:
-            # PRINTS SIN IMPORTANCIA
-            print("Turno de: ", turno)
+        if turno == 2:
+            # PRINTS DE TABLEROS
+            print("Signos:")
+            mostrar(signosTablero)
+            print("Colores:")
+            mostrar(coloresTablero)
+            print("Cantidad de Fichas: ", cont)
+            #PRINTS SIN IMPORTANCIA
+            print("Turno de: " ,turno)
             print(deckP2)
-            # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
-            index = int(input("Ficha[0,5]: "))
+            #ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
+            index = int(input("Ficha[0,5][Signos,Colores]: "))
             ficha = deckP2[index]
             print(ficha)
-            # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
-            i = int(input("Columna: "))
-            j = int(input("Fila: "))
+            #POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
+            i = int(input("Fila: "))
+            j = int(input("Columna: "))
 
-            # VERIFICA SI EL TABLERO ESTA VACAIO
-            if isBoardEmpty(coloresTablero) and isBoardEmpty(signosTablero):
-                # PONE LA FICHA EN LOS TABLEROS
-                coloresTablero[i][j] = ficha[0]
-                signosTablero[i][j] = ficha[1]
-                # ELIMINA LA FICHA DEL DECK DEL JUGADOR
-                deckP2.pop(index)
-
-            # VALIDACIONES DE LA JUGADA
-            #elif verificarJugadaValidaColor(ficha, [i, j], coloresTablero, signosTablero):
-                # PONE LA FICHA EN LOS TABLEROS
-                coloresTablero[i][j] = ficha[0]
-                signosTablero[i][j] = ficha[1]
-                # ELIMINA LA FICHA DEL DECK DEL JUGADOR
-                deckP2.pop(index)
-
-            # PREGUNTA SI YA QUIERE ACABAR EL TURNO
-            print(deckP2)
-            #PREGUNTA SI YA TERMINO
-            finish = int(input("Desea terminar turno(0,1): "))
-            if finish == 1:
-                deckP2 = agregaNuevasFichas(deckP2)  # AGREGA FICHAS AL DECK
-                turno = 3
-
-
-        elif turno == 3:
-            # PRINTS SIN IMPORTANCIA
-            print("Turno de: ", turno)
-            print(deckP3)
-            # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
-            index = int(input("Ficha[0,5]: "))
-            ficha = deckP3[index]
-            print(ficha)
-            # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
-            i = int(input("Columna: "))
-            j = int(input("Fila: "))
-
-            # VERIFICA SI EL TABLERO ESTA VACAIO
-            if isBoardEmpty(coloresTablero) and isBoardEmpty(signosTablero):
+            #VALIDACIONES DE LA JUGADA
+            if verificarJugadaValida(ficha,[i,j],coloresTablero,signosTablero):
                 # PONE LA FICHA EN LOS TABLEROS
                 coloresTablero[i][j] = ficha[1]
                 signosTablero[i][j] = ficha[0]
                 # ELIMINA LA FICHA DEL DECK DEL JUGADOR
-                deckP3.pop(index)
+                deckP2.pop(index)
+
+            #PREGUNTA SI YA QUIERE ACABAR EL TURNO
+            print(deckP2)
+            finish = int(input("Desea terminar turno(0,1): "))
+            if  finish == 1:
+                deckP2 = agregaNuevasFichas(deckP2) #AGREGA FICHAS AL DECK
+                turno = 3
+
+        if turno == 3:
+             # PRINTS DE TABLEROS
+            print("Signos:")
+            mostrar(signosTablero)
+            print("Colores:")
+            mostrar(coloresTablero)
+            print("Cantidad de Fichas: ", cont)
+            # PRINTS SIN IMPORTANCIA
+            print("Turno de: ", turno)
+            print(deckP3)
+            # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
+            index = int(input("Ficha[0,5][Signos,Colores]: "))
+            ficha = deckP3[index]
+            print(ficha)
+            # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
+            i = int(input("Fila: "))
+            j = int(input("Columna: "))
 
             # VALIDACIONES DE LA JUGADA
-            #elif verificarJugadaValidaColor(ficha, [i, j], coloresTablero, signosTablero):
+            if verificarJugadaValida(ficha, [i, j], coloresTablero, signosTablero):
                 # PONE LA FICHA EN LOS TABLEROS
-                coloresTablero[i][j] = ficha[0]
-                signosTablero[i][j] = ficha[1]
-                # ELIMINA LA FICHA DEL DECK DEL JUGADOR
+                coloresTablero[i][j] = ficha[1]
+                signosTablero[i][j] = ficha[0]
+                 # ELIMINA LA FICHA DEL DECK DEL JUGADOR
                 deckP3.pop(index)
 
             # PREGUNTA SI YA QUIERE ACABAR EL TURNO
@@ -285,6 +273,8 @@ def juego():
             if finish == 1:
                 deckP3 = agregaNuevasFichas(deckP3)  # AGREGA FICHAS AL DECK
                 turno = 1
+
+
         #VERIFICA QUE YA NO HAYAN FICHAS DISPONIBLES
         if deckP1 == deckP2 == deckP3 == []:
             break
@@ -311,6 +301,18 @@ def mostrar(tablero):
             print(tablero[i][j], end=' ')
         print()
     print()
+
+
+# Puntuacion
+# E: Una listas de listas
+# S: Un numero
+# D: Revisa la jugada de acuerdo a las fichas y a la posicion en la que la puso.
+def puntuacion(jugadas):
+    # JUGADAS[POSICION,FICHA]
+    primeraJugada = jugadas[0]
+    jugadas.pop(0)
+    while jugadas != []:
+
 
 
 # E: matriz del tablero
@@ -594,7 +596,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
         return False
 
 
-#juego()
+juego()
 # seleccionadorDeFichas()
 
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
