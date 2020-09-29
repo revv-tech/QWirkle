@@ -31,16 +31,16 @@ fichas = [[1, 2, 3, 4, 5, 6],
 cont = 108
 #TABLERO COLORES
 # TABLERO COLORES
-coloresTablero = [[4, 4, 4, 4, 8, 8, 8],
-                  [8, 8, 8, 3, 8, 8, 8],
-                  [8, 8, 0, 0, 8, 8, 8],
+coloresTablero = [[8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 0, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8]]
 # TABLERO SIGNOS
-signosTablero = [[3, 2, 1, 5, 8, 8, 8],
-                  [8, 8, 8, 5, 8, 8, 8],
-                  [8, 8, 0, 5, 8, 8, 8],
+signosTablero = [[8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 0, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8]]
@@ -322,6 +322,8 @@ play1 = [[[0, 0], [4, 3]], [[0, 1], [4, 2]], [[2, 3], [0, 5]], [[2, 2], [0, 0]],
 #D:
 def puntuacionAux(jugada):
 
+
+
     i = jugada[0][0]
     j = jugada[0][1]
 
@@ -329,22 +331,26 @@ def puntuacionAux(jugada):
     puntos = 1
     aux1 = i
     aux2 = j
+
     #Compara FILAS
     print(ficha,jugada[0])
+
     if coloresTablero [i][j+1] == ficha[0] or signosTablero[i][j+1] == ficha[1]:
         print("#1")
         aux2 += 1
         while coloresTablero[i][aux2] == ficha[0] or signosTablero[i][aux2] == ficha[1]:
             puntos += 1
             aux2 +=1
-    elif coloresTablero[i][j - 1] == ficha[0] or signosTablero[i][j - 1] == ficha[1]:
+
+    if coloresTablero[i][j - 1] == ficha[0] or signosTablero[i][j - 1] == ficha[1]:
         print("#2")
         aux2 -= 1
         while coloresTablero[i][aux2] == ficha[0] or signosTablero[i][aux2] == ficha[1]:
             puntos += 1
             aux2 -= 1
+
     #COMPARA COLUMNAS
-    elif coloresTablero[i+1][j] == ficha[0] or signosTablero[i+1][j] == ficha[1]:
+    if coloresTablero[i+1][j] == ficha[0] or signosTablero[i+1][j] == ficha[1]:
         print("#3")
         aux1 += 1
         while coloresTablero[aux1][j] == ficha[0] or signosTablero[aux1][j] == ficha[1]:
@@ -352,7 +358,7 @@ def puntuacionAux(jugada):
             puntos += 1
             aux1 += 1
 
-    elif coloresTablero[i-1][j] == ficha[0] or signosTablero[i-1][j] == ficha[1]:
+    if coloresTablero[i-1][j] == ficha[0] or signosTablero[i-1][j] == ficha[1]:
         print("#4")
         aux1 -= 1
         while coloresTablero[aux1][j] == ficha[0] or signosTablero[aux1][j] == ficha[1]:
@@ -648,8 +654,8 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
         return False
 
 
-#juego()
-puntuacionAux(play)
+juego()
+#puntuacionAux(play)
 # seleccionadorDeFichas()
 
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
