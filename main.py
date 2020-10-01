@@ -351,14 +351,13 @@ def puntuacion(jugada,jugadasPos):
         jugada = jugada[1:]
     return puntos
 
-
-
 #Check Puntuacion
 #E: Una lista con la ficha y la posicion y la lista de fichas puestas en el turno
 #S: La cantidad de numeros
 #D: Suma los puntos de cada jugada
 def puntuacionAux(jugada,jugadasList):
     print("Puntuacion Aux")
+
     i = jugada[0][0]
     j = jugada[0][1]
 
@@ -366,6 +365,7 @@ def puntuacionAux(jugada,jugadasList):
     puntos = 1
     aux1 = i
     aux2 = j
+
     #COMPARACION COLUMNAS
     if coloresTablero [i][j+1] == ficha[0] or signosTablero[i][j+1] == ficha[1]:
         print("#1")
@@ -384,6 +384,7 @@ def puntuacionAux(jugada,jugadasList):
                 break
             puntos += 1
             aux2 -= 1
+
     #COMPARA FILAS
     if coloresTablero[i+1][j] == ficha[0] or signosTablero[i+1][j] == ficha[1]:
         print("#3")
@@ -399,8 +400,8 @@ def puntuacionAux(jugada,jugadasList):
         print("#4")
         aux1 -= 1
         while coloresTablero[aux1][j] == ficha[0] or signosTablero[aux1][j] == ficha[1]:
-            #if [aux1,j] in jugadasList:
-            #    break
+            if [aux1,j] in jugadasList:
+                break
             puntos += 1
             aux1 -= 1
 
@@ -773,26 +774,31 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 
 #juego()
 #puntuacionAux(play)
-# seleccionadorDeFichas()
+#seleccionadorDeFichas()
 
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
 # TABLERO COLORES
-coloresTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
+coloresTablero = [[8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
+                  [8, 8, 8, 2, 3, 8, 8],
+                  [8, 8, 1, 8, 8, 8, 8],
+                  [8, 8, 1, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8]]
+
 # TABLERO SIGNOS
-signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
+signosTablero = [[8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 1, 1, 8, 8],
+                 [8, 8, 2, 8, 8, 8, 8],
+                 [8, 8, 3, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8]]
+
+=======
+
 
 #mano = [[1, 1], [1, 2], [2, 0]]
 #pos = [2, 4]
+
 #print(buscarPosicionesValidas(signosTablero))
 #print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
 #buscarSolucionesHorizontal(coloresTablero, signosTablero, mano, pos)
