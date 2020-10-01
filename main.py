@@ -347,7 +347,7 @@ def puntuacion(jugada,jugadasPos):
     jugada = jugada[1:]
     while jugada != []:
         print("Ciclo Jugadas Extras")
-        puntos = puntos + puntuacionFichasEx(jugada[0],jugadasPos)
+        puntos = puntos + puntuacionAux(jugada[0],jugadasPos)
         jugada = jugada[1:]
     return puntos
 
@@ -371,8 +371,8 @@ def puntuacionAux(jugada,jugadasList):
         print("#1")
         aux2 += 1
         while coloresTablero[i][aux2] == ficha[0] or signosTablero[i][aux2] == ficha[1]:
-            #if [i,aux2] in jugadasList:
-             #   break
+            if [i,aux2] in jugadasList:
+                break
             puntos += 1
             aux2 +=1
         aux2 = j
@@ -380,8 +380,8 @@ def puntuacionAux(jugada,jugadasList):
         print("#2")
         aux2 -= 1
         while coloresTablero[i][aux2] == ficha[0] or signosTablero[i][aux2] == ficha[1]:
-            #if [i,aux2] in jugadasList:
-            #    break
+            if [i,aux2] in jugadasList:
+                break
             puntos += 1
             aux2 -= 1
     #COMPARA FILAS
@@ -389,8 +389,8 @@ def puntuacionAux(jugada,jugadasList):
         print("#3")
         aux1 += 1
         while coloresTablero[aux1][j] == ficha[0] or signosTablero[aux1][j] == ficha[1]:
-            #if [aux1,j]  in jugadasList:
-            #    break
+            if [aux1,j]  in jugadasList:
+                break
             puntos += 1
             aux1 += 1
         aux1 = i
