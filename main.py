@@ -33,14 +33,14 @@ cont = 108
 # TABLERO COLORES
 coloresTablero = [[8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 0, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8]]
 # TABLERO SIGNOS
 signosTablero = [[8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 0, 8, 8, 8, 8],
+                  [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8]]
@@ -168,10 +168,11 @@ def juego():
     turno = 1
     #Selecciona los decks de los jugadores al azar
     seleccionadorDeFichas()
+    game = True
     # Almacena las jugadas
     # [[POSICION],[FICHA]]
     listaJugadas = []
-    game = True
+    listaPosicionesPlays = []
     while game:
 
         if turno == 1:
@@ -200,13 +201,22 @@ def juego():
                 deckP1.pop(index)
                 # AGREGA LA JUGADA A LA LISTA DE JUGADAS
                 listaJugadas.append([[i,j]]+[ficha])
+                listaPosicionesPlays.append([i,j])
+
             #PREGUNTA SI YA QUIERE ACABAR EL TURNO
             print(deckP1)
             print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
+            print("Posiciones: ",listaPosicionesPlays)
             finish = int(input("Desea terminar turno(0,1): "))
             if  finish == 1:
+                play = puntuacion(listaJugadas,listaPosicionesPlays)
+                print("Tu turno fue de  +", play)
+                p1 = p1 + play
+                print("P#",turno," llevas ",p1," puntos!")
                 deckP1 = agregaNuevasFichas(deckP1) #AGREGA FICHAS AL DECK
                 turno = 2
+                listaJugadas = []
+                listaPosicionesPlays = []
 
         if turno == 2:
             # PRINTS DE TABLEROS
@@ -233,13 +243,24 @@ def juego():
                 signosTablero[i][j] = ficha[0]
                 # ELIMINA LA FICHA DEL DECK DEL JUGADOR
                 deckP2.pop(index)
+                # AGREGA LA JUGADA A LA LISTA DE JUGADAS
+                listaJugadas.append([[i, j]] + [ficha])
+                listaPosicionesPlays.append([i, j])
 
             #PREGUNTA SI YA QUIERE ACABAR EL TURNO
             print(deckP2)
+            print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
+            print("Posiciones: ", listaPosicionesPlays)
             finish = int(input("Desea terminar turno(0,1): "))
             if  finish == 1:
+                play = puntuacion(listaJugadas,listaPosicionesPlays)
+                print("Tu turno fue de  +", play)
+                p2 = p2 + play
+                print("P#", turno, " llevas ", p2, " puntos!")
                 deckP2 = agregaNuevasFichas(deckP2) #AGREGA FICHAS AL DECK
                 turno = 3
+                listaJugadas = []
+                listaPosicionesPlays = []
 
         if turno == 3:
              # PRINTS DE TABLEROS
@@ -266,12 +287,23 @@ def juego():
                 signosTablero[i][j] = ficha[0]
                  # ELIMINA LA FICHA DEL DECK DEL JUGADOR
                 deckP3.pop(index)
+                # AGREGA LA JUGADA A LA LISTA DE JUGADAS
+                listaJugadas.append([[i, j]] + [ficha])
+                listaPosicionesPlays.append([i, j])
 
             # PREGUNTA SI YA QUIERE ACABAR EL TURNO
             print(deckP3)
+            print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
+            print("Posiciones: ", listaPosicionesPlays)
             finish = int(input("Desea terminar turno(0,1): "))
             if finish == 1:
+                play = puntuacion(listaJugadas,listaPosicionesPlays)
+                print("Tu turno fue de  +", play)
+                p3 = p3 + play
+                print("P#", turno, " llevas ", p3, " puntos!")
                 deckP3 = agregaNuevasFichas(deckP3)  # AGREGA FICHAS AL DECK
+                listaJugadas = []
+                listaPosicionesPlays = []
                 turno = 1
 
 
@@ -307,23 +339,26 @@ def mostrar(tablero):
 # E: Una listas de listas
 # S: Un numero
 # D: Revisa la jugada de acuerdo a las fichas y a la posicion en la que la puso.
-def puntuacion(jugadas):
+def puntuacion(jugada,jugadasPos):
     # JUGADAS[POSICION,FICHA]
-    primeraJugada = jugadas[0]
+    print(jugada)
+    #Puntos de la jugada
+    puntos = puntuacionAux(jugada[0],jugadasPos)
+    jugada = jugada[1:]
+    while jugada != []:
+        print("Ciclo Jugadas Extras")
+        puntos = puntos + puntuacionFichasEx(jugada[0],jugadasPos)
+        jugada = jugada[1:]
+    return puntos
 
 
-
-play = [[2, 3], [0, 5]]
-play1 = [[[0, 0], [4, 3]], [[0, 1], [4, 2]], [[2, 3], [0, 5]], [[2, 2], [0, 0]], [[3, 2], [1, 0]]]
 
 #Check Puntuacion
-#E: Una lista con la ficha y la posicion
+#E: Una lista con la ficha y la posicion y la lista de fichas puestas en el turno
 #S: La cantidad de numeros
-#D:
-def puntuacionAux(jugada):
-
-
-
+#D: Suma los puntos de cada jugada
+def puntuacionAux(jugada,jugadasList):
+    print("Puntuacion Aux")
     i = jugada[0][0]
     j = jugada[0][1]
 
@@ -331,44 +366,71 @@ def puntuacionAux(jugada):
     puntos = 1
     aux1 = i
     aux2 = j
-
-    #Compara FILAS
-    print(ficha,jugada[0])
-
+    #COMPARACION COLUMNAS
     if coloresTablero [i][j+1] == ficha[0] or signosTablero[i][j+1] == ficha[1]:
         print("#1")
         aux2 += 1
         while coloresTablero[i][aux2] == ficha[0] or signosTablero[i][aux2] == ficha[1]:
+            #if [i,aux2] in jugadasList:
+             #   break
             puntos += 1
             aux2 +=1
-
+        aux2 = j
     if coloresTablero[i][j - 1] == ficha[0] or signosTablero[i][j - 1] == ficha[1]:
         print("#2")
         aux2 -= 1
         while coloresTablero[i][aux2] == ficha[0] or signosTablero[i][aux2] == ficha[1]:
+            #if [i,aux2] in jugadasList:
+            #    break
             puntos += 1
             aux2 -= 1
-
-    #COMPARA COLUMNAS
+    #COMPARA FILAS
     if coloresTablero[i+1][j] == ficha[0] or signosTablero[i+1][j] == ficha[1]:
         print("#3")
         aux1 += 1
         while coloresTablero[aux1][j] == ficha[0] or signosTablero[aux1][j] == ficha[1]:
-            print(coloresTablero[aux1][j],signosTablero[aux1][j])
+            #if [aux1,j]  in jugadasList:
+            #    break
             puntos += 1
             aux1 += 1
+        aux1 = i
 
     if coloresTablero[i-1][j] == ficha[0] or signosTablero[i-1][j] == ficha[1]:
         print("#4")
         aux1 -= 1
         while coloresTablero[aux1][j] == ficha[0] or signosTablero[aux1][j] == ficha[1]:
+            #if [aux1,j] in jugadasList:
+            #    break
             puntos += 1
             aux1 -= 1
 
-    print(puntos)
     return puntos
 
+def puntuacionFichasEx(jugada,jugadasList):
 
+    i = jugada[0][0]
+    j = jugada[0][1]
+
+    ficha = jugada[1]
+    puntos = 1
+
+    if coloresTablero[i][j + 1] == ficha[0] or signosTablero[i][j + 1] == ficha[1]:
+        print("Extras #1")
+        if not ([i,j + 1] in jugadasList):
+            puntos += 1
+    if coloresTablero[i][j - 1] == ficha[0] or signosTablero[i][j - 1] == ficha[1]:
+        print("Extras #2")
+        if not ([i,j - 1] in jugadasList):
+            puntos += 1
+    if coloresTablero[i + 1][j] == ficha[0] or signosTablero[i + 1][j] == ficha[1]:
+        print("Extras #3")
+        if not ([i+1,j] in jugadasList):
+            puntos += 1
+    if coloresTablero[i - 1][j] == ficha[0] or signosTablero[i - 1][j] == ficha[1]:
+        print("Extras #4")
+        if not ([i - 1,j] in jugadasList):
+            puntos += 1
+    return puntos
 
 
 
