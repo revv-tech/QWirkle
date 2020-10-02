@@ -3,7 +3,7 @@
 # imports
 import pygame
 import random
-import math
+import itertools
 from pygame.locals import *
 pygame.init()
 # PUNTAJE
@@ -187,6 +187,7 @@ def juego():
             mostrar(coloresTablero)
             print("Cantidad de Fichas: ", cont)
             #PRINTS SIN IMPORTANCIA
+            #print("Permutaciones: ",list(itertools.permutations(deckP1)))
             print("Turno de: " ,turno)
             print(deckP1)
             #ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
@@ -335,10 +336,9 @@ def puntuacion(jugada,jugadasPos):
     # JUGADAS[POSICION,FICHA]
     print(jugada)
     #Puntos de la jugada
-    puntos = puntuacionAux(jugada[0],jugadasPos)
+    puntos = puntuacionAux(jugada[0],[])
     jugada = jugada[1:]
     while jugada != []:
-        print("Ciclo Jugadas Extras")
         puntos = puntos + puntuacionAux(jugada[0],jugadasPos)
         jugada = jugada[1:]
     return puntos
@@ -353,7 +353,6 @@ def puntuacionAux(jugada,jugadasList):
     print("Puntuacion Aux")
     i = jugada[0][0]
     j = jugada[0][1]
-
     ficha = jugada[1]
     puntos = 1
     aux1 = i
@@ -395,38 +394,8 @@ def puntuacionAux(jugada,jugadasList):
                 break
             puntos += 1
             aux1 -= 1
-
+            
     return puntos
-
-def puntuacionFichasEx(jugada,jugadasList):
-
-    i = jugada[0][0]
-    j = jugada[0][1]
-
-    ficha = jugada[1]
-    puntos = 1
-
-    if coloresTablero[i][j + 1] == ficha[0] or signosTablero[i][j + 1] == ficha[1]:
-        print("Extras #1")
-        if not ([i,j + 1] in jugadasList):
-            puntos += 1
-    if coloresTablero[i][j - 1] == ficha[0] or signosTablero[i][j - 1] == ficha[1]:
-        print("Extras #2")
-        if not ([i,j - 1] in jugadasList):
-            puntos += 1
-    if coloresTablero[i + 1][j] == ficha[0] or signosTablero[i + 1][j] == ficha[1]:
-        print("Extras #3")
-        if not ([i+1,j] in jugadasList):
-            puntos += 1
-    if coloresTablero[i - 1][j] == ficha[0] or signosTablero[i - 1][j] == ficha[1]:
-        print("Extras #4")
-        if not ([i - 1,j] in jugadasList):
-            puntos += 1
-    return puntos
-
-
-
-
 # E: matriz del tablero
 # S: Booleano, retorna True si el tablero necesita extenderse hacia arriba
 # D: Revisa la tercera fila del tablero (arriba hacia abajo) si encuentra
@@ -762,6 +731,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
     else:
         return False
 
+#PERMUTACIONES DEL DECK
 
 #juego()
 #puntuacionAux(play)
@@ -794,48 +764,6 @@ signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
 #IMAGENES
 #BK
 bg = pygame.image.load('bg.png')
-#BLUE
-azul_1=pygame.image.load('1_1.png')
-azul_2=pygame.image.load('1_2.png')
-azul_3=pygame.image.load('1_3.png')
-azul_4=pygame.image.load('1_4.png')
-azul_5=pygame.image.load('1_5.png')
-azul_6=pygame.image.load('1_6.png')
-#LIGHT BLUE
-azulB_1=pygame.image.load('2_1.png')
-azulB_2=pygame.image.load('2_2.png')
-azulB_3=pygame.image.load('2_3.png')
-azulB_4=pygame.image.load('2_4.png')
-azulB_5=pygame.image.load('2_5.png')
-azulB_6=pygame.image.load('2_6.png')
-#GREEN
-green_1=pygame.image.load('3_1.png')
-green_2=pygame.image.load('3_2.png')
-green_3=pygame.image.load('3_3.png')
-green_4=pygame.image.load('3_4.png')
-green_5=pygame.image.load('3_5.png')
-green_6=pygame.image.load('3_6.png')
-#YELLOW
-amarillo_1=pygame.image.load('4_1.png')
-amarillo_2=pygame.image.load('4_2.png')
-amarillo_3=pygame.image.load('4_3.png')
-amarillo_4=pygame.image.load('4_4.png')
-amarillo_5=pygame.image.load('4_5.png')
-amarillo_6=pygame.image.load('4_6.png')
-#ORANGE
-orange_1=pygame.image.load('5_1.png')
-orange_2=pygame.image.load('5_2.png')
-orange_3=pygame.image.load('5_3.png')
-orange_4=pygame.image.load('5_4.png')
-orange_5=pygame.image.load('5_5.png')
-orange_6=pygame.image.load('5_6.png')
-#ORANGE
-red_1=pygame.image.load('6_1.png')
-red_2=pygame.image.load('6_2.png')
-red_3=pygame.image.load('6_3.png')
-red_4=pygame.image.load('6_4.png')
-red_5=pygame.image.load('6_5.png')
-red_6=pygame.image.load('6_6.png')
 #VACIO
 vacio = pygame.image.load("vacio.png")
 
@@ -937,3 +865,4 @@ def gui():
         reloj.tick(1)
 
 #gui()
+juego()
