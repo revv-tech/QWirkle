@@ -5,7 +5,6 @@ import pygame
 import random
 import math
 from pygame.locals import *
-
 pygame.init()
 # PUNTAJE
 p1 = 0
@@ -29,21 +28,21 @@ fichas = [[1, 2, 3, 4, 5, 6],
 
 #Contador de Fichas
 cont = 108
+
+#E: Dos ints
+#S: Una Matriz
+#D:Crea una matriz con la cantidad de C y F que se le pase
+def generadorMatriz(filas,columnas):
+    M = []
+    for i in range(filas):
+        columna = [8]*columnas
+        M.append(columna)
+    return M
+
 #TABLERO COLORES
-# TABLERO COLORES
-coloresTablero = [[8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8]]
+coloresTablero = generadorMatriz(18,9)
 # TABLERO SIGNOS
-signosTablero = [[8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8],
-                  [8, 8, 8, 8, 8, 8, 8]]
+signosTablero = generadorMatriz(18,9)
 
 #VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
 #TABLERO DE FICHAS
@@ -63,11 +62,19 @@ fichasUsadas = []
 deckP1 = []
 deckP2 = []
 deckP3 = []
+#PRINT DEL TABLERO
+# E: Una matriz
+# S: No tiene
+# D: Imprime el tablero
+
+def mostrar(tablero):
+    # tablero = tablero[::-1]
+    for i in range(len(tablero)):
+        for j in range(len(tablero[i])):
+            print(tablero[i][j], end=' ')
+        print()
+    print()
 # ---------------------------------------------------------------------------------------
-# VENTANA GUI
-ventana = pygame.display.set_mode((720, 720))
-
-
 #
 # SELECTOR DE FICHAS DE CADA JUGADOR--------------------------------------------------------
 # E: No tiene
@@ -160,9 +167,6 @@ def juego():
     global deckP2
     global deckP1
     global deckP3
-    game = True
-    # Turno del primer jugador
-    turno = 1
     # Asina fichas
     # Turno del primer jugador
     turno = 1
@@ -321,18 +325,6 @@ def isBoardEmpty(M):
                 return False
     return True
 
-#PRINT DEL TABLERO
-# E: Una matriz
-# S: No tiene
-# D: Imprime el tablero
-
-def mostrar(tablero):
-    # tablero = tablero[::-1]
-    for i in range(len(tablero)):
-        for j in range(len(tablero[i])):
-            print(tablero[i][j], end=' ')
-        print()
-    print()
 
 
 # Puntuacion
@@ -399,8 +391,8 @@ def puntuacionAux(jugada,jugadasList):
         print("#4")
         aux1 -= 1
         while coloresTablero[aux1][j] == ficha[0] or signosTablero[aux1][j] == ficha[1]:
-            #if [aux1,j] in jugadasList:
-            #    break
+            if [aux1,j] in jugadasList:
+                break
             puntos += 1
             aux1 -= 1
 
@@ -777,6 +769,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
 # TABLERO COLORES
+"""
 coloresTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8],
@@ -790,9 +783,157 @@ signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
-
+"""
 #mano = [[1, 1], [1, 2], [2, 0]]
 #pos = [2, 4]
 #print(buscarPosicionesValidas(signosTablero))
 #print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
 #buscarSolucionesHorizontal(coloresTablero, signosTablero, mano, pos)
+
+#GUI
+#IMAGENES
+#BK
+bg = pygame.image.load('bg.png')
+#BLUE
+azul_1=pygame.image.load('1_1.png')
+azul_2=pygame.image.load('1_2.png')
+azul_3=pygame.image.load('1_3.png')
+azul_4=pygame.image.load('1_4.png')
+azul_5=pygame.image.load('1_5.png')
+azul_6=pygame.image.load('1_6.png')
+#LIGHT BLUE
+azulB_1=pygame.image.load('2_1.png')
+azulB_2=pygame.image.load('2_2.png')
+azulB_3=pygame.image.load('2_3.png')
+azulB_4=pygame.image.load('2_4.png')
+azulB_5=pygame.image.load('2_5.png')
+azulB_6=pygame.image.load('2_6.png')
+#GREEN
+green_1=pygame.image.load('3_1.png')
+green_2=pygame.image.load('3_2.png')
+green_3=pygame.image.load('3_3.png')
+green_4=pygame.image.load('3_4.png')
+green_5=pygame.image.load('3_5.png')
+green_6=pygame.image.load('3_6.png')
+#YELLOW
+amarillo_1=pygame.image.load('4_1.png')
+amarillo_2=pygame.image.load('4_2.png')
+amarillo_3=pygame.image.load('4_3.png')
+amarillo_4=pygame.image.load('4_4.png')
+amarillo_5=pygame.image.load('4_5.png')
+amarillo_6=pygame.image.load('4_6.png')
+#ORANGE
+orange_1=pygame.image.load('5_1.png')
+orange_2=pygame.image.load('5_2.png')
+orange_3=pygame.image.load('5_3.png')
+orange_4=pygame.image.load('5_4.png')
+orange_5=pygame.image.load('5_5.png')
+orange_6=pygame.image.load('5_6.png')
+#ORANGE
+red_1=pygame.image.load('6_1.png')
+red_2=pygame.image.load('6_2.png')
+red_3=pygame.image.load('6_3.png')
+red_4=pygame.image.load('6_4.png')
+red_5=pygame.image.load('6_5.png')
+red_6=pygame.image.load('6_6.png')
+#VACIO
+vacio = pygame.image.load("vacio.png")
+
+
+#Crea la ventana
+qwirkle = pygame.display.set_mode((1080,720))
+#Colores
+blanco=(255,255,255)
+negro=(0,0,0)
+verde=(124,252,0)
+
+#Nombre de la ventana
+pygame.display.set_caption('QWirkle')
+reloj=pygame.time.Clock()
+
+#FUENTE
+font = pygame.font.SysFont("Minecraft",20)
+font2 = pygame.font.SysFont("Minecraft",40)
+font3 = pygame.font.SysFont("Minecraft",10)
+
+#ACOMODAR IMAGENES
+def imageSetter(x,y,name):
+    qwirkle.blit(name,(x,y))
+
+# Configuracion texto
+# E:  Un string, un color, un numero
+# S:  No tiene
+# D:  Verifica la superficie en la que se escribira el texto
+
+def texto_aux(texto, fuente, color):
+    superficie = fuente.render(texto, True, color)
+    return superficie, superficie.get_rect()
+
+
+# E: Tres numeros, un color, un string
+# S: Un texto
+# D: Crea el texto
+
+def texto(x, y, texto, tamano, color):
+    font = pygame.font.SysFont("Minecraft", tamano)
+    superficie, rectangulo = texto_aux(texto, font, color)
+    rectangulo.center = ((x), (y))
+    qwirkle.blit(superficie, rectangulo)
+
+    pygame.display.update()
+#MOSTRAR DESKS
+def mostrarDecks(x,y,deck):
+    xAux = x
+    cont = 0
+    for elem in deck:
+        cont += 1
+        name = str(elem[1]+1) + "_" + str(elem[0]+1) + ".png"
+        image = pygame.image.load(name)
+        imageSetter(int(x), int(y), image)
+        x = x+55
+        if cont == 3:
+            x = xAux
+            y = y + 55
+
+
+#MOSTRAR TABLERO
+def tableroJuegoGUI():
+    for i in range(len(signosTablero)):
+        for j in range(len(signosTablero[i])):
+            if signosTablero[i][j] == 8 and coloresTablero[i][j] == 8:
+                imageSetter(int(i*52+52/2+50),int(j*52+52/2+50),vacio)
+            else:
+                name = str(signosTablero[i][j]+1) + "_" + str(coloresTablero[i][j]+1) + ".png"
+                image = pygame.image.load(name)
+                imageSetter(int(i * 52 + 52 / 2 + 50), int(j * 52 + 52 / 2 + 50), image)
+
+#FUNCION DEL JUEGO
+def gui():
+    seleccionadorDeFichas()
+    pygame.init()
+    play = True
+    while play:
+        qwirkle.blit(bg, (0, 0))
+        texto(550, 30, "QWIRKLE", 50, blanco)
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        tableroJuegoGUI()
+        texto(50, 585, "P#1:", 25, blanco)
+        texto(280, 585, "Ultimo turno P#1:", 13, blanco)
+        texto(100, 585, str(p1), 25, blanco)
+        mostrarDecks(20, 600, deckP1)
+        texto(400, 585, "P#2:", 25, blanco)
+        texto(600, 585, "Ultimo turno P#2:", 13, blanco)
+        texto(450, 585, str(p2), 25, blanco)
+        mostrarDecks(370, 600, deckP2)
+        texto(750, 585, "P#3:", 25, blanco)
+        texto(1000, 590, "Ultimo turno P#3:", 13, blanco)
+        texto(800, 585, str(p3), 25, blanco)
+        mostrarDecks(720, 600, deckP3)
+        pygame.display.update()
+        reloj.tick(1)
+
+#gui()
