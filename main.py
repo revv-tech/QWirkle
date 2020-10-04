@@ -20,8 +20,8 @@ cont = 108
 # D:Crea una matriz con la cantidad de C y F que se le pase
 def generadorMatriz(filas,columnas):
     M = []
-    for i in range(filas):
-        columna = [8]*columnas
+    for i in range(columnas):
+        columna = [8]*filas
         M.append(columna)
     return M
 
@@ -218,7 +218,7 @@ def juego():
                 listaJugadas = []
                 listaPosicionesPlays = []
 
-        if turno == 2:
+        elif turno == 2:
             # PRINTS DE TABLEROS
             print("Signos:")
             mostrar(signosTablero)
@@ -262,7 +262,7 @@ def juego():
                 listaJugadas = []
                 listaPosicionesPlays = []
 
-        if turno == 3:
+        elif turno == 3:
             # PRINTS DE TABLEROS
             print("Signos:")
             mostrar(signosTablero)
@@ -327,69 +327,72 @@ def isBoardEmpty(M):
 # S: Un numero
 # D: Revisa la jugada de acuerdo a las fichas y a la posicion en la que la puso.
 def puntuacion(jugada,jugadasPos):
+    puntos = 0
     # JUGADAS[POSICION,FICHA]
-    print(jugada)
-    # Puntos de la jugada
-    puntos = puntuacionAux(jugada[0], [])
-    jugada = jugada[1:]
+    if not jugada:
+        return 0
+    if len(jugada) == 1:
+        return puntuacionAux(jugada[0],jugadasPos)
     while jugada:
-        puntos = puntos + puntuacionAux(jugada[0], jugadasPos)
+        puntos = puntos + puntuacionAux(jugada[0],jugadasPos)
         jugada = jugada[1:]
     return puntos
-
 
 # Check Puntuacion
 # E: Una lista con la ficha y la posicion y la lista de fichas puestas en el turno
 # S: La cantidad de numeros
 # D: Suma los puntos de cada jugada
-def puntuacionAux(jugada,jugadasList):
-    print("Puntuacion Aux")
-    i = jugada[0][0]
-    j = jugada[0][1]
-    ficha = jugada[1]
+def puntuacionAux(jugada,jugadaPos = []):
+
+    print("Puntuacion Aux: ", jugada)
+    i = jugada[0][0] #FILAS
+    j = jugada[0][1] #COLUMNAS
+    ficha = jugada[1] #FICHA
     puntos = 1
+    #AXUILIARES
     aux1 = i
     aux2 = j
-    # COMPARACION COLUMNAS
-    if coloresTablero[i][j+1] == ficha[0] or signosTablero[i][j+1] == ficha[1]:
-        print("#1")
+
+    # COMPARACION COLUMNA
+    print("DER: ", signosTablero[i][j + 1], coloresTablero[i][j + 1],ficha)
+    if coloresTablero[i][j + 1] == ficha[0] or signosTablero[i][j + 1] == ficha[1]:
+        print("#1: Columna Derecha")
         aux2 += 1
-        while coloresTablero[i][aux2] == ficha[0] or signosTablero[i][aux2] == ficha[1]:
-            if [i, aux2] in jugadasList:
-                break
-            puntos += 1
+        while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
+            if not ([i,aux2] in jugadaPos):
+                puntos += 1
             aux2 += 1
         aux2 = j
-    if coloresTablero[i][j - 1] == ficha[0] or signosTablero[i][j - 1] == ficha[1]:
-        print("#2")
+    print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
+    if coloresTablero[i][j - 1] == ficha[1] or signosTablero[i][j - 1] == ficha[0]:
+        print("#2: Columna Izquierda")
         aux2 -= 1
-        while coloresTablero[i][aux2] == ficha[0] or signosTablero[i][aux2] == ficha[1]:
-            if [i, aux2] in jugadasList:
-                break
-            puntos += 1
+        while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
+            if not ([i, aux2] in jugadaPos):
+                puntos += 1
             aux2 -= 1
+
     # COMPARA FILAS
-    if coloresTablero[i+1][j] == ficha[0] or signosTablero[i+1][j] == ficha[1]:
-        print("#3")
+    print("ARRIBA: ",signosTablero[i + 1][j],coloresTablero[i + 1][j],ficha)
+    if coloresTablero[i + 1][j] == ficha[1] or signosTablero[i + 1][j] == ficha[0]:
+        print("#3: Fila Arriba ")
         aux1 += 1
-        while coloresTablero[aux1][j] == ficha[0] or signosTablero[aux1][j] == ficha[1]:
-            if [aux1, j] in jugadasList:
-                break
-            puntos += 1
+        while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
+            if not ([aux1, j] in jugadaPos):
+                puntos += 1
             aux1 += 1
         aux1 = i
 
-    if coloresTablero[i-1][j] == ficha[0] or signosTablero[i-1][j] == ficha[1]:
-        print("#4")
+    print("ABAJO: ", signosTablero[i - 1][j], coloresTablero[i - 1][j],ficha)
+    if coloresTablero[i - 1][j] == ficha[1] or signosTablero[i - 1][j] == ficha[0]:
+        print("#4: Fila Abajo")
         aux1 -= 1
-        while coloresTablero[aux1][j] == ficha[0] or signosTablero[aux1][j] == ficha[1]:
-            if [aux1, j] in jugadasList:
-                break
-            puntos += 1
+        while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
+            if not ([aux1, j] in jugadaPos):
+                puntos += 1
             aux1 -= 1
-            
-    return puntos
 
+    return puntos
 
 # E: matriz del tablero
 # S: Booleano, retorna True si el tablero necesita extenderse hacia arriba
@@ -770,7 +773,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
 # TABLERO COLORES
 
-
+"""
 
 coloresTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
@@ -788,10 +791,11 @@ signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
 
 mano = [[1, 1], [1, 2], [2, 0], [1, 3], [3, 0], [4, 4]]
 pos = [2, 4]
-permutaciones = list(itertools.permutations(mano))
+"""
+#permutaciones = list(itertools.permutations(mano))
 # print(buscarPosicionesValidas(signosTablero))
 # print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
-buscarSolucionesHorizontal(coloresTablero, signosTablero, mano, pos)
+#buscarSolucionesHorizontal(coloresTablero, signosTablero, mano, pos)
 
 # GUI
 # IMAGENES
@@ -875,14 +879,16 @@ def tableroJuegoGUI():
 
 # FUNCION DEL JUEGO
 def gui():
+    #AGREGA FICHAS
     seleccionadorDeFichas()
+    #TURNO
+    turno = 1
     pygame.init()
     play = True
     while play:
         qwirkle.blit(bg, (0, 0))
         texto(550, 30, "QWIRKLE", 50, blanco)
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
@@ -900,7 +906,7 @@ def gui():
         texto(800, 585, str(p3), 25, blanco)
         mostrarDecks(720, 600, deckP3)
         pygame.display.update()
-        reloj.tick(1)
+        reloj.tick(5)
 
-# gui()
-# juego()
+juego()
+#gui()
