@@ -482,7 +482,7 @@ def checkExtenderTablero(matrizColores):
 
 
 # BACKTRACKING
-def buscarSolucionesHorizontal(matrizColores, matrizSignos, deck, posicion):
+def buscarSoluciones(matrizColores, matrizSignos, deck):
     jugada = []
     jugadas = []
     total = []
@@ -491,21 +491,32 @@ def buscarSolucionesHorizontal(matrizColores, matrizSignos, deck, posicion):
         return []
 
     else:
-        perm = list(itertools.permutations(deck))
-        posiciones = buscarPosicionesValidas(matrizSignos)
-        for posicion in posiciones:
-            for deck_ in perm:
+        #perm = list(itertools.permutations(deck))
+        #posiciones = buscarPosicionesValidas(matrizSignos)
+        #for posicion in posiciones:
+        #for deck_ in perm:
 
-                buscarSolucionesHorizontalAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
+                buscarSolucionesDerAux(matrizColores, matrizSignos, [[1, 1],[2, 1]], [2, 4], jugada)
                 jugadas += [jugada]
                 jugada = []
+                """"
+                buscarSolucionesIzqAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
+                jugadas += [jugada]
+                jugada = []
+                buscarSolucionesArribaAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
+                jugadas += [jugada]
+                jugada = []
+                buscarSolucionesAbajoAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
+                jugadas += [jugada]
+                jugada = []
+                """
 
-            jugadas = removerRepetidos(jugadas)
-            total += jugadas
-            jugadas = []
+                jugadas = removerRepetidos(jugadas)
+                total += jugadas
+                jugadas = []
 
-        print("TOTAL JUGADAS")
-        print(total[2])
+                print("TOTAL JUGADAS")
+                print(total)
 
 def removerRepetidos(jugadas):
 
@@ -514,12 +525,63 @@ def removerRepetidos(jugadas):
     for jugada in jugadas:
 
         if jugada not in resultado:
-            resultado.append(jugada)
+            if jugada:
+                resultado.append(jugada)
 
     return resultado
 
 
-def buscarSolucionesHorizontalAux(matrizColores, matrizSignos, deck, posicion, jugada):
+def buscarSolucionesDerAux(matrizColores, matrizSignos, deck, posicion, jugada):
+
+
+    print("======NUEVA RECURSION=======")
+    """
+    print("MATRIZ SIGNOS")
+    mostrar(matrizSignos)
+    print("MATRIZ COLORES")
+    mostrar(matrizColores)
+    print()
+    print("DECK")
+    print(deck)
+    print("POSICION")
+    print(posicion)
+    print("JUGADA")
+    print(jugada)
+    """
+
+    i = posicion[0]
+    j = posicion[1]
+
+    if deck:
+        a = deck[0]  # Ficha que sera jugada
+
+    # Condicion de parada de la recursividad
+    if not deck:
+
+        return 1
+
+    # Si la jugada sirve la agrega a la lista "jugada" y hace llamada recursiva
+    # en las direcciones laterales adyacentes a la ficha que se puso
+    elif verificarJugadaValida(a, posicion, matrizColores, matrizSignos):
+        jugada += [[a, posicion]]
+        matrizColores[i][j] = a[1]
+        matrizSignos[i][j] = a[0]
+        deck.remove(deck[0])
+
+        posAdelante = [posicion[0], posicion[1]+1]
+        buscarSolucionesDerAux(matrizColores, matrizSignos, deck, posAdelante, jugada)
+
+        matrizColores[i][j] = 8
+        matrizSignos[i][j] = 8
+        deck = [a] + deck
+
+    else:  # Sigue la recursion pero no agrega la ficha a la jugada
+        deck.remove(deck[0])
+        buscarSolucionesDerAux(matrizColores, matrizSignos, deck, posicion, jugada)
+
+        deck = [a] + deck
+
+def buscarSolucionesIzqAux(matrizColores, matrizSignos, deck, posicion, jugada):
 
     """
     print("======NUEVA RECURSION=======")
@@ -554,8 +616,8 @@ def buscarSolucionesHorizontalAux(matrizColores, matrizSignos, deck, posicion, j
         matrizSignos[i][j] = a[0]
         deck.remove(deck[0])
 
-        posAdelante = [posicion[0], posicion[1]+1]
-        buscarSolucionesHorizontalAux(matrizColores, matrizSignos, deck, posAdelante, jugada)
+        posAdelante = [posicion[0], posicion[1]-1]
+        buscarSolucionesIzqAux(matrizColores, matrizSignos, deck, posAdelante, jugada)
 
         matrizColores[i][j] = 8
         matrizSignos[i][j] = 8
@@ -563,7 +625,105 @@ def buscarSolucionesHorizontalAux(matrizColores, matrizSignos, deck, posicion, j
 
     else:  # Sigue la recursion pero no agrega la ficha a la jugada
         deck.remove(deck[0])
-        buscarSolucionesHorizontalAux(matrizColores, matrizSignos, deck, posicion, jugada)
+        buscarSolucionesIzqAux(matrizColores, matrizSignos, deck, posicion, jugada)
+
+        deck = [a] + deck
+
+
+def buscarSolucionesArribaAux(matrizColores, matrizSignos, deck, posicion, jugada):
+
+    """
+    print("======NUEVA RECURSION=======")
+    print("MATRIZ SIGNOS")
+    mostrar(matrizSignos)
+    print("MATRIZ COLORES")
+    mostrar(matrizColores)
+    print()
+    print("DECK")
+    print(deck)
+    print("POSICION")
+    print(posicion)
+    print("JUGADA")
+    print(jugada)
+    """
+    i = posicion[0]
+    j = posicion[1]
+
+    if deck:
+        a = deck[0]  # Ficha que sera jugada
+
+    # Condicion de parada de la recursividad
+    if not deck:
+
+        return 1
+
+    # Si la jugada sirve la agrega a la lista "jugada" y hace llamada recursiva
+    # en las direcciones laterales adyacentes a la ficha que se puso
+    elif verificarJugadaValida(a, posicion, matrizColores, matrizSignos):
+        jugada += [[a, posicion]]
+        matrizColores[i][j] = a[1]
+        matrizSignos[i][j] = a[0]
+        deck.remove(deck[0])
+
+        posAdelante = [posicion[0]+1, posicion[1]]
+        buscarSolucionesArribaAux(matrizColores, matrizSignos, deck, posAdelante, jugada)
+
+        matrizColores[i][j] = 8
+        matrizSignos[i][j] = 8
+        deck = [a] + deck
+
+    else:  # Sigue la recursion pero no agrega la ficha a la jugada
+        deck.remove(deck[0])
+        buscarSolucionesArribaAux(matrizColores, matrizSignos, deck, posicion, jugada)
+
+        deck = [a] + deck
+
+
+def buscarSolucionesAbajoAux(matrizColores, matrizSignos, deck, posicion, jugada):
+
+    """
+    print("======NUEVA RECURSION=======")
+    print("MATRIZ SIGNOS")
+    mostrar(matrizSignos)
+    print("MATRIZ COLORES")
+    mostrar(matrizColores)
+    print()
+    print("DECK")
+    print(deck)
+    print("POSICION")
+    print(posicion)
+    print("JUGADA")
+    print(jugada)
+    """
+    i = posicion[0]
+    j = posicion[1]
+
+    if deck:
+        a = deck[0]  # Ficha que sera jugada
+
+    # Condicion de parada de la recursividad
+    if not deck:
+
+        return 1
+
+    # Si la jugada sirve la agrega a la lista "jugada" y hace llamada recursiva
+    # en las direcciones laterales adyacentes a la ficha que se puso
+    elif verificarJugadaValida(a, posicion, matrizColores, matrizSignos):
+        jugada += [[a, posicion]]
+        matrizColores[i][j] = a[1]
+        matrizSignos[i][j] = a[0]
+        deck.remove(deck[0])
+
+        posAdelante = [posicion[0]-1, posicion[1]]
+        buscarSolucionesAbajoAux(matrizColores, matrizSignos, deck, posAdelante, jugada)
+
+        matrizColores[i][j] = 8
+        matrizSignos[i][j] = 8
+        deck = [a] + deck
+
+    else:  # Sigue la recursion pero no agrega la ficha a la jugada
+        deck.remove(deck[0])
+        buscarSolucionesAbajoAux(matrizColores, matrizSignos, deck, posicion, jugada)
 
         deck = [a] + deck
 
@@ -756,7 +916,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
             else:
                 aux2 += 1
         aux2 = j
-    # print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
+    print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
     if (colorArriba or simboloArriba) and (colorDerecha or simboloDerecha) and (colorAbajo or simboloAbajo) and (colorIzquierda or simboloIzquierda):
 
         return True
@@ -773,8 +933,8 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
 # TABLERO COLORES
 
-"""
 
+                 # 0  1  2  3  4  5  6  7  8  9 10 11 12
 coloresTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8],
@@ -789,13 +949,12 @@ signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
 
-mano = [[1, 1], [1, 2], [2, 0], [1, 3], [3, 0], [4, 4]]
+mano = [[1, 1], [2, 1]]
 pos = [2, 4]
-"""
-#permutaciones = list(itertools.permutations(mano))
+
 # print(buscarPosicionesValidas(signosTablero))
 # print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
-#buscarSolucionesHorizontal(coloresTablero, signosTablero, mano, pos)
+buscarSoluciones(coloresTablero, signosTablero, mano)
 
 # GUI
 # IMAGENES
@@ -908,5 +1067,5 @@ def gui():
         pygame.display.update()
         reloj.tick(5)
 
-juego()
+#juego()
 #gui()
