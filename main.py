@@ -1027,13 +1027,13 @@ def mostrarDecks(x, y, deck):
 # MOSTRAR TABLERO
 def tableroJuegoGUI():
     for i in range(len(signosTablero)):
-        for j in range(len(signosTablero[i])):
+        for j in range(len(signosTablero[0])):
             if signosTablero[i][j] == 8 and coloresTablero[i][j] == 8:
-                imageSetter(int(i*52+52/2+50),int(j*52+52/2+50),vacio)
+                imageSetter(int(j*52+52/2+50),int(i*52+52/2+50),vacio)
             else:
                 name = str(signosTablero[i][j]+1) + "_" + str(coloresTablero[i][j]+1) + ".png"
                 image = pygame.image.load(name)
-                imageSetter(int(i * 52 + 52 / 2 + 50), int(j * 52 + 52 / 2 + 50), image)
+                imageSetter(int(j * 52 + 52 / 2 + 50), int(i * 52 + 52 / 2 + 50), image)
 
 
 # FUNCION DEL JUEGO
@@ -1042,16 +1042,11 @@ def gui():
     seleccionadorDeFichas()
     #TURNO
     turno = 1
-    pygame.init()
+    #pygame.init()
     play = True
     while play:
         qwirkle.blit(bg, (0, 0))
         texto(550, 30, "QWIRKLE", 50, blanco)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-        tableroJuegoGUI()
         texto(50, 585, "P#1:", 25, blanco)
         texto(280, 585, "Ultimo turno P#1:", 13, blanco)
         texto(100, 585, str(p1), 25, blanco)
@@ -1064,8 +1059,48 @@ def gui():
         texto(1000, 590, "Ultimo turno P#3:", 13, blanco)
         texto(800, 585, str(p3), 25, blanco)
         mostrarDecks(720, 600, deckP3)
+        tableroJuegoGUI()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+
+
         pygame.display.update()
-        reloj.tick(5)
+        reloj.tick(1)
 
 #juego()
 #gui()
+def game_loop(turno):
+    #Variables Globales
+    global signosTablero
+    global coloresTablero
+    # PUNTAJES
+    global p1
+    global p2
+    global p3
+    # TABLEROS
+    global coloresTablero
+    global signosTablero
+    # Decks
+    global deckP2
+    global deckP1
+    global deckP3
+    # Almacena las jugadas
+    # [[POSICION],[FICHA]]
+    listaJugadas = []
+    listaPosicionesPlays = []
+    game = True
+    while game:
+    #JUGADOR P1 (Inteligente)
+        if turno == 1:
+            return
+    # JUGADOR P2
+        if turno == 2:
+            return
+    #JUGADOR P3
+        if turno == 3:
+            return
+#juego()
+gui()
