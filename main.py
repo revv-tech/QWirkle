@@ -394,6 +394,7 @@ def puntuacionAux(jugada,jugadaPos = []):
 
     return puntos
 
+
 # E: matriz del tablero
 # S: Booleano, retorna True si el tablero necesita extenderse hacia arriba
 # D: Revisa la tercera fila del tablero (arriba hacia abajo) si encuentra
@@ -482,7 +483,11 @@ def checkExtenderTablero(matrizColores):
 
 
 # BACKTRACKING
+# S: Una lista con el total de jugadas que son posibles en ese momento segun el deck y el tablero con
+# el siguiente formato:
+# [jugada[fichasPuestas[ficha, posicion]]]
 def buscarSoluciones(matrizColores, matrizSignos, deck):
+
     jugada = []
     jugadas = []
     total = []
@@ -491,15 +496,16 @@ def buscarSoluciones(matrizColores, matrizSignos, deck):
         return []
 
     else:
-        #perm = list(itertools.permutations(deck))
-        #posiciones = buscarPosicionesValidas(matrizSignos)
-        #for posicion in posiciones:
-        #for deck_ in perm:
+        perm = list(itertools.permutations(deck))
+        posiciones = buscarPosicionesValidas(matrizSignos)
 
-                buscarSolucionesDerAux(matrizColores, matrizSignos, [[1, 1],[2, 1]], [2, 4], jugada)
+        for posicion in posiciones:
+            for deck_ in perm:
+
+                buscarSolucionesDerAux(matrizColores, matrizSignos, [[1, 1], [2, 1]], [2, 4], jugada)
                 jugadas += [jugada]
                 jugada = []
-                """"
+
                 buscarSolucionesIzqAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
                 jugadas += [jugada]
                 jugada = []
@@ -509,14 +515,18 @@ def buscarSoluciones(matrizColores, matrizSignos, deck):
                 buscarSolucionesAbajoAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
                 jugadas += [jugada]
                 jugada = []
-                """
 
-                jugadas = removerRepetidos(jugadas)
-                total += jugadas
-                jugadas = []
 
-                print("TOTAL JUGADAS")
-                print(total)
+            total += jugadas
+            jugadas = []
+
+        total = removerRepetidos(total)
+        print("TOTAL JUGADAS")
+        for jugada in total:
+
+            print(jugada)
+        return total
+
 
 def removerRepetidos(jugadas):
 
@@ -533,9 +543,9 @@ def removerRepetidos(jugadas):
 
 def buscarSolucionesDerAux(matrizColores, matrizSignos, deck, posicion, jugada):
 
-
-    print("======NUEVA RECURSION=======")
     """
+    print("======NUEVA RECURSION=======")
+
     print("MATRIZ SIGNOS")
     mostrar(matrizSignos)
     print("MATRIZ COLORES")
@@ -580,6 +590,7 @@ def buscarSolucionesDerAux(matrizColores, matrizSignos, deck, posicion, jugada):
         buscarSolucionesDerAux(matrizColores, matrizSignos, deck, posicion, jugada)
 
         deck = [a] + deck
+
 
 def buscarSolucionesIzqAux(matrizColores, matrizSignos, deck, posicion, jugada):
 
@@ -773,6 +784,32 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 
         return False
 
+    # Parche excepcion hacia arriba
+    if matrizSignos[i+1][j] != 8:
+
+        if matrizSignos[i+1][j] == matrizSignos[i+2][j] and matrizSignos[i+1][j] != ficha[0]:
+
+            return False
+
+    # Parche excpecion derecha
+    if matrizSignos[i][j+1] != 8:
+        if matrizSignos[i][j+1] == matrizSignos[i][j+2] and matrizSignos[i][j+1] != ficha[0]:
+
+            return False
+
+    # Parche excpecion izquiera
+    if matrizSignos[i][j-1] != 8:
+        if matrizSignos[i][j-1] == matrizSignos[i][j-2] and matrizSignos[i][j-1] != ficha[0]:
+
+            return False
+
+    # Parche excpecion abajo
+    if matrizSignos[i-1][j] != 8:
+        if matrizSignos[i-1][j] == matrizSignos[i-2][j] and matrizSignos[i-1][j] != ficha[0]:
+
+            return False
+
+
     if posicion[0] >= len(matrizSignos) or posicion[1] >= len(matrizSignos[0]):
 
         return False
@@ -916,7 +953,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
             else:
                 aux2 += 1
         aux2 = j
-    print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
+    # print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
     if (colorArriba or simboloArriba) and (colorDerecha or simboloDerecha) and (colorAbajo or simboloAbajo) and (colorIzquierda or simboloIzquierda):
 
         return True
@@ -933,6 +970,13 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
 # TABLERO COLORES
 
+# TABLERO SIGNOS
+signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
 
                  # 0  1  2  3  4  5  6  7  8  9 10 11 12
 coloresTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
@@ -941,13 +985,6 @@ coloresTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                   [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
-# TABLERO SIGNOS
-signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
 
 mano = [[1, 1], [2, 1]]
 pos = [2, 4]
@@ -1038,11 +1075,11 @@ def tableroJuegoGUI():
 
 # FUNCION DEL JUEGO
 def gui():
-    #AGREGA FICHAS
+    # AGREGA FICHAS
     seleccionadorDeFichas()
-    #TURNO
+    # TURNO
     turno = 1
-    #pygame.init()
+    # pygame.init()
     play = True
     while play:
         qwirkle.blit(bg, (0, 0))
@@ -1065,15 +1102,12 @@ def gui():
                 pygame.quit()
                 quit()
 
-
-
         pygame.display.update()
         reloj.tick(1)
 
-#juego()
-#gui()
+
 def game_loop(turno):
-    #Variables Globales
+    # Variables Globales
     global signosTablero
     global coloresTablero
     # PUNTAJES
@@ -1093,14 +1127,14 @@ def game_loop(turno):
     listaPosicionesPlays = []
     game = True
     while game:
-    #JUGADOR P1 (Inteligente)
+    # JUGADOR P1 (Inteligente)
         if turno == 1:
             return
     # JUGADOR P2
         if turno == 2:
             return
-    #JUGADOR P3
+    # JUGADOR P3
         if turno == 3:
             return
-#juego()
-gui()
+# juego()
+# gui()
