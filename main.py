@@ -10,11 +10,8 @@ pygame.init()
 p1 = 0
 p2 = 0
 p3 = 0
-
 # Contador de Fichas
 cont = 108
-
-
 # E: Dos ints
 # S: Una Matriz
 # D:Crea una matriz con la cantidad de C y F que se le pase
@@ -23,14 +20,12 @@ def generadorMatriz(filas,columnas):
     for i in range(columnas):
         columna = [8]*filas
         M.append(columna)
+
     return M
-
-
 # TABLERO COLORES
 coloresTablero = generadorMatriz(18, 9)
 # TABLERO SIGNOS
 signosTablero = generadorMatriz(18, 9)
-
 # VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
 # TABLERO DE FICHAS
 # FILAS
@@ -49,8 +44,6 @@ fichasUsadas = []
 deckP1 = []
 deckP2 = []
 deckP3 = []
-
-
 # PRINT DEL TABLERO
 # E: Una matriz
 # S: No tiene
@@ -62,14 +55,6 @@ def mostrar(tablero):
             print(tablero[i][j], end=' ')
         print()
     print()
-
-
-# ---------------------------------------------------------------------------------------
-#
-# SELECTOR DE FICHAS DE CADA JUGADOR--------------------------------------------------------
-# E: No tiene
-# S: No tiene
-# D: Selecciona cada uno de los decks de los jugaores
 # SELECTOR DE FICHAS DE CADA JUGADOR--------------------------------------------------------
 # E: No tiene
 # S: No tiene
@@ -84,8 +69,6 @@ def seleccionadorDeFichas():
     deckP3 = seleccionadorDeFichasAux()
     print(deckP1)
     cont = cont - 18
-
-
 # Selector Auxiliar
 # E: Una lista de
 # S: No tiene
@@ -144,7 +127,6 @@ def agregaNuevasFichas(deck):
             cont = cont - 1
     return deck
 
-
 # ---------------------------------------------------------------------------------------
 # JUEGO
 # E: No tiene
@@ -173,7 +155,7 @@ def juego():
     listaJugadas = []
     listaPosicionesPlays = []
     while game:
-
+        tableroVacio(deckP1)
         if turno == 1:
             # PRINTS DE TABLEROS
             print("Signos:")
@@ -745,7 +727,6 @@ def buscarSolucionesAbajoAux(matrizColores, matrizSignos, deck, posicion, jugada
 #    todas las posiciones donde se puede colocar una ficha
 def buscarPosicionesValidas(matrizSignos):
     posiciones = []
-
     for i in range(0, len(matrizSignos) - 1):
 
         for j in range(0, len(matrizSignos[0]) - 1):
@@ -989,6 +970,7 @@ coloresTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
 mano = [[1, 1], [2, 1]]
 pos = [2, 4]
 
+
 # print(buscarPosicionesValidas(signosTablero))
 # print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
 buscarSoluciones(coloresTablero, signosTablero, mano)
@@ -1006,10 +988,9 @@ qwirkle = pygame.display.set_mode((1080,720))
 # Colores
 blanco = (255, 255, 255)
 negro = (0, 0, 0)
-verde = (124, 252, 0)
 
 # Nombre de la ventana
-pygame.display.set_caption('QWirkle')
+pygame.display.set_caption('QWirkle by Sven&Rev')
 reloj = pygame.time.Clock()
 
 # FUENTE
@@ -1043,7 +1024,6 @@ def texto(x, y, texto, tamano, color):
     rectangulo.center = ((x), (y))
     qwirkle.blit(superficie, rectangulo)
 
-    pygame.display.update()
 
 
 # MOSTRAR DECKS
@@ -1059,7 +1039,6 @@ def mostrarDecks(x, y, deck):
         if cont == 3:
             x = xAux
             y = y + 55
-
 
 # MOSTRAR TABLERO
 def tableroJuegoGUI():
@@ -1136,5 +1115,54 @@ def game_loop(turno):
     # JUGADOR P3
         if turno == 3:
             return
-# juego()
-# gui()
+
+
+# JUGADAS TABLERO CUANDO ESTA VACIO
+# E: Un deck
+# S:
+# D:
+def tableroVacio(deck):
+
+    listaIndexSignos = []
+    listaIndexColores = []
+    # VERIFICA SI ALGUNOS TIENEN MISMO SIGNO
+    for elem in deck:
+        listaIndexSignos.append(tableroVacioAux(elem,deck,0))
+    # VERIFICA SI ALGUNOS TIENEN MISMO COLOR
+    for elem in deck:
+        listaIndexColores.append(tableroVacioAux(elem,deck,1))
+    print(listaIndexSignos)
+    print(listaIndexColores)
+    return
+
+
+# AUXILIAR
+# E: Dos listas, un int
+# S: Una lista
+# D: Devuelve una lista con las fichas iguales
+
+def tableroVacioAux(ficha,deck,i):
+    newList = []
+    while deck:
+        if ficha[i] == deck[0][i]:
+            newList.append(deck[0])
+        deck = deck[1:]
+    return newList
+
+
+# JUGADAS CON PUNTUACIONES
+# E: Una lista con todas las jugadas
+# S: La jugada con el maximo de puntos
+# D: Recibe la lista con las jugadas del backtracking, calcula la puntuacion de cada una y luego selecciona la que tiene mayor puntaje\
+
+def puntuacionesConJugadas(listaBackT):
+    cantidadPuntos = []
+
+    for jugada in listaBackT:
+        for fichasPuestas in jugada:
+            i = puntuacion(fichasPuestas)
+            cantidadPuntos.append(i)
+
+    return cantidadPuntos
+juego()
+#gui()
