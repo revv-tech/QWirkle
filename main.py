@@ -155,7 +155,7 @@ def juego():
     listaJugadas = []
     listaPosicionesPlays = []
     while game:
-        tableroVacio(deckP1)
+
         if turno == 1:
             # PRINTS DE TABLEROS
             print("Signos:")
@@ -299,7 +299,7 @@ def juego():
 def isBoardEmpty(M):
     for i in range(len(M)):
         for j in range(len(M[0])):
-            if M[i][j] != 0:
+            if M[i][j] != 8:
                 return False
     return True
 
@@ -1088,6 +1088,8 @@ def gui():
         texto(800, 585, str(p3), 25, blanco)
         mostrarDecks(720, 600, deckP3)
         tableroJuegoGUI()
+        print("Prueba P1: ", deckP1)
+        tableroVacio(deckP1)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -1120,6 +1122,8 @@ def game_loop(turno):
     while game:
     # JUGADOR P1 (Inteligente)
         if turno == 1:
+            #if isBoardEmpty(coloresTablero) and isBoardEmpty(signosTablero):
+
             return
     # JUGADOR P2
         if turno == 2:
@@ -1129,37 +1133,6 @@ def game_loop(turno):
             return
 
 
-# JUGADAS TABLERO CUANDO ESTA VACIO
-# E: Un deck
-# S:
-# D:
-def tableroVacio(deck):
-
-    listaIndexSignos = []
-    listaIndexColores = []
-    # VERIFICA SI ALGUNOS TIENEN MISMO SIGNO
-    for elem in deck:
-        listaIndexSignos.append(tableroVacioAux(elem,deck,0))
-    # VERIFICA SI ALGUNOS TIENEN MISMO COLOR
-    for elem in deck:
-        listaIndexColores.append(tableroVacioAux(elem,deck,1))
-    print(listaIndexSignos)
-    print(listaIndexColores)
-    return
-
-
-# AUXILIAR
-# E: Dos listas, un int
-# S: Una lista
-# D: Devuelve una lista con las fichas iguales
-
-def tableroVacioAux(ficha,deck,i):
-    newList = []
-    while deck:
-        if ficha[i] == deck[0][i]:
-            newList.append(deck[0])
-        deck = deck[1:]
-    return newList
 
 
 # JUGADAS CON PUNTUACIONES
@@ -1167,14 +1140,8 @@ def tableroVacioAux(ficha,deck,i):
 # S: La jugada con el maximo de puntos
 # D: Recibe la lista con las jugadas del backtracking, calcula la puntuacion de cada una y luego selecciona la que tiene mayor puntaje\
 
-def puntuacionesConJugadas(listaBackT):
-    cantidadPuntos = []
-
-    for jugada in listaBackT:
-        for fichasPuestas in jugada:
-            i = puntuacion(fichasPuestas)
-            cantidadPuntos.append(i)
 
     return cantidadPuntos
 #juego()
-#gui()
+gui()
+
