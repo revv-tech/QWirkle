@@ -726,7 +726,9 @@ def buscarSolucionesAbajoAux(matrizColores, matrizSignos, deck, posicion, jugada
 # D: Recibe la matriz del tablero y retorna
 #    todas las posiciones donde se puede colocar una ficha
 def buscarPosicionesValidas(matrizSignos):
+
     posiciones = []
+
     for i in range(0, len(matrizSignos) - 1):
 
         for j in range(0, len(matrizSignos[0]) - 1):
@@ -737,8 +739,16 @@ def buscarPosicionesValidas(matrizSignos):
                 if matrizSignos[i - 1][j] != 8 or matrizSignos[i + 1][j] != 8 or matrizSignos[i][j - 1] != 8 or matrizSignos[i][j + 1] != 8:
                     posiciones += [[i, j]]
 
+    if not posiciones:
+        return [[len(matrizSignos)//2, len(matrizSignos[0])//2]]
+
     return posiciones
 
+
+
+def buscarQwirkleParcial():
+
+    1+1
 
 # E: ficha = [simbolo, color], posicion = [i, j], dos matrices del tablero
 # S: booleano. True si es valido poner la ficha en la poscion dada, False en caso contrario
@@ -954,8 +964,9 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 # TABLERO SIGNOS
 signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
 
@@ -973,7 +984,8 @@ pos = [2, 4]
 
 # print(buscarPosicionesValidas(signosTablero))
 # print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
-buscarSoluciones(coloresTablero, signosTablero, mano)
+print(buscarPosicionesValidas(signosTablero))
+# buscarSoluciones(coloresTablero, signosTablero, mano)
 
 # GUI
 # IMAGENES
@@ -1164,5 +1176,5 @@ def puntuacionesConJugadas(listaBackT):
             cantidadPuntos.append(i)
 
     return cantidadPuntos
-juego()
+#juego()
 #gui()
