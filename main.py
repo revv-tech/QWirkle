@@ -19,6 +19,7 @@ cont = 108
 # E: Dos ints
 # S: Una Matriz
 # D:Crea una matriz con la cantidad de C y F que se le pase
+
 def generadorMatriz(filas,columnas):
     M = []
     for i in range(columnas):
@@ -27,9 +28,9 @@ def generadorMatriz(filas,columnas):
 
     return M
 # TABLERO COLORES
-coloresTablero = generadorMatriz(17, 9)
+coloresTablero = generadorMatriz(216, 216)
 # TABLERO SIGNOS
-signosTablero = generadorMatriz(17, 9)
+signosTablero = generadorMatriz(216, 216)
 # VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
 # TABLERO DE FICHAS
 # FILAS
@@ -390,7 +391,7 @@ def revisarTableroArriba(matrizColores):
 
     for j in range(0, len(matrizColores[2])):  # Revisa la fila 3
 
-        if matrizColores[2][j] != 0:
+        if matrizColores[6][j] != 8:
             return True
 
     return False
@@ -401,12 +402,11 @@ def revisarTableroArriba(matrizColores):
 # D: Revisa la tercera fila del tablero (abajo hacia arriba) si encuentra
 #    una ficha entonces retorna True, en otro caso retorna False
 def revisarTableroAbajo(matrizColores):
-
-    i = len(matrizColores)-2  # Revisa 3 filas arriba de la fila final
+    i = len(matrizColores)-6  # Revisa 3 filas arriba de la fila final
 
     for j in range(0, len(matrizColores[i])):  # Revisa la fila 3
 
-        if matrizColores[2][j] != 0:
+        if matrizColores[i][j] != 8:
             return True
 
     return False
@@ -418,9 +418,9 @@ def revisarTableroAbajo(matrizColores):
 #    una ficha entonces retorna True, en otro caso retorna False
 def revisarTableroIzquierda(matrizColores):
 
-    for i in range(0, len(matrizColores)):  # Revisa la columna 3
+    for j in range(0, len(matrizColores[0])):  # Revisa la columna 3
 
-        if matrizColores[i][2] != 0:
+        if matrizColores[6][j] != 8:
             return True
 
     return False
@@ -432,11 +432,11 @@ def revisarTableroIzquierda(matrizColores):
 #    una ficha entonces retorna True, en otro caso retorna False
 def revisarTableroDerecha(matrizColores):
 
-    j = len(matrizColores)-2
+    j = len(matrizColores[0])-6
 
     for i in range(0, len(matrizColores)):  # Revisa 3 columnas a la izquierda de la columna final
 
-        if matrizColores[i][j] != 0:
+        if matrizColores[i][j] != 8:
             return True
 
     return False
@@ -788,8 +788,8 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
         return False
 
     # Parche excepcion hacia arriba
-    print(len(matrizSignos),len(matrizSignos[0]))
-    print(i+1,j)
+    #print(len(matrizSignos),len(matrizSignos[0]))
+    #print(i+1,j)
     if matrizSignos[i+1][j] != 8:
 
         if matrizSignos[i+1][j] == matrizSignos[i+2][j] and matrizSignos[i+1][j] != ficha[0]:
@@ -1138,11 +1138,14 @@ def game_loop(turno):
     global lastP3
     game = True
     #Condicion Extender Tablero
-    checkExtenderTablero(coloresTablero,signosTablero)
+    #checkExtenderTablero(coloresTablero,signosTablero)
     while game:
     # JUGADOR P1 (El mayor)
         if turno == 1:
             play = maxPuntuaciones(buscarSoluciones(coloresTablero, signosTablero, deckP1)) # Jugada con el mayor Puntaje
+            if not play:
+                lastP1 = 0
+                return
             fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
             deckP1 = eliminadorFichasDeck(deckP1, fichasTurno)  # Elimina las fichas del deck
             colocadorFichas(play) # Coloca las fichas en el tablero
@@ -1156,6 +1159,9 @@ def game_loop(turno):
     # JUGADOR P2
         if turno == 2:
             play = maxPuntuaciones(buscarSoluciones(coloresTablero, signosTablero, deckP2))  # Jugada con el mayor Puntaje
+            if not play:
+                lastP2 = 0
+                return
             fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
             deckP2 = eliminadorFichasDeck(deckP2, fichasTurno)  # Elimina las fichas del deck
             colocadorFichas(play)  # Coloca las fichas en el tablero
@@ -1186,6 +1192,8 @@ def maxPuntuaciones(jugadas):
         # print(posiciones)
         puntajes = puntuacion(jugada,posiciones)    # Calcula los puntos de las fichas a poner
         listaPuntajes.append(puntajes)              # Agrega a lista con los puntajes de las jugadas recibidas
+    if  not listaPuntajes:                          #Si no hay jugadas disponibles
+        return []
     i = max(listaPuntajes)                          # Busca el puntaje mayor
     index = listaPuntajes.index(i)                  # Busca el index del puntaje maximo
     jugadaMax = jugadas[index]                      # Jugada Maxima
@@ -1230,5 +1238,5 @@ def eliminadorFichasDeck(deck,fichas):
     return deck
 
 #juego()
-#gui()
+gui()
 
