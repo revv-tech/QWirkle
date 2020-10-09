@@ -10,6 +10,10 @@ pygame.init()
 p1 = 0
 p2 = 0
 p3 = 0
+#ULTIMOS TURNOS
+lastP1 = 0
+lastP2 = 0
+lastP3 = 0
 # Contador de Fichas
 cont = 108
 # E: Dos ints
@@ -23,9 +27,9 @@ def generadorMatriz(filas,columnas):
 
     return M
 # TABLERO COLORES
-coloresTablero = generadorMatriz(18, 9)
+coloresTablero = generadorMatriz(17, 9)
 # TABLERO SIGNOS
-signosTablero = generadorMatriz(18, 9)
+signosTablero = generadorMatriz(17, 9)
 # VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
 # TABLERO DE FICHAS
 # FILAS
@@ -67,12 +71,13 @@ def seleccionadorDeFichas():
     deckP1 = seleccionadorDeFichasAux()
     deckP2 = seleccionadorDeFichasAux()
     deckP3 = seleccionadorDeFichasAux()
-    print(deckP1)
+    #print(deckP1)
     cont = cont - 18
 # Selector Auxiliar
 # E: Una lista de
 # S: No tiene
 # D: Selecciona las fichas del deck
+
 def seleccionadorDeFichasAux():
     global fichasUsadas
     # Contador que crea el deck del player (6)
@@ -318,6 +323,7 @@ def puntuacion(jugada,jugadasPos):
     while jugada:
         puntos = puntos + puntuacionAux(jugada[0],jugadasPos)
         jugada = jugada[1:]
+    #print(puntos)
     return puntos
 
 # Check Puntuacion
@@ -325,29 +331,29 @@ def puntuacion(jugada,jugadasPos):
 # S: La cantidad de numeros
 # D: Suma los puntos de cada jugada
 def puntuacionAux(jugada,jugadaPos = []):
-
-    print("Puntuacion Aux: ", jugada)
-    i = jugada[0][0] #FILAS
-    j = jugada[0][1] #COLUMNAS
-    ficha = jugada[1] #FICHA
+    # CAMBIE FICHA [POS,FICHA]
+    #print("Puntuacion Aux: ", jugada)
+    i = jugada[1][0] #FILAS
+    j = jugada[1][1] #COLUMNAS
+    ficha = jugada[0] #FICHA
     puntos = 1
     #AXUILIARES
     aux1 = i
     aux2 = j
 
     # COMPARACION COLUMNA
-    print("DER: ", signosTablero[i][j + 1], coloresTablero[i][j + 1],ficha)
+    #print("DER: ", signosTablero[i][j + 1], coloresTablero[i][j + 1],ficha)
     if coloresTablero[i][j + 1] == ficha[0] or signosTablero[i][j + 1] == ficha[1]:
-        print("#1: Columna Derecha")
+        #print("#1: Columna Derecha")
         aux2 += 1
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
             if not ([i,aux2] in jugadaPos):
                 puntos += 1
             aux2 += 1
         aux2 = j
-    print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
+    #print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
     if coloresTablero[i][j - 1] == ficha[1] or signosTablero[i][j - 1] == ficha[0]:
-        print("#2: Columna Izquierda")
+        #print("#2: Columna Izquierda")
         aux2 -= 1
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
             if not ([i, aux2] in jugadaPos):
@@ -355,9 +361,9 @@ def puntuacionAux(jugada,jugadaPos = []):
             aux2 -= 1
 
     # COMPARA FILAS
-    print("ARRIBA: ",signosTablero[i + 1][j],coloresTablero[i + 1][j],ficha)
+    #print("ARRIBA: ",signosTablero[i + 1][j],coloresTablero[i + 1][j],ficha)
     if coloresTablero[i + 1][j] == ficha[1] or signosTablero[i + 1][j] == ficha[0]:
-        print("#3: Fila Arriba ")
+        #print("#3: Fila Arriba ")
         aux1 += 1
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
             if not ([aux1, j] in jugadaPos):
@@ -365,15 +371,14 @@ def puntuacionAux(jugada,jugadaPos = []):
             aux1 += 1
         aux1 = i
 
-    print("ABAJO: ", signosTablero[i - 1][j], coloresTablero[i - 1][j],ficha)
+    #print("ABAJO: ", signosTablero[i - 1][j], coloresTablero[i - 1][j],ficha)
     if coloresTablero[i - 1][j] == ficha[1] or signosTablero[i - 1][j] == ficha[0]:
-        print("#4: Fila Abajo")
+        #print("#4: Fila Abajo")
         aux1 -= 1
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
             if not ([aux1, j] in jugadaPos):
                 puntos += 1
             aux1 -= 1
-
     return puntos
 
 
@@ -437,31 +442,36 @@ def revisarTableroDerecha(matrizColores):
     return False
 
 
-def checkExtenderTablero(matrizColores):
+def checkExtenderTablero(matrizColores,matrizSignos):
 
     if revisarTableroArriba(matrizColores):  # True = necesita extenderse hacia arriba
 
         for i in range(0, 5):  # Le suma 6 filas
 
-            matrizColores = [[0]*len(matrizColores[0])] + matrizColores  # Suma a la izquierda para que queden "arriba"
+            matrizColores = [[8]*len(matrizColores[0])] + matrizColores  # Suma a la izquierda para que queden "arriba"
+            matrizSignos = [[8]*len(matrizSignos[0])] + matrizSignos  # Suma a la izquierda para que queden "arriba"
 
     if revisarTableroAbajo(matrizColores):  # True = necesita extenderse hacia abajo
 
         for i in range(0, 5):  # Le suma 6 filas
 
-            matrizColores = matrizColores + [[0] * len(matrizColores)]  # Suma a la derecha para que queden "abajo"
+            matrizColores = matrizColores + [[8] * len(matrizColores[0])]  # Suma a la derecha para que queden "abajo"
+            matrizSignos = matrizSignos + [[8] * len(matrizSignos[0])]  # Suma a la derecha para que queden "abajo"
 
     if revisarTableroIzquierda(matrizColores):  # True = necesita extenderse hacia la izquierda
 
         for i in range(0, len(matrizColores)):
 
-            matrizColores[i] += [0]*6  # Suma 6 ceros a cada fila para agregar columnas
+            matrizColores[i] = [8] * 6 + matrizColores[i]  # Suma 6 ceros a cada fila para agregar columnas
+            matrizSignos[i] = [8] * 6 + matrizSignos[i]  # Suma 6 ceros a cada fila para agregar columnas
 
     if revisarTableroDerecha(matrizColores):  # True = necesita extenderse hacia la derecha
 
         for i in range(0, len(matrizColores)):
 
-            matrizColores[i] = [0]*6 + matrizColores[i]  # Suma 6 ceros a cada fila para agregar columnas
+            matrizColores[i] += [8] * 6  # Suma 6 ceros a cada fila para agregar columnas
+            matrizSignos[i] += [8] * 6  # Suma 6 ceros a cada fila para agregar columnas
+
 
 
 # BACKTRACKING
@@ -484,7 +494,7 @@ def buscarSoluciones(matrizColores, matrizSignos, deck):
         for posicion in posiciones:
             for deck_ in perm:
 
-                buscarSolucionesDerAux(matrizColores, matrizSignos, [[1, 1], [2, 1]], [2, 4], jugada)
+                buscarSolucionesDerAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
                 jugadas += [jugada]
                 jugada = []
 
@@ -503,10 +513,12 @@ def buscarSoluciones(matrizColores, matrizSignos, deck):
             jugadas = []
 
         total = removerRepetidos(total)
-        print("TOTAL JUGADAS")
+        #print("TOTAL JUGADAS")
         for jugada in total:
 
             print(jugada)
+        #print(total)
+        #total = total[1:]
         return total
 
 
@@ -776,6 +788,8 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
         return False
 
     # Parche excepcion hacia arriba
+    print(len(matrizSignos),len(matrizSignos[0]))
+    print(i+1,j)
     if matrizSignos[i+1][j] != 8:
 
         if matrizSignos[i+1][j] == matrizSignos[i+2][j] and matrizSignos[i+1][j] != ficha[0]:
@@ -962,6 +976,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 # TABLERO COLORES
 
 # TABLERO SIGNOS
+"""
 signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
@@ -980,11 +995,11 @@ coloresTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
 
 mano = [[1, 1], [2, 1]]
 pos = [2, 4]
-
+"""
 
 # print(buscarPosicionesValidas(signosTablero))
 # print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
-print(buscarPosicionesValidas(signosTablero))
+#print(buscarPosicionesValidas(signosTablero))
 # buscarSoluciones(coloresTablero, signosTablero, mano)
 
 # GUI
@@ -1037,7 +1052,6 @@ def texto(x, y, texto, tamano, color):
     qwirkle.blit(superficie, rectangulo)
 
 
-
 # MOSTRAR DECKS
 def mostrarDecks(x, y, deck):
     xAux = x
@@ -1075,26 +1089,36 @@ def gui():
     while play:
         qwirkle.blit(bg, (0, 0))
         texto(550, 30, "QWIRKLE", 50, blanco)
+        texto(150, 30, "Total Fichas: " + str (cont), 30, blanco)
         texto(50, 585, "P#1:", 25, blanco)
         texto(280, 585, "Ultimo turno P#1:", 13, blanco)
+        texto(280, 625, str(lastP1), 50, blanco)
         texto(100, 585, str(p1), 25, blanco)
         mostrarDecks(20, 600, deckP1)
         texto(400, 585, "P#2:", 25, blanco)
         texto(600, 585, "Ultimo turno P#2:", 13, blanco)
+        texto(600, 625, str(lastP2), 50, blanco)
         texto(450, 585, str(p2), 25, blanco)
         mostrarDecks(370, 600, deckP2)
         texto(750, 585, "P#3:", 25, blanco)
         texto(1000, 590, "Ultimo turno P#3:", 13, blanco)
+        texto(1000, 625, str(lastP3), 50, blanco)
         texto(800, 585, str(p3), 25, blanco)
         mostrarDecks(720, 600, deckP3)
         tableroJuegoGUI()
-        print("Prueba P1: ", deckP1)
-        tableroVacio(deckP1)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
+        if turno == 1:
+            game_loop(1)
+            turno = 2
+        elif turno == 2:
+            game_loop(2)
+            turno = 3
+        elif turno == 3:
+            print("Turno 3")
+            turno = 1
         pygame.display.update()
         reloj.tick(1)
 
@@ -1107,41 +1131,107 @@ def game_loop(turno):
     global p1
     global p2
     global p3
-    # TABLEROS
-    global coloresTablero
-    global signosTablero
     # Decks
     global deckP2
     global deckP1
     global deckP3
-    # Almacena las jugadas
-    # [[POSICION],[FICHA]]
-    listaJugadas = []
-    listaPosicionesPlays = []
+    #ultimos turnos
+    global lastP1
+    global lastP2
+    global lastP3
     game = True
+    #Condicion Extender Tablero
+    checkExtenderTablero(coloresTablero,signosTablero)
     while game:
-    # JUGADOR P1 (Inteligente)
+    # JUGADOR P1 (El mayor)
         if turno == 1:
-            #if isBoardEmpty(coloresTablero) and isBoardEmpty(signosTablero):
-
+            play = maxPuntuaciones(buscarSoluciones(coloresTablero, signosTablero, deckP1)) # Jugada con el mayor Puntaje
+            fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
+            deckP1 = eliminadorFichasDeck(deckP1, fichasTurno)  # Elimina las fichas del deck
+            colocadorFichas(play) # Coloca las fichas en el tablero
+            deckP1 = agregaNuevasFichas(deckP1)  # Agrega nuevas fichas al deck
+            posiciones = listaPosiciones_FichasAux(play, 1) #Lista de Posiciones (Necesaria para Puntaciones)
+            puntos = puntuacion(play,posiciones) #Calcula los puntos de la jugada
+            p1 = p1 + puntos # Suma los puntos
+            lastP1 = puntos
+            reloj.tick(1)
             return
     # JUGADOR P2
         if turno == 2:
+            play = maxPuntuaciones(buscarSoluciones(coloresTablero, signosTablero, deckP2))  # Jugada con el mayor Puntaje
+            fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
+            deckP2 = eliminadorFichasDeck(deckP2, fichasTurno)  # Elimina las fichas del deck
+            colocadorFichas(play)  # Coloca las fichas en el tablero
+            deckP2 = agregaNuevasFichas(deckP2)  # Agrega nuevas fichas al deck
+            posiciones = listaPosiciones_FichasAux(play, 1)  # Lista de Posiciones (Necesaria para Puntaciones)
+            puntos = puntuacion(play, posiciones)  # Calcula los puntos de la jugada
+            p2 = p2 + puntos  # Suma los puntos
+            lastP2 = puntos
+            reloj.tick(1)
             return
     # JUGADOR P3
-        if turno == 3:
+        if turno == 3: # Inteligente
             return
-
-
 
 
 # JUGADAS CON PUNTUACIONES
 # E: Una lista con todas las jugadas
 # S: La jugada con el maximo de puntos
-# D: Recibe la lista con las jugadas del backtracking, calcula la puntuacion de cada una y luego selecciona la que tiene mayor puntaje\
+# D: Recibe la lista con las jugadas del backtracking, calcula la puntuacion de cada una y luego selecciona la que tiene mayor puntaje
+
+def maxPuntuaciones(jugadas):
+
+    listaPuntajes = [] # Lista que guarda las puntuaciones de cada jugada
+
+    for jugada in jugadas:                          # Loop para recorrer las jugadas
+        #print("Jugada: ",jugada)
+        posiciones = listaPosiciones_FichasAux(jugada,1)     # Lista de las posiciones de las fichas a poner en la jugada (Necesario para funcion puntuacion)
+        # print(posiciones)
+        puntajes = puntuacion(jugada,posiciones)    # Calcula los puntos de las fichas a poner
+        listaPuntajes.append(puntajes)              # Agrega a lista con los puntajes de las jugadas recibidas
+    i = max(listaPuntajes)                          # Busca el puntaje mayor
+    index = listaPuntajes.index(i)                  # Busca el index del puntaje maximo
+    jugadaMax = jugadas[index]                      # Jugada Maxima
+    #print(jugadaMax)
+    return jugadaMax
+
+#Auxiliar
+# E: Una lista
+# S: Una lista
+# D: Agarra las posiciones en las que se ponen las fichas
+
+def listaPosiciones_FichasAux(jugadas,i):
+    newList = []
+    for elem in jugadas:
+        newList.append(elem[i])
+    return newList
 
 
-    return cantidadPuntos
+# COLOCADOR DE FICHAS
+# E: Una lista con la jugada (Fichas y Posiciones)
+# S: No tiene
+# D: Coloca las fichas en las matrices
+
+def colocadorFichas(jugada):
+    # Variables Globales
+    global signosTablero
+    global coloresTablero
+    for ficha in jugada:
+        i = ficha[1][0]  # FILAS
+        j = ficha[1][1]  # COLUMNAS
+        signosTablero[i][j] = ficha[0][0]
+        coloresTablero[i][j] = ficha[0][1]
+    return
+# ELIMINADOR DE FICHAS DEL DECK
+# E: Un deck, una lista con las fichas usadas
+# S: Un deck sin las fichas
+# D: Elimina las fichas del deck principal
+def eliminadorFichasDeck(deck,fichas):
+    print(deck,fichas)
+    for ficha in fichas:
+        deck.remove(ficha)
+    return deck
+
 #juego()
-gui()
+#gui()
 
