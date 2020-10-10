@@ -407,9 +407,7 @@ def revisarTableroArriba(matrizColores):
     for j in range(0, len(matrizColores[2])):  # Revisa la fila 3
 
         if matrizColores[6][j] != 8:
-            #print("Arriba T")
             return True
-    #print("Arriba F")
     return False
 
 
@@ -423,9 +421,7 @@ def revisarTableroAbajo(matrizColores):
     for j in range(0, len(matrizColores[i])):  # Revisa la fila 3
 
         if matrizColores[i][j] != 8:
-            #print("Abajo T")
             return True
-    #print("Abajo F")
     return False
 
 
@@ -438,9 +434,7 @@ def revisarTableroIzquierda(matrizColores):
     for j in range(0, len(matrizColores[0])):  # Revisa la columna 3
 
         if matrizColores[6][j] != 8:
-            #print("Izq T")
             return True
-    #print("Izq F")
     return False
 
 
@@ -455,9 +449,7 @@ def revisarTableroDerecha(matrizColores):
     for i in range(0, len(matrizColores)):  # Revisa 3 columnas a la izquierda de la columna final
 
         if matrizColores[i][j] != 8:
-            #print("Der T")
             return True
-    #print("Der F")
     return False
 
 
@@ -466,19 +458,19 @@ def checkExtenderTablero(matrizColores,matrizSignos):
     print(len(matrizColores),len(matrizColores[0]))
     if revisarTableroArriba(matrizColores):  # True = necesita extenderse hacia arriba
 
-        for i in range(0, 5):  # Le suma 6 filas
+        for i in range(0, 9):  # Le suma 9 filas
 
-            matrizColores = matrizColores.insert(0,[[8]*len(matrizColores[0])])  # Suma a la izquierda para que queden "arriba"
-            matrizSignos = matrizSignos.insert(0,[[8]*len(matrizSignos[0])]) # Suma a la izquierda para que queden "arriba"
+            matrizColores = [[8]*len(matrizColores[0])] + matrizColores   # Suma a la izquierda para que queden "arriba"
+            matrizSignos = [[8]*len(matrizSignos[0])] + matrizSignos  # Suma a la izquierda para que queden "arriba"
 
     print(len(matrizColores), len(matrizColores[0]))
 
     if revisarTableroAbajo(matrizColores):  # True = necesita extenderse hacia abajo
-        print(len(matrizSignos),len(matrizColores[0]))
-        for i in range(0, 5):  # Le suma 6 filas
+        print(len(matrizSignos), len(matrizColores[0]))
+        for i in range(0, 9):  # Le suma 9 filas
 
             matrizColores += [[8] * len(matrizColores[0])]  # Suma a la derecha para que queden "abajo"
-            matrizSignos +=  [[8] * len(matrizSignos[0])]  # Suma a la derecha para que queden "abajo"
+            matrizSignos += [[8] * len(matrizSignos[0])]  # Suma a la derecha para que queden "abajo"
 
     print(len(matrizColores), len(matrizColores[0]))
 
@@ -486,8 +478,8 @@ def checkExtenderTablero(matrizColores,matrizSignos):
 
         for i in range(0, len(matrizColores)):
 
-            matrizColores[i] = [8] * 13 + matrizColores[i]  # Suma 6 ceros a cada fila para agregar columnas
-            matrizSignos[i] = [8] * 13 + matrizSignos[i]  # Suma 6 ceros a cada fila para agregar columnas
+            matrizColores[i] = [8] * 9 + matrizColores[i]  # Suma 9 ceros a cada fila para agregar columnas
+            matrizSignos[i] = [8] * 9 + matrizSignos[i]  # Suma 9 ceros a cada fila para agregar columnas
 
     print(len(matrizColores), len(matrizColores[0]))
 
@@ -495,9 +487,10 @@ def checkExtenderTablero(matrizColores,matrizSignos):
 
         for i in range(0, len(matrizColores)):
 
-            matrizColores[i] += [8] * 13  # Suma 6 ceros a cada fila para agregar columnas
-            matrizSignos[i] += [8] *13  # Suma 6 ceros a cada fila para agregar columnas
+            matrizColores[i] += [8] * 9  # Suma 9 ceros a cada fila para agregar columnas
+            matrizSignos[i] += [8] * 9  # Suma 9 ceros a cada fila para agregar columnas
 
+    return [matrizSignos, matrizColores]
 
 
 # BACKTRACKING
@@ -1196,7 +1189,9 @@ def game_loop(turno):
     global lastP3
     game = True
     #Condicion Extender Tablero
-    checkExtenderTablero(coloresTablero,signosTablero)
+    matrices = checkExtenderTablero(coloresTablero, signosTablero)
+    signosTablero = matrices[0]
+    coloresTablero = matrices[1]
     while game:
     # JUGADOR P1 (El mayor)
         if turno == 1:
