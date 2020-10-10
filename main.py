@@ -509,21 +509,21 @@ def buscarSoluciones(matrizColores, matrizSignos, deck):
         for posicion in posiciones:
             for deck_ in perm:
 
-                #buscarSolucionesDerAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
-                #jugadas += [jugada]
-                #jugada = []
+                buscarSolucionesDerAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
+                jugadas += [jugada]
+                jugada = []
 
                 buscarSolucionesIzqAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
                 jugadas += [jugada]
                 jugada = []
 
-                #buscarSolucionesArribaAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
-                #jugadas += [jugada]
-                #jugada = []
+                buscarSolucionesArribaAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
+                jugadas += [jugada]
+                jugada = []
 
-                #buscarSolucionesAbajoAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
-                #jugadas += [jugada]
-                #jugada = []
+                buscarSolucionesAbajoAux(matrizColores, matrizSignos, list(deck_), posicion, jugada)
+                jugadas += [jugada]
+                jugada = []
 
             total += jugadas
             jugadas = []
@@ -995,7 +995,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [0, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [1, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
@@ -1004,12 +1004,12 @@ signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
 coloresTablero =[[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [0, 1, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
 
-mano = [[0, 0]]
+mano = [[2, 2]]
 
 
 # print(buscarPosicionesValidas(signosTablero))
