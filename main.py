@@ -354,7 +354,7 @@ def puntuacionAux(jugada,jugadaPos = []):
     # COMPARACION COLUMNA
     #print("DER: ", signosTablero[i][j + 1], coloresTablero[i][j + 1],ficha)
     if coloresTablero[i][j + 1] == ficha[0] or signosTablero[i][j + 1] == ficha[1]:
-        #print("#1: Columna Derecha")
+        print("#1: Columna Derecha")
         aux2 += 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
@@ -362,45 +362,47 @@ def puntuacionAux(jugada,jugadaPos = []):
                 counter += 1
             aux2 += 1
         aux2 = j
-        if counter == 6:
+        if counter == 5:
             counter += 6
         puntos += counter
     #print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
     if coloresTablero[i][j - 1] == ficha[1] or signosTablero[i][j - 1] == ficha[0]:
-        #print("#2: Columna Izquierda")
+        print("#2: Columna Izquierda",signosTablero[i][j - 1],coloresTablero[i][j - 1])
         aux2 -= 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
+            print(signosTablero[i][aux2],coloresTablero[i][aux2])
             if not ([i, aux2] in jugadaPos):
                 counter += 1
             aux2 -= 1
-        if counter == 6:
+        print(counter)
+        if counter == 5:
             counter += 6
         puntos += counter
     # COMPARA FILAS
     #print("ARRIBA: ",signosTablero[i + 1][j],coloresTablero[i + 1][j],ficha)
     if coloresTablero[i + 1][j] == ficha[1] or signosTablero[i + 1][j] == ficha[0]:
-        #print("#3: Fila Arriba ")
+        print("#3: Fila Arriba ")
         aux1 += 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
             if not ([aux1, j] in jugadaPos):
                 counter += 1
             aux1 += 1
-        if counter == 6:
+        if counter == 5:
             counter += 6
         puntos += counter
         aux1 = i
     #print("ABAJO: ", signosTablero[i - 1][j], coloresTablero[i - 1][j],ficha)
     if coloresTablero[i - 1][j] == ficha[1] or signosTablero[i - 1][j] == ficha[0]:
-        #print("#4: Fila Abajo")
+        print("#4: Fila Abajo")
         aux1 -= 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
             if not ([aux1, j] in jugadaPos):
                 counter += 1
             aux1 -= 1
-        if counter == 6:
+        if counter == 5:
             counter += 6
         puntos += counter
 
@@ -546,12 +548,12 @@ def buscarSoluciones(matrizColores, matrizSignos, deck):
             jugadas = []
 
         total = removerRepetidos(total)
-        """
+
         print("TOTAL JUGADAS")
         for jugada in total:
 
             print(jugada)
-        """
+
         return total
 
 
@@ -1009,25 +1011,27 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 
 # TABLERO SIGNOS
 """
-signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [1, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
+signosTablero = [[2, 3, 4, 5, 0, 1, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8]]
 
                  # 0  1  2  3  4  5  6  7  8  9 10 11 12
-coloresTablero =[[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [0, 1, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
+coloresTablero =[[1, 1, 1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 2, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 5, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 8, 8]]
 
-mano = [[2, 2]]
 
+jugada1Pos =[[0,0]]
+jugada1 =  [[[3, 2], [1, 10]]]
+print(puntuacion(jugada1,jugada1Pos))
 
 # print(buscarPosicionesValidas(signosTablero))
 # print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
@@ -1190,7 +1194,7 @@ def gui():
                 elif event.key == pygame.K_LEFT:
                     columnas = columnas - 13
                     columnasInicio = columnasInicio - 13
-
+        """
         if turn == 1:
             print("Turno 1")
             game_loop(1)
@@ -1200,7 +1204,7 @@ def gui():
             print("Turno 2")
             game_loop(2)
             turn = 1
-
+        """
 
         if cont == 0 and deckP1 == deckP2 == []:
             winner = max(p1,p2,p3)
@@ -1289,7 +1293,7 @@ def game_loop(turno):
 def maxPuntuaciones(jugadas):
 
     listaPuntajes = []                                       # Lista que guarda las puntuaciones de cada jugada
-    print(jugadas)
+    #print(jugadas)
     for jugada in jugadas:                                   # Loop para recorrer las jugadas
         #print("Jugada: ",jugada)
         posiciones = listaPosiciones_FichasAux(jugada,1)     # Lista de las posiciones de las fichas a poner en la jugada (Necesario para funcion puntuacion)
@@ -1388,7 +1392,7 @@ def game_loop_2(turno):
         lastP1 = puntos
         #reloj.tick(1)
         return
-        # JUGADOR P2
+    # JUGADOR P2
     if turno == 2:
         play = maxPuntuaciones(buscarSoluciones(coloresTablero, signosTablero, deckP2))  # Jugada con el mayor Puntaje
         print(play, "P2")
