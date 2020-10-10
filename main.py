@@ -28,9 +28,9 @@ def generadorMatriz(filas,columnas):
 
     return M
 # TABLERO COLORES
-coloresTablero = generadorMatriz(17, 9)
+coloresTablero = generadorMatriz(13, 13)
 # TABLERO SIGNOS
-signosTablero = generadorMatriz(17, 9)
+signosTablero = generadorMatriz(13, 13)
 
 # VARIABLES PARA GENERADOR DE FICHAS ----------------------------------------------------
 # TABLERO DE FICHAS
@@ -407,8 +407,9 @@ def revisarTableroArriba(matrizColores):
     for j in range(0, len(matrizColores[2])):  # Revisa la fila 3
 
         if matrizColores[6][j] != 8:
+            #print("Arriba T")
             return True
-
+    #print("Arriba F")
     return False
 
 
@@ -422,8 +423,9 @@ def revisarTableroAbajo(matrizColores):
     for j in range(0, len(matrizColores[i])):  # Revisa la fila 3
 
         if matrizColores[i][j] != 8:
+            #print("Abajo T")
             return True
-
+    #print("Abajo F")
     return False
 
 
@@ -436,8 +438,9 @@ def revisarTableroIzquierda(matrizColores):
     for j in range(0, len(matrizColores[0])):  # Revisa la columna 3
 
         if matrizColores[6][j] != 8:
+            #print("Izq T")
             return True
-
+    #print("Izq F")
     return False
 
 
@@ -452,40 +455,48 @@ def revisarTableroDerecha(matrizColores):
     for i in range(0, len(matrizColores)):  # Revisa 3 columnas a la izquierda de la columna final
 
         if matrizColores[i][j] != 8:
+            #print("Der T")
             return True
-
+    #print("Der F")
     return False
 
 
 def checkExtenderTablero(matrizColores,matrizSignos):
 
+    print(len(matrizColores),len(matrizColores[0]))
     if revisarTableroArriba(matrizColores):  # True = necesita extenderse hacia arriba
 
         for i in range(0, 5):  # Le suma 6 filas
 
-            matrizColores = [[8]*len(matrizColores[0])] + matrizColores  # Suma a la izquierda para que queden "arriba"
-            matrizSignos = [[8]*len(matrizSignos[0])] + matrizSignos  # Suma a la izquierda para que queden "arriba"
+            matrizColores = matrizColores.insert(0,[[8]*len(matrizColores[0])])  # Suma a la izquierda para que queden "arriba"
+            matrizSignos = matrizSignos.insert(0,[[8]*len(matrizSignos[0])]) # Suma a la izquierda para que queden "arriba"
+
+    print(len(matrizColores), len(matrizColores[0]))
 
     if revisarTableroAbajo(matrizColores):  # True = necesita extenderse hacia abajo
-
+        print(len(matrizSignos),len(matrizColores[0]))
         for i in range(0, 5):  # Le suma 6 filas
 
-            matrizColores = matrizColores + [[8] * len(matrizColores[0])]  # Suma a la derecha para que queden "abajo"
-            matrizSignos = matrizSignos + [[8] * len(matrizSignos[0])]  # Suma a la derecha para que queden "abajo"
+            matrizColores += [[8] * len(matrizColores[0])]  # Suma a la derecha para que queden "abajo"
+            matrizSignos +=  [[8] * len(matrizSignos[0])]  # Suma a la derecha para que queden "abajo"
+
+    print(len(matrizColores), len(matrizColores[0]))
 
     if revisarTableroIzquierda(matrizColores):  # True = necesita extenderse hacia la izquierda
 
         for i in range(0, len(matrizColores)):
 
-            matrizColores[i] = [8] * 6 + matrizColores[i]  # Suma 6 ceros a cada fila para agregar columnas
-            matrizSignos[i] = [8] * 6 + matrizSignos[i]  # Suma 6 ceros a cada fila para agregar columnas
+            matrizColores[i] = [8] * 13 + matrizColores[i]  # Suma 6 ceros a cada fila para agregar columnas
+            matrizSignos[i] = [8] * 13 + matrizSignos[i]  # Suma 6 ceros a cada fila para agregar columnas
+
+    print(len(matrizColores), len(matrizColores[0]))
 
     if revisarTableroDerecha(matrizColores):  # True = necesita extenderse hacia la derecha
 
         for i in range(0, len(matrizColores)):
 
-            matrizColores[i] += [8] * 6  # Suma 6 ceros a cada fila para agregar columnas
-            matrizSignos[i] += [8] * 6  # Suma 6 ceros a cada fila para agregar columnas
+            matrizColores[i] += [8] * 13  # Suma 6 ceros a cada fila para agregar columnas
+            matrizSignos[i] += [8] *13  # Suma 6 ceros a cada fila para agregar columnas
 
 
 
@@ -1084,6 +1095,7 @@ def mostrarDecks(x, y, deck):
 
 # MOSTRAR TABLERO
 def tableroJuegoGUI():
+
     for i in range(len(signosTablero)):
         for j in range(len(signosTablero[0])):
             if signosTablero[i][j] == 8 and coloresTablero[i][j] == 8:
@@ -1161,11 +1173,15 @@ def gui():
         pygame.display.update()
         reloj.tick(1)
 
+#E: Un int con el turno
+#S: No tiene
+#D:
 
 def game_loop(turno):
     # Variables Globales
     global signosTablero
     global coloresTablero
+    mostrar(signosTablero)
     # PUNTAJES
     global p1
     global p2
@@ -1180,7 +1196,7 @@ def game_loop(turno):
     global lastP3
     game = True
     #Condicion Extender Tablero
-    #checkExtenderTablero(coloresTablero,signosTablero)
+    checkExtenderTablero(coloresTablero,signosTablero)
     while game:
     # JUGADOR P1 (El mayor)
         if turno == 1:
@@ -1229,7 +1245,7 @@ def game_loop(turno):
 def maxPuntuaciones(jugadas):
 
     listaPuntajes = []                                       # Lista que guarda las puntuaciones de cada jugada
-
+    #print(jugadas)
     for jugada in jugadas:                                   # Loop para recorrer las jugadas
         #print("Jugada: ",jugada)
         posiciones = listaPosiciones_FichasAux(jugada,1)     # Lista de las posiciones de las fichas a poner en la jugada (Necesario para funcion puntuacion)
@@ -1238,10 +1254,11 @@ def maxPuntuaciones(jugadas):
         listaPuntajes.append(puntajes)                      # Agrega a lista con los puntajes de las jugadas recibidas
     if  not listaPuntajes:                                  # Si no hay jugadas disponibles
         return []
+
     i = max(listaPuntajes)                                  # Busca el puntaje mayor
     index = listaPuntajes.index(i)                          # Busca el index del puntaje maximo
     jugadaMax = jugadas[index]                              # Jugada Maxima
-    print(jugadaMax)
+    #print(jugadaMax)
     return jugadaMax
 
 #Auxiliar
