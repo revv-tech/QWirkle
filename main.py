@@ -9,10 +9,12 @@ pygame.init()
 #Turno
 turn = 1
 #RANGOS TABLERO
-filas = 13
+filas = 12
 filasInicio = 0
-columnas = 13
+
+columnas = 12
 columnasInicio = 0
+
 # PUNTAJE
 p1 = 0
 p2 = 0
@@ -325,16 +327,21 @@ def isBoardEmpty(M):
 # S: Un numero
 # D: Revisa la jugada de acuerdo a las fichas y a la posicion en la que la puso.
 def puntuacion(jugada,jugadasPos):
+    #print("CORRIDA============================================================================")
     puntos = 0
     # JUGADAS[POSICION,FICHA]
     if not jugada:
         return 0
+
     if len(jugada) == 1:
         return puntuacionAux(jugada[0],jugadasPos)
-    while jugada:
+
+    while len(jugada) > 1:
+        #print("JUGADA: ",jugada[0])
         puntos = puntos + puntuacionAux(jugada[0],jugadasPos)
         jugada = jugada[1:]
-    #print(puntos)
+    #print("============================================================================")
+    puntos += puntuacionAux(jugada[0])
     return puntos
 
 
@@ -350,8 +357,18 @@ def puntuacionAux(jugada,jugadaPos = []):
     ficha = jugada[0] # FICHA
     puntos = 1
     # AXUILIARES
+    #print("Puntuacion Aux: ", jugada)
+
+    i = jugada[1][0] #FILAS
+    j = jugada[1][1] #COLUMNAS
+    ficha = jugada[0] #FICHA
+    puntos = 1
+
+    #AXUILIARES
+
     aux1 = i
     aux2 = j
+
     # COMPARACION COLUMNA
     # print("DER: ", signosTablero[i][j + 1], coloresTablero[i][j + 1],ficha)
     if coloresTablero[i][j + 1] == ficha[0] or signosTablero[i][j + 1] == ficha[1]:
@@ -359,23 +376,34 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux2 += 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
+            #print("+1: Columna Derecha", signosTablero[i][aux2], coloresTablero[i][aux2])
             if not ([i,aux2] in jugadaPos):
                 counter += 1
             aux2 += 1
         aux2 = j
-        if counter == 6:
+        if counter == 5:
             counter += 6
+
         puntos += counter
+
     # print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
     if coloresTablero[i][j - 1] == ficha[1] or signosTablero[i][j - 1] == ficha[0]:
         # print("#2: Columna Izquierda")
+
+
+    #print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
+    if coloresTablero[i][j - 1] == ficha[1] or signosTablero[i][j - 1] == ficha[0]:
+        #print("#2: Columna Izquierda",signosTablero[i][j - 1],coloresTablero[i][j - 1])
+
         aux2 -= 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
+            #print("+1: Columna Izquierda",signosTablero[i][aux2],coloresTablero[i][aux2])
             if not ([i, aux2] in jugadaPos):
                 counter += 1
             aux2 -= 1
-        if counter == 6:
+        #print(counter)
+        if counter == 5:
             counter += 6
         puntos += counter
     # COMPARA FILAS
@@ -385,10 +413,11 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux1 += 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
+            #print("+1 Fila Abajo: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
             if not ([aux1, j] in jugadaPos):
                 counter += 1
             aux1 += 1
-        if counter == 6:
+        if counter == 5:
             counter += 6
         puntos += counter
         aux1 = i
@@ -398,10 +427,11 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux1 -= 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
+            #print("+1 Fila Arriba: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
             if not ([aux1, j] in jugadaPos):
                 counter += 1
             aux1 -= 1
-        if counter == 6:
+        if counter == 5:
             counter += 6
         puntos += counter
 
@@ -472,8 +502,8 @@ def checkExtenderTablero(matrizColores,matrizSignos):
 
     # print(len(matrizColores),len(matrizColores[0]))
     if revisarTableroArriba(matrizColores):  # True = necesita extenderse hacia arriba
-        filas += len(matrizColores[0])
-        filasInicio += len(matrizColores[0])
+        filas += 13
+        filasInicio += 13
         for i in range(0, 13):  # Le suma 9 filas
 
             matrizColores = [[8]*len(matrizColores[0])] + matrizColores   # Suma a la izquierda para que queden "arriba"
@@ -490,9 +520,12 @@ def checkExtenderTablero(matrizColores,matrizSignos):
     # print(len(matrizColores), len(matrizColores[0]))
 
     if revisarTableroIzquierda(matrizColores):  # True = necesita extenderse hacia la izquierda
-        columnasInicio += len(matrizColores)
-        columnas += len(matrizColores)
+
+        columnasInicio += 13
+        columnas += 13
+
         for i in range(0, len(matrizColores)):
+
             matrizColores[i] = [8] * 13 + matrizColores[i]  # Suma 9 ceros a cada fila para agregar columnas
             matrizSignos[i] = [8] * 13 + matrizSignos[i]  # Suma 9 ceros a cada fila para agregar columnas
 
@@ -1118,7 +1151,30 @@ coloresTablero =[[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
 
 mano = [[2, 2]]
 pos = [3, 0]
-""""
+"""
+"""
+signosTablero = [[2, 3, 4, 5, 0, 1, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8]]
+
+                 # 0  1  2  3  4  5  6  7  8  9 10 11 12
+coloresTablero =[[1, 1, 1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 2, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 5, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 8, 8],
+                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 8, 8]]
+
+
+jugada1Pos =[[0,0]]
+jugada1 =  [[[3, 2], [1, 10]]]
+print(puntuacion(jugada1,jugada1Pos))
+"""
 
 # print(buscarPosicionesValidas(signosTablero))
 # print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
@@ -1193,25 +1249,27 @@ def mostrarDecks(x, y, deck):
 
 # MOSTRAR TABLERO
 def tableroJuegoGUI():
-    print("Len: ",len(signosTablero),len(signosTablero[0]))
-    print(filasInicio,filas)
+    #print("Len: ",len(signosTablero),len(signosTablero[0]))
+    #print(filasInicio,filas)
+    #mostrar(signosTablero)
+    for i in range(filasInicio,filas+1):
+        for j in range(columnasInicio,columnas+1):
 
-    for i in range(0, 13):
-        for j in range(0, 13):
-            if signosTablero[i][j] == 8 and coloresTablero[i][j] == 8:
-                imageSetter(int(j * 52 + 40 / 200 + 100), int(i * 52 + 40 / 200 + 100), vacio)
-
-    for i in range(filasInicio,filas):
-        for j in range(columnasInicio,columnas):
                 newRangei = i
                 newRangej = j
+
                 newRangei = tableroJuegoMatriz_GUI_AUX(newRangei)
                 newRangej = tableroJuegoMatriz_GUI_AUX(newRangej)
+
                 if signosTablero[i][j] == 8 and coloresTablero[i][j] == 8:
+                    #signosTablero[i][j] = 7
                     imageSetter(int(newRangej*52+40/200+100),int(newRangei*52+40/200+100),vacio)
                 else:
+                    # IMAGEN
+                    #mostrar(signosTablero)
                     name = str(signosTablero[i][j] + 1) + "_" + str(coloresTablero[i][j] + 1) + ".png"
                     image = pygame.image.load(name)
+                    # PONE LA FICHA
                     imageSetter(int(newRangej * 52 + 52 / 200 + 100), int(newRangei * 52 + 52 / 200 + 100), image)
 
 
@@ -1233,6 +1291,8 @@ def gui():
     # pygame.init()
     play = True
     while play:
+        #print("FilasI: ",filasInicio, "FilasF: ", filas)
+        #print("ColumnasI: ", columnasInicio, "ColumnasF: ", columnas)
         qwirkle.blit(bg, (0, 0))
         texto(1000, 30, "Total Fichas: " + str (cont), 30, blanco)
         #p1
@@ -1265,24 +1325,27 @@ def gui():
                     game_loop_2(2)
                 elif event.key == pygame.K_3:
                     game_loop_2(3)
-
+                #BOTONES INDICES
                 elif event.key == pygame.K_UP:
-                    filas = filas - 13
                     if filasInicio != 0:
+                        filas = filas - 13
                         filasInicio = filasInicio - 13
 
                 elif event.key == pygame.K_DOWN:
-                    filas = filas + 13
-                    filasInicio = filasInicio - 13
+                    if filas != len(signosTablero)-1:
+                        filas = filas + 13
+                        filasInicio = filasInicio + 13
 
                 elif event.key == pygame.K_RIGHT:
-                    columnas = columnas + 13
-                    columnasInicio = columnasInicio + 13
+                    if columnas != len(signosTablero[0])-1:
+                        columnas = columnas + 13
+                        columnasInicio = columnasInicio + 13
 
                 elif event.key == pygame.K_LEFT:
-                    columnas = columnas - 13
-                    columnasInicio = columnasInicio - 13
-
+                    if columnas != 0:
+                        columnas = columnas - 13
+                        columnasInicio = columnasInicio - 13
+        """
         if turn == 1:
             print("Turno 1")
             game_loop(1)
@@ -1292,8 +1355,7 @@ def gui():
             print("Turno 2")
             game_loop(2)
             turn = 1
-
-
+        """
         if cont == 0 and deckP1 == deckP2 == []:
             winner = max(p1,p2,p3)
             if winner == p1:
@@ -1336,7 +1398,7 @@ def game_loop(turno):
         # JUGADOR P1 (El mayor)
         if turno == 1:
             play = maxPuntuaciones(buscarSoluciones(coloresTablero, signosTablero, deckP1))  # Jugada con el mayor Puntaje
-            print(play, "P1")
+            #print(play, "P1")
             if not play:
                 lastP1 = 0
                 return
@@ -1354,7 +1416,7 @@ def game_loop(turno):
         if turno == 2:
 
             play = maxPuntuaciones(buscarSoluciones(coloresTablero, signosTablero, deckP2))  # Jugada con el mayor Puntaje
-            print(play, "P2")
+            #print(play, "P2")
             if not play:
                 lastP2 = 0
                 return
@@ -1381,7 +1443,7 @@ def game_loop(turno):
 def maxPuntuaciones(jugadas):
 
     listaPuntajes = []                                       # Lista que guarda las puntuaciones de cada jugada
-    print(jugadas)
+    #print(jugadas)
     for jugada in jugadas:                                   # Loop para recorrer las jugadas
         #print("Jugada: ",jugada)
         posiciones = listaPosiciones_FichasAux(jugada,1)     # Lista de las posiciones de las fichas a poner en la jugada (Necesario para funcion puntuacion)
@@ -1394,7 +1456,7 @@ def maxPuntuaciones(jugadas):
     i = max(listaPuntajes)                                  # Busca el puntaje mayor
     index = listaPuntajes.index(i)                          # Busca el index del puntaje maximo
     jugadaMax = jugadas[index]                              # Jugada Maxima
-    print(listaPuntajes,i)
+    #print(listaPuntajes,i)
     #print(jugadaMax)
     return jugadaMax
 
@@ -1438,8 +1500,6 @@ def eliminadorFichasDeck(deck,fichas):
     return deck
 
 
-
-
 def game_loop_2(turno):
     # Variables Globales
     global signosTablero
@@ -1457,7 +1517,6 @@ def game_loop_2(turno):
     global lastP1
     global lastP2
     global lastP3
-    game = True
     #Condicion Extender Tablero
     matrices = checkExtenderTablero(coloresTablero, signosTablero)
     signosTablero = matrices[0]
@@ -1466,7 +1525,7 @@ def game_loop_2(turno):
     # JUGADOR P1 (El mayor)
     if turno == 1:
         play = maxPuntuaciones(buscarSoluciones(coloresTablero, signosTablero, deckP1)) # Jugada con el mayor Puntaje
-        print(play,"P1")
+        #print(play,"P1")
         if not play:
             lastP1 = 0
             return
@@ -1480,10 +1539,10 @@ def game_loop_2(turno):
         lastP1 = puntos
         #reloj.tick(1)
         return
-        # JUGADOR P2
+    # JUGADOR P2
     if turno == 2:
         play = maxPuntuaciones(buscarSoluciones(coloresTablero, signosTablero, deckP2))  # Jugada con el mayor Puntaje
-        print(play, "P2")
+        #print(play, "P2")
         if not play:
             lastP2 = 0
             return
@@ -1501,6 +1560,12 @@ def game_loop_2(turno):
     if turno == 3: # Inteligente
         return
 
+# INTELIGENCIA
+# E:
+# S:
+# D:
+def inteligenciaBT(jugadas):
+    return
 
 #juego()
 #gui()
