@@ -337,24 +337,25 @@ def puntuacion(jugada,jugadasPos):
     #print(puntos)
     return puntos
 
+
 # Check Puntuacion
 # E: Una lista con la ficha y la posicion y la lista de fichas puestas en el turno
 # S: La cantidad de numeros
 # D: Suma los puntos de cada jugada
 def puntuacionAux(jugada,jugadaPos = []):
     # CAMBIE FICHA [POS,FICHA]
-    #print("Puntuacion Aux: ", jugada)
-    i = jugada[1][0] #FILAS
-    j = jugada[1][1] #COLUMNAS
-    ficha = jugada[0] #FICHA
+    # print("Puntuacion Aux: ", jugada)
+    i = jugada[1][0] # FILAS
+    j = jugada[1][1] # COLUMNAS
+    ficha = jugada[0] # FICHA
     puntos = 1
-    #AXUILIARES
+    # AXUILIARES
     aux1 = i
     aux2 = j
     # COMPARACION COLUMNA
-    #print("DER: ", signosTablero[i][j + 1], coloresTablero[i][j + 1],ficha)
+    # print("DER: ", signosTablero[i][j + 1], coloresTablero[i][j + 1],ficha)
     if coloresTablero[i][j + 1] == ficha[0] or signosTablero[i][j + 1] == ficha[1]:
-        #print("#1: Columna Derecha")
+        # print("#1: Columna Derecha")
         aux2 += 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
@@ -365,9 +366,9 @@ def puntuacionAux(jugada,jugadaPos = []):
         if counter == 6:
             counter += 6
         puntos += counter
-    #print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
+    # print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
     if coloresTablero[i][j - 1] == ficha[1] or signosTablero[i][j - 1] == ficha[0]:
-        #print("#2: Columna Izquierda")
+        # print("#2: Columna Izquierda")
         aux2 -= 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
@@ -378,9 +379,9 @@ def puntuacionAux(jugada,jugadaPos = []):
             counter += 6
         puntos += counter
     # COMPARA FILAS
-    #print("ARRIBA: ",signosTablero[i + 1][j],coloresTablero[i + 1][j],ficha)
+    # print("ARRIBA: ",signosTablero[i + 1][j],coloresTablero[i + 1][j],ficha)
     if coloresTablero[i + 1][j] == ficha[1] or signosTablero[i + 1][j] == ficha[0]:
-        #print("#3: Fila Arriba ")
+        # print("#3: Fila Arriba ")
         aux1 += 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
@@ -391,9 +392,9 @@ def puntuacionAux(jugada,jugadaPos = []):
             counter += 6
         puntos += counter
         aux1 = i
-    #print("ABAJO: ", signosTablero[i - 1][j], coloresTablero[i - 1][j],ficha)
+    # print("ABAJO: ", signosTablero[i - 1][j], coloresTablero[i - 1][j],ficha)
     if coloresTablero[i - 1][j] == ficha[1] or signosTablero[i - 1][j] == ficha[0]:
-        #print("#4: Fila Abajo")
+        # print("#4: Fila Abajo")
         aux1 -= 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
@@ -469,7 +470,7 @@ def checkExtenderTablero(matrizColores,matrizSignos):
     global columnas
     global columnasInicio
 
-    #print(len(matrizColores),len(matrizColores[0]))
+    # print(len(matrizColores),len(matrizColores[0]))
     if revisarTableroArriba(matrizColores):  # True = necesita extenderse hacia arriba
         filas += len(matrizColores[0])
         filasInicio += len(matrizColores[0])
@@ -478,7 +479,7 @@ def checkExtenderTablero(matrizColores,matrizSignos):
             matrizColores = [[8]*len(matrizColores[0])] + matrizColores   # Suma a la izquierda para que queden "arriba"
             matrizSignos = [[8]*len(matrizSignos[0])] + matrizSignos  # Suma a la izquierda para que queden "arriba"
 
-    #print(len(matrizColores), len(matrizColores[0]))
+    # print(len(matrizColores), len(matrizColores[0]))
 
     if revisarTableroAbajo(matrizColores):  # True = necesita extenderse hacia abajo
         for i in range(0, 13):  # Le suma 9 filas
@@ -486,7 +487,7 @@ def checkExtenderTablero(matrizColores,matrizSignos):
             matrizColores += [[8] * len(matrizColores[0])]  # Suma a la derecha para que queden "abajo"
             matrizSignos += [[8] * len(matrizSignos[0])]  # Suma a la derecha para que queden "abajo"
 
-    #print(len(matrizColores), len(matrizColores[0]))
+    # print(len(matrizColores), len(matrizColores[0]))
 
     if revisarTableroIzquierda(matrizColores):  # True = necesita extenderse hacia la izquierda
         columnasInicio += len(matrizColores)
@@ -495,7 +496,7 @@ def checkExtenderTablero(matrizColores,matrizSignos):
             matrizColores[i] = [8] * 13 + matrizColores[i]  # Suma 9 ceros a cada fila para agregar columnas
             matrizSignos[i] = [8] * 13 + matrizSignos[i]  # Suma 9 ceros a cada fila para agregar columnas
 
-    #print(len(matrizColores), len(matrizColores[0]))
+    # print(len(matrizColores), len(matrizColores[0]))
 
     if revisarTableroDerecha(matrizColores):  # True = necesita extenderse hacia la derecha
         for i in range(0, len(matrizColores)):
@@ -791,10 +792,99 @@ def buscarPosicionesValidas(matrizSignos):
     return posiciones
 
 
+def buscarQwirkleParcial(matrizSignos, matrizColores):
+    fichas = []  # Contendra las fichas que hay que guardar para evitar regalar el Qwrikle
+    casillas = []  # Contendra las casillas donde se puede regalar un Qwirkle
 
-def buscarQwirkleParcial():
+    for i in range(0, len(matrizSignos)):
+        for j in range(0, len(matrizSignos[0])):
 
-    1+1
+            if matrizSignos[i][j] != 8:
+                print("Analizar todos los lados")
+
+
+def analizarSemiQwirkle(posicion, matrizSignos, matrizColores):
+
+    qwirkleSignoArriba = []  # Guardara las fichas que forman al qwirkle
+    qwirkleColorArriba = []
+    qwirkleSignoAbajo = []
+    qwirkleColorAbajo = []
+    qwirkleSignoDerecha = []
+    qwirkleColorDerecha = []
+    qwirkleSignoIzquierda = []
+    qwirkleColorIzquierda = []
+
+    i = posicion[0]
+    j = posicion[1]
+    fichaInicial = [matrizSignos[i][j], matrizColores[i][j], [i, j]]
+
+    # Analiza hacia abajo
+    qwirkleColorAbajo += [fichaInicial]
+    qwirkleSignoAbajo += [fichaInicial]
+    i += 1
+    while matrizSignos[i][j] != 8:
+
+        if matrizSignos[i][j] == fichaInicial[0]:
+            qwirkleSignoAbajo += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
+
+        elif matrizColores[i][j] == fichaInicial[1]:
+            qwirkleColorAbajo += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
+
+        i += 1
+
+    i = posicion[0]  # Reset del indice para seguir analizando desde la pos inicial
+
+    # Analiza hacia arriba
+    qwirkleColorArriba += [fichaInicial]
+    qwirkleSignoArriba += [fichaInicial]
+    i -= 1
+    while matrizSignos[i][j] != 8:
+
+        if matrizSignos[i][j] == fichaInicial[0]:
+            qwirkleSignoArriba += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
+
+        elif matrizColores[i][j] == fichaInicial[1]:
+            qwirkleColorArriba += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
+
+        i -= 1
+
+    i = posicion[0]  # Reset del indice para seguir analizando desde la pos inicial
+
+    # Analiza hacia derecha
+    qwirkleColorDerecha += [fichaInicial]
+    qwirkleSignoDerecha += [fichaInicial]
+    j += 1
+    while matrizSignos[i][j] != 8:
+
+        if matrizSignos[i][j] == fichaInicial[0]:
+            qwirkleSignoDerecha += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
+
+        elif matrizColores[i][j] == fichaInicial[1]:
+            qwirkleColorDerecha += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
+
+        j += 1
+
+    j = posicion[1]  # Reset del indice para seguir analizando desde la pos inicial
+
+    # Analiza hacia izquierda
+    qwirkleColorIzquierda += [fichaInicial]
+    qwirkleSignoIzquierda += [fichaInicial]
+    j -= 1
+    while matrizSignos[i][j] != 8:
+
+        if matrizSignos[i][j] == fichaInicial[0]:
+            qwirkleSignoIzquierda += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
+
+        elif matrizColores[i][j] == fichaInicial[1]:
+            qwirkleColorIzquierda += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
+
+        j -= 1
+
+    j = posicion[1]  # Reset del indice para seguir analizando desde la pos inicial
+
+
+    return [qwirkleColorDerecha, qwirkleSignoDerecha]
+
 
 # E: ficha = [simbolo, color], posicion = [i, j], dos matrices del tablero
 # S: booleano. True si es valido poner la ficha en la poscion dada, False en caso contrario
@@ -1012,7 +1102,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [1, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
@@ -1021,20 +1111,22 @@ signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
 coloresTablero =[[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [0, 1, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [0, 1, 2, 3, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
 
 mano = [[2, 2]]
-
+pos = [3, 0]
+""""
 
 # print(buscarPosicionesValidas(signosTablero))
 # print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
 #print(buscarPosicionesValidas(signosTablero))
-buscarSoluciones(coloresTablero, signosTablero, mano)
+#buscarSoluciones(coloresTablero, signosTablero, mano)
+#print(analizarSemiQwirkle(pos, signosTablero, coloresTablero))
 
-"""
+
 # GUI
 # IMAGENES
 # BK
@@ -1411,5 +1503,5 @@ def game_loop_2(turno):
 
 
 #juego()
-gui()
+#gui()
 
