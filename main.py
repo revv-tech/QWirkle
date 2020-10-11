@@ -327,7 +327,7 @@ def isBoardEmpty(M):
 # S: Un numero
 # D: Revisa la jugada de acuerdo a las fichas y a la posicion en la que la puso.
 def puntuacion(jugada,jugadasPos):
-    print("CORRIDA============================================================================")
+    #print("CORRIDA============================================================================")
     puntos = 0
     # JUGADAS[POSICION,FICHA]
     if not jugada:
@@ -337,10 +337,10 @@ def puntuacion(jugada,jugadasPos):
         return puntuacionAux(jugada[0],jugadasPos)
 
     while len(jugada) > 1:
-        print("JUGADA: ",jugada[0])
+        #print("JUGADA: ",jugada[0])
         puntos = puntos + puntuacionAux(jugada[0],jugadasPos)
         jugada = jugada[1:]
-    print("============================================================================")
+    #print("============================================================================")
     puntos += puntuacionAux(jugada[0])
     return puntos
 
@@ -368,7 +368,7 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux2 += 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
-            print("+1: Columna Derecha", signosTablero[i][aux2], coloresTablero[i][aux2])
+            #print("+1: Columna Derecha", signosTablero[i][aux2], coloresTablero[i][aux2])
             if not ([i,aux2] in jugadaPos):
                 counter += 1
             aux2 += 1
@@ -384,7 +384,7 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux2 -= 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
-            print("+1: Columna Izquierda",signosTablero[i][aux2],coloresTablero[i][aux2])
+            #print("+1: Columna Izquierda",signosTablero[i][aux2],coloresTablero[i][aux2])
             if not ([i, aux2] in jugadaPos):
                 counter += 1
             aux2 -= 1
@@ -399,7 +399,7 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux1 += 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
-            print("+1 Fila Abajo: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
+            #print("+1 Fila Abajo: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
             if not ([aux1, j] in jugadaPos):
                 counter += 1
             aux1 += 1
@@ -413,7 +413,7 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux1 -= 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
-            print("+1 Fila Arriba: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
+            #print("+1 Fila Arriba: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
             if not ([aux1, j] in jugadaPos):
                 counter += 1
             aux1 -= 1
@@ -1435,7 +1435,7 @@ def game_loop_2(turno):
         return
 
 # INTELIGENCIA
-# E: 
+# E:
 # S:
 # D:
 def inteligenciaBT(jugadas):
