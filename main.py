@@ -984,18 +984,19 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
     simboloDerecha = True
     colorDerecha = True
 
+
+    if posicion[0] >= len(matrizSignos) or posicion[1] >= len(matrizSignos[0]):
+
+        return False
+
     # Si es diferente de 8 significa que ya esa posicion esta ocupada
     # por lo tanto no es valido poner una ficha ahi
     if matrizSignos[i][j] != 8:
 
         return False
 
-    # Parche excepcion hacia arriba
-    # print(len(matrizSignos),len(matrizSignos[0]))
-    # print(i+1,j)
-
+    # Parche excepcion hacia abajo
     if matrizSignos[i+1][j] != 8:
-
         if matrizSignos[i+1][j] == matrizSignos[i+2][j] and matrizSignos[i+1][j] != ficha[0]:
 
             return False
@@ -1012,15 +1013,36 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 
             return False
 
-    # Parche excpecion abajo
+    # Parche excpecion arriba
     if matrizSignos[i-1][j] != 8:
         if matrizSignos[i-1][j] == matrizSignos[i-2][j] and matrizSignos[i-1][j] != ficha[0]:
 
             return False
 
-    if posicion[0] >= len(matrizSignos) or posicion[1] >= len(matrizSignos[0]):
+    # Parche 2 abajo
+    if matrizSignos[i + 1][j] != 8 and matrizSignos[i - 1][j] != 8:
+        if matrizSignos[i + 1][j] == ficha[0] and matrizSignos[i - 1][j] != ficha[0]:
 
-        return False
+            return False
+
+    # Parche 2 derecha
+    if matrizSignos[i][j + 1] != 8 and matrizSignos[i][j - 1] != 8:
+        if matrizSignos[i][j + 1] == ficha[0] and matrizSignos[i][j - 1] != ficha[0]:
+
+            return False
+
+    # Parche 2 izquierda
+    if matrizSignos[i][j + 1] != 8 and matrizSignos[i][j - 1] != 8:
+        if matrizSignos[i][j - 1] == ficha[0] and matrizSignos[i][j + 1] != ficha[0]:
+
+            return False
+
+
+    # Parche 2 arriba
+    if matrizSignos[i + 1][j] != 8 and matrizSignos[i - 1][j] != 8:
+        if matrizSignos[i - 1][j] == ficha[0] and matrizSignos[i + 1][j] != ficha[0]:
+
+            return False
 
     # Comparar en todas direcciones si el simbolo es el mismo
     # Cada if equivale a un direccion
@@ -1160,7 +1182,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
             else:
                 aux2 -= 1
 
-    print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
+    #print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
     if (colorArriba or simboloArriba) and (colorDerecha or simboloDerecha) and (colorAbajo or simboloAbajo) and (colorIzquierda or simboloIzquierda):
 
         return True
@@ -1168,18 +1190,10 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
     else:
         return False
 
-
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
 
 # TABLERO SIGNOS
-
-signosTablero = [[8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-
-
-# =================== PRUEBAS PARA EL BACKTRACKING ===================================
-
-# TABLERO SIGNOS
-"""
+""""
 signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
@@ -1196,26 +1210,15 @@ coloresTablero =[[8, 8, 8, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
+"""
 
-
-mano = [[4, 0], [2, 0]]
-pos = [3, 0]
+#mano = [[4, 0], [2, 0]]
+#pos = [3, 0]
 
 #validas = buscarPosicionesValidas(signosTablero)
 #buscarSemiQwirkle(signosTablero, coloresTablero, validas)
 #buscarSoluciones(coloresTablero, signosTablero, mano)
 #print(analizarSemiQwirkle(pos, signosTablero, coloresTablero))
-
-mano = [[1, 3],[3, 4]]
-pos = [3, 0]
-
-
-validas = buscarPosicionesValidas(signosTablero)
-print(puntuacion([mano],[]))
-#buscarSemiQwirkle(signosTablero, coloresTablero, validas))
-#buscarSoluciones(coloresTablero, signosTablero, mano)
-#print(analizarSemiQwirkle(pos, signosTablero, coloresTablero))
-"""
 
 
 # GUI
