@@ -387,7 +387,7 @@ def puntuacionAux(jugada,jugadaPos = []):
         puntos += counter
 
     # print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
-    if coloresTablero[i][j - 1] == ficha[1] or signosTablero[i][j - 1] == ficha[0]:
+    #if coloresTablero[i][j - 1] == ficha[1] or signosTablero[i][j - 1] == ficha[0]:
         # print("#2: Columna Izquierda")
 
 
@@ -589,6 +589,10 @@ def buscarSoluciones(matrizColores, matrizSignos, deck):
         return total
 
 
+# E: Recibe una lista con jugadas
+# S: Retorna una lista con jugadas
+# D: Recibe una lista con jugadas las cuales
+#    filtra para que no hayan repetidas
 def removerRepetidos(jugadas):
 
     resultado = []
@@ -602,11 +606,16 @@ def removerRepetidos(jugadas):
     return resultado
 
 
+# E: Dos matrcies del tablero, el deck, la posicion a evaluar y una lista vacia para guardar la jugada
+# S: No tiene salida pero la lista "jugada" al final contendrá la jugada formada que sea valida
+# D: Funcion recursiva que toma cada ficha del deck y las va colocando verificando la validez
+#     en caso de ser valido lo agrega a la jugada, si no descarta la ficha y sigue avanzando en el deck
+#     su condicion de parada es que el deck ya esté vacio
 def buscarSolucionesDerAux(matrizColores, matrizSignos, deck, posicion, jugada):
 
     """
-    print("======NUEVA RECURSION=======")
 
+    print("======NUEVA RECURSION=======")
     print("MATRIZ SIGNOS")
     mostrar(matrizSignos)
     print("MATRIZ COLORES")
@@ -618,6 +627,7 @@ def buscarSolucionesDerAux(matrizColores, matrizSignos, deck, posicion, jugada):
     print(posicion)
     print("JUGADA")
     print(jugada)
+
     """
 
     i = posicion[0]
@@ -653,6 +663,11 @@ def buscarSolucionesDerAux(matrizColores, matrizSignos, deck, posicion, jugada):
         deck = [a] + deck
 
 
+# E: Dos matrcies del tablero, el deck, la posicion a evaluar y una lista vacia para guardar la jugada
+# S: No tiene salida pero la lista "jugada" al final contendrá la jugada formada que sea valida
+# D: Funcion recursiva que toma cada ficha del deck y las va colocando verificando la validez
+#     en caso de ser valido lo agrega a la jugada, si no descarta la ficha y sigue avanzando en el deck
+#     su condicion de parada es que el deck ya esté vacio
 def buscarSolucionesIzqAux(matrizColores, matrizSignos, deck, posicion, jugada):
 
     """"
@@ -703,6 +718,11 @@ def buscarSolucionesIzqAux(matrizColores, matrizSignos, deck, posicion, jugada):
         deck = [a] + deck
 
 
+# E: Dos matrcies del tablero, el deck, la posicion a evaluar y una lista vacia para guardar la jugada
+# S: No tiene salida pero la lista "jugada" al final contendrá la jugada formada que sea valida
+# D: Funcion recursiva que toma cada ficha del deck y las va colocando verificando la validez
+#     en caso de ser valido lo agrega a la jugada, si no descarta la ficha y sigue avanzando en el deck
+#     su condicion de parada es que el deck ya esté vacio
 def buscarSolucionesArribaAux(matrizColores, matrizSignos, deck, posicion, jugada):
 
     """
@@ -752,6 +772,11 @@ def buscarSolucionesArribaAux(matrizColores, matrizSignos, deck, posicion, jugad
         deck = [a] + deck
 
 
+# E: Dos matrcies del tablero, el deck, la posicion a evaluar y una lista vacia para guardar la jugada
+# S: No tiene salida pero la lista "jugada" al final contendrá la jugada formada que sea valida
+# D: Funcion recursiva que toma cada ficha del deck y las va colocando verificando la validez
+#     en caso de ser valido lo agrega a la jugada, si no descarta la ficha y sigue avanzando en el deck
+#     su condicion de parada es que el deck ya esté vacio
 def buscarSolucionesAbajoAux(matrizColores, matrizSignos, deck, posicion, jugada):
 
     """
@@ -825,99 +850,127 @@ def buscarPosicionesValidas(matrizSignos):
     return posiciones
 
 
-def buscarQwirkleParcial(matrizSignos, matrizColores):
-    fichas = []  # Contendra las fichas que hay que guardar para evitar regalar el Qwrikle
-    casillas = []  # Contendra las casillas donde se puede regalar un Qwirkle
+def buscarSemiQwirkle(matrizSignos, matrizColores, posicionesValidas):
 
-    for i in range(0, len(matrizSignos)):
-        for j in range(0, len(matrizSignos[0])):
+    semiQwirkles = []
+    casillasExtremos = [] # Contendra las casillas donde se puede jugar en un extremo
+    casillasSemiQwirkle = []  # Contendra las casillas donde se puede regalar un Qwirkle
 
-            if matrizSignos[i][j] != 8:
-                print("Analizar todos los lados")
+    for posicion in posicionesValidas:
+        semi = buscarSemiQwirkleAux(posicion, matrizSignos, matrizColores)
+
+        if posicionExtremo(posicion, posicionesValidas):
+            casillasExtremos += [posicion]
 
 
-def analizarSemiQwirkle(posicion, matrizSignos, matrizColores):
+        if len(semi) > 4:
+            semiQwirkles += [semi]
 
-    qwirkleSignoArriba = []  # Guardara las fichas que forman al qwirkle
-    qwirkleColorArriba = []
-    qwirkleSignoAbajo = []
-    qwirkleColorAbajo = []
-    qwirkleSignoDerecha = []
-    qwirkleColorDerecha = []
-    qwirkleSignoIzquierda = []
-    qwirkleColorIzquierda = []
+    for semi in semiQwirkles:
+
+        casillasSemiQwirkle += [semi[0]]
+
+    print(casillasExtremos)
+
+
+def buscarSemiQwirkleAux(posicion, matrizSignos, matrizColores):
+    listaQwirkleParcial = []
+    qwirkleParcial = []
 
     i = posicion[0]
     j = posicion[1]
-    fichaInicial = [matrizSignos[i][j], matrizColores[i][j], [i, j]]
+
+    # Guarda la posicion donde se puede jugar cualquier qwirkle parcial que se encuentre
+    listaQwirkleParcial += [[i, j]]
 
     # Analiza hacia abajo
-    qwirkleColorAbajo += [fichaInicial]
-    qwirkleSignoAbajo += [fichaInicial]
     i += 1
     while matrizSignos[i][j] != 8:
 
-        if matrizSignos[i][j] == fichaInicial[0]:
-            qwirkleSignoAbajo += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
-
-        elif matrizColores[i][j] == fichaInicial[1]:
-            qwirkleColorAbajo += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
-
+        qwirkleParcial += [[matrizSignos[i][j], matrizColores[i][j]]]
         i += 1
 
+    if qwirkleParcial:
+        listaQwirkleParcial += [qwirkleParcial]
+        qwirkleParcial = []
     i = posicion[0]  # Reset del indice para seguir analizando desde la pos inicial
 
     # Analiza hacia arriba
-    qwirkleColorArriba += [fichaInicial]
-    qwirkleSignoArriba += [fichaInicial]
     i -= 1
     while matrizSignos[i][j] != 8:
 
-        if matrizSignos[i][j] == fichaInicial[0]:
-            qwirkleSignoArriba += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
-
-        elif matrizColores[i][j] == fichaInicial[1]:
-            qwirkleColorArriba += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
-
+        qwirkleParcial += [[matrizSignos[i][j], matrizColores[i][j]]]
         i -= 1
 
+    if qwirkleParcial:
+        listaQwirkleParcial += [qwirkleParcial]
+        qwirkleParcial = []
     i = posicion[0]  # Reset del indice para seguir analizando desde la pos inicial
 
     # Analiza hacia derecha
-    qwirkleColorDerecha += [fichaInicial]
-    qwirkleSignoDerecha += [fichaInicial]
     j += 1
     while matrizSignos[i][j] != 8:
 
-        if matrizSignos[i][j] == fichaInicial[0]:
-            qwirkleSignoDerecha += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
-
-        elif matrizColores[i][j] == fichaInicial[1]:
-            qwirkleColorDerecha += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
-
+        qwirkleParcial += [[matrizSignos[i][j], matrizColores[i][j]]]
         j += 1
 
+    if qwirkleParcial:
+        listaQwirkleParcial += [qwirkleParcial]
+        qwirkleParcial = []
     j = posicion[1]  # Reset del indice para seguir analizando desde la pos inicial
 
     # Analiza hacia izquierda
-    qwirkleColorIzquierda += [fichaInicial]
-    qwirkleSignoIzquierda += [fichaInicial]
     j -= 1
     while matrizSignos[i][j] != 8:
 
-        if matrizSignos[i][j] == fichaInicial[0]:
-            qwirkleSignoIzquierda += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
-
-        elif matrizColores[i][j] == fichaInicial[1]:
-            qwirkleColorIzquierda += [[matrizSignos[i][j], matrizColores[i][j]], [i, j]]
-
+        qwirkleParcial += [[matrizSignos[i][j], matrizColores[i][j]]]
         j -= 1
 
-    j = posicion[1]  # Reset del indice para seguir analizando desde la pos inicial
+    if qwirkleParcial:
+        listaQwirkleParcial += [qwirkleParcial]
+        qwirkleParcial = []
+
+    # Aqui se filtran los SemiQwirkle de los que no lo son
+    listaFinal = []
+    listaFinal += [listaQwirkleParcial[0]]  # Saco la posicion del semi qwirkle
+    for i in range(1, len(listaQwirkleParcial)):
+        if len(listaQwirkleParcial[i]) == 4:  # Para considerarse como SemiQwirkle debe tener 4 fichas
+            listaFinal += listaQwirkleParcial[i]
+
+    return listaFinal
 
 
-    return [qwirkleColorDerecha, qwirkleSignoDerecha]
+def posicionExtremo(posicion, posValidas):
 
+    i = posicion[0]
+    j = posicion[1]
+    contador = 0  # Cuenta cuantas posiciones validas adyacentes tiene una posicion dada
+
+    # Verifica abajo
+    if [i+1, j] in posValidas:
+
+        contador += 1
+
+    # Verifica arriba
+    if [i - 1, j] in posValidas:
+
+        contador += 1
+
+    # Verifica derecha
+    if [i, j+1] in posValidas:
+        contador += 1
+
+    # Verifica izquierda
+    if [i, j-1] in posValidas:
+        contador += 1
+
+    if contador > 1:
+
+        return False
+
+    else:
+
+        return True
 
 # E: ficha = [simbolo, color], posicion = [i, j], dos matrices del tablero
 # S: booleano. True si es valido poner la ficha en la poscion dada, False en caso contrario
@@ -1131,7 +1184,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
 
 # TABLERO SIGNOS
-"""
+
 signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
@@ -1151,7 +1204,7 @@ coloresTablero =[[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
 
 mano = [[2, 2]]
 pos = [3, 0]
-"""
+
 """
 signosTablero = [[2, 3, 4, 5, 0, 1, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
@@ -1176,9 +1229,8 @@ jugada1 =  [[[3, 2], [1, 10]]]
 print(puntuacion(jugada1,jugada1Pos))
 """
 
-# print(buscarPosicionesValidas(signosTablero))
-# print(verificarJugadaValida([1, 0], [1, 0], coloresTablero, signosTablero))
-#print(buscarPosicionesValidas(signosTablero))
+validas = buscarPosicionesValidas(signosTablero)
+buscarSemiQwirkle(signosTablero, coloresTablero, validas)
 #buscarSoluciones(coloresTablero, signosTablero, mano)
 #print(analizarSemiQwirkle(pos, signosTablero, coloresTablero))
 
