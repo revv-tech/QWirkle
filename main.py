@@ -1585,7 +1585,7 @@ def game_loop_2(turno):
         puntos = puntuacion(play,posiciones)                    # Calcula los puntos de la jugada
         p1 = p1 + puntos                                        # Suma los puntos
         lastP1 = puntos
-        #reloj.tick(1)
+
         return
     # JUGADOR P2
     if turno == 2:
@@ -1605,7 +1605,7 @@ def game_loop_2(turno):
         puntos = puntuacion(play, posiciones)                       # Calcula los puntos de la jugada
         p2 = p2 + puntos                                            # Suma los puntos
         lastP2 = puntos
-        #reloj.tick(1)
+
         return
         # JUGADOR P3
     if turno == 3: # Inteligente
@@ -1622,7 +1622,7 @@ def game_loop_2(turno):
         puntos = puntuacion(play, posiciones)  # Calcula los puntos de la jugada
         p3 = p3 + puntos  # Suma los puntos
         lastP3 = puntos
-        # reloj.tick(1)
+
         return
 
 # INTELIGENCIA
@@ -1698,18 +1698,6 @@ def esSemiQWirkle_Extremos(jugada,QWList):
             return True
     else:
         return False
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #juego()
