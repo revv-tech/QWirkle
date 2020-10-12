@@ -725,7 +725,7 @@ def buscarSolucionesIzqAux(matrizColores, matrizSignos, deck, posicion, jugada):
 #     su condicion de parada es que el deck ya esté vacio
 def buscarSolucionesArribaAux(matrizColores, matrizSignos, deck, posicion, jugada):
 
-    """
+    """"
     print("======NUEVA RECURSION=======")
     print("MATRIZ SIGNOS")
     mostrar(matrizSignos)
@@ -1035,15 +1035,15 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
     # Comparaciones segun simbolo igual
     if matrizColores[i + 1][j] != 8:  # Comparacion hacia abajo
         aux1 += 1
-        # Jugada de colores
+        # Jugada de simbolos
         while matrizColores[aux1][aux2] != 8:  # Mientras no sea un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] == ficha[1]:  # Comparar color igual
-                colorAbajo = False
+                simboloAbajo = False
                 break
 
             if matrizSignos[aux1][aux2] != ficha[0]:  # Comparar simbolo diferente
-                colorAbajo = False
+                simboloAbajo = False
                 break
 
             else:
@@ -1051,15 +1051,15 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 
         aux1 = i
         aux1 += 1
-        # Jugada de simbolos
+        # Jugada de colores
         while matrizColores[aux1][aux2] != 8:  # Mientras no se un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] != ficha[1]:  # Comparar color diferente
-                simboloAbajo = False
+                colorAbajo = False
                 break
 
             if matrizSignos[aux1][aux2] == ficha[0]:  # Comparar simbolo igual
-                simboloAbajo = False
+                colorAbajo = False
                 break
 
             else:
@@ -1069,15 +1069,15 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 
     if matrizColores[i - 1][j] != 8:  # Comparacion hacia arriba
         aux1 -= 1
-        # Jugada de colores
+        # Jugada de simbolos
         while matrizColores[aux1][aux2] != 8:  # Mientras no sea un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] == ficha[1]:  # Comparar color igual
-                colorArriba = False
+                simboloArriba = False
                 break
 
             if matrizSignos[aux1][aux2] != ficha[0]:  # Comparar simbolo diferente
-                colorArriba = False
+                simboloArriba = False
                 break
 
             else:
@@ -1085,15 +1085,15 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 
         aux1 = i
         aux1 -= 1
-        # Jugada de simbolos
+        # Jugada de colores
         while matrizColores[aux1][aux2] != 8:  # Mientras no se un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] != ficha[1]:  # Comparar color diferente
-                simboloArriba = False
+                colorArriba = False
                 break
 
             if matrizSignos[aux1][aux2] == ficha[0]:  # Comparar simbolo igual
-                simboloArriba = False
+                colorArriba = False
                 break
 
             else:
@@ -1103,15 +1103,15 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
     if matrizColores[i][j + 1] != 8:  # Comparacion hacia la derecha
 
         aux2 += 1
-        # Jugada de colores
+        # Jugada de simbolo
         while matrizColores[aux1][aux2] != 8:  # Mientras no sea un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] == ficha[1]:  # Comparar color igual
-                colorDerecha = False
+                simboloDerecha = False
                 break
 
             if matrizSignos[aux1][aux2] != ficha[0]:  # Comparar simbolo diferente
-                colorDerecha = False
+                simboloDerecha = False
                 break
 
             else:
@@ -1119,15 +1119,15 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
 
         aux2 = j
         aux2 += 1
-        # Jugada de simbolos
+        # Jugada de colores
         while matrizColores[aux1][aux2] != 8:  # Mientras no se un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] != ficha[1]:  # Comparar color diferente
-                simboloDerecha = False
+                colorDerecha = False
                 break
 
             if matrizSignos[aux1][aux2] == ficha[0]:  # Comparar simbolo igual
-                simboloDerecha = False
+                colorDerecha = False
                 break
 
             else:
@@ -1141,11 +1141,11 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
         while matrizColores[aux1][aux2] != 8:  # Mientras no sea un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] == ficha[1]:  # Comparar color igual
-                colorIzquierda = False
+                simboloIzquierda = False
                 break
 
             if matrizSignos[aux1][aux2] != ficha[0]:  # Comparar simbolo diferente
-                colorIzquierda = False
+                simboloIzquierda = False
                 break
 
             else:
@@ -1157,17 +1157,17 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
         while matrizColores[aux1][aux2] != 8:  # Mientras no sea un espacio vacio va a comparar
 
             if matrizColores[aux1][aux2] != ficha[1]:  # Comparar color diferente
-                simboloIzquierda = False
+                colorIzquierda = False
                 break
 
             if matrizSignos[aux1][aux2] == ficha[0]:  # Comparar simbolo igual
-                simboloIzquierda = False
+                colorIzquierda = False
                 break
 
             else:
                 aux2 -= 1
 
-    # print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
+    print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
     if (colorArriba or simboloArriba) and (colorDerecha or simboloDerecha) and (colorAbajo or simboloAbajo) and (colorIzquierda or simboloIzquierda):
 
         return True
@@ -1175,65 +1175,34 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
     else:
         return False
 
-# PERMUTACIONES DEL DECK
-
-# juego()
-# puntuacionAux(play)
-# seleccionadorDeFichas()
-
 # =================== PRUEBAS PARA EL BACKTRACKING ===================================
 
 # TABLERO SIGNOS
 
-signosTablero = [[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+signosTablero = [[8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 3, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
 
                  # 0  1  2  3  4  5  6  7  8  9 10 11 12
-coloresTablero =[[8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+coloresTablero =[[8, 8, 8, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-                 [0, 1, 2, 3, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                 [8, 8, 8, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
 
-mano = [[2, 2]]
+mano = [[4, 0], [2, 0]]
 pos = [3, 0]
 
-"""
-signosTablero = [[2, 3, 4, 5, 0, 1, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8]]
-
-                 # 0  1  2  3  4  5  6  7  8  9 10 11 12
-coloresTablero =[[1, 1, 1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 2, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 5, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 8, 8],
-                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 8, 8]]
-
-
-jugada1Pos =[[0,0]]
-jugada1 =  [[[3, 2], [1, 10]]]
-print(puntuacion(jugada1,jugada1Pos))
-"""
-
-validas = buscarPosicionesValidas(signosTablero)
-buscarSemiQwirkle(signosTablero, coloresTablero, validas)
+#validas = buscarPosicionesValidas(signosTablero)
+#buscarSemiQwirkle(signosTablero, coloresTablero, validas)
 #buscarSoluciones(coloresTablero, signosTablero, mano)
 #print(analizarSemiQwirkle(pos, signosTablero, coloresTablero))
-
 
 # GUI
 # IMAGENES
