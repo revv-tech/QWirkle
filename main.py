@@ -55,6 +55,9 @@ fichas = [[1, 2, 3, 4, 5, 6],
           [1, 2, 3, 4, 5, 6],
           [1, 2, 3, 4, 5, 6],
           [1, 2, 3, 4, 5, 6]]
+
+
+
 # FICHAS YA USADAS O EN POSECION DE LOS JUGADORES
 fichasUsadas = []
 # VARIABLES GLOBALES DE LOS DECKS DE CADA JUGADOR
@@ -92,7 +95,9 @@ def seleccionadorDeFichas():
 # D: Selecciona las fichas del deck
 
 def seleccionadorDeFichasAux():
+    #print(fichas)
     global fichasUsadas
+    global fichas
     # Contador que crea el deck del player (6)
     deck = []
     # Contador que crea el deck del player (6)
@@ -104,13 +109,21 @@ def seleccionadorDeFichasAux():
         i = random.randint(0, 5)
         # COLOR
         j = random.randint(0, 5)
+
         # Verifica si la ficha ya fue utilizada, si no la agrega al deck
         if fichas[i][j] != 0 and fichaFinder([j, i]) != 3:
             deck.append([j, i])
             fichasUsadas.append([j, i])
             contador = contador + 1
+
     return deck
 
+def randomFicha():
+    for i in range(len(fichas)):
+        for j in range(len(fichas[0])):
+            if fichas[i][j] != 0:
+                return [j,i]
+    return []
 
 # AUXILIAR PARA ENCONTAR SI UNA FICHA YA FUE USADA
 # E: Una lista
@@ -138,13 +151,29 @@ def agregaNuevasFichas(deck):
         return deck
     while len(deck) != 6:
         # Randoms
+        # SIGNO
         i = random.randint(0, 5)
+        # COLOR
         j = random.randint(0, 5)
+        print(i,j)
+        if fichaFinder([j, i]) == 3 and fichas[i][j] != 0:
+            print("1 if")
+            fichas[i][j] = 0
+            newFicha = randomFicha()
+            deck.append(newFicha)
+            fichasUsadas.append([j, i])
+            cont -= 1
+
         # Verifica si la ficha ya fue utilizada, si no la agrega al deck
-        if fichas[j][i] != 0 and fichaFinder([j, i]) != 3:
-            deck.append([j, i])  # Agrega al deck
-            fichasUsadas.append([j, i])  # Agrega las fichas seleccionadas a la lista de fichas usadas
-            cont = cont - 1
+        elif fichas[i][j] != 0 and fichaFinder([j, i]) != 3:
+            print("2 if")
+            deck.append([j, i])
+            fichasUsadas.append([j, i])
+            if fichaFinder([j, i]) == 3:
+                fichas[i][j] = 0
+            cont -= 1
+
+        #print(deck)
     return deck
 
 # ---------------------------------------------------------------------------------------
@@ -178,19 +207,19 @@ def juego():
 
         if turno == 1:
             # PRINTS DE TABLEROS
-            print("Signos:")
+            #print("Signos:")
             mostrar(signosTablero)
-            print("Colores:")
+            #print("Colores:")
             mostrar(coloresTablero)
-            print("Cantidad de Fichas: ", cont)
+            #print("Cantidad de Fichas: ", cont)
             # PRINTS SIN IMPORTANCIA
             # print("Permutaciones: ",list(itertools.permutations(deckP1)))
-            print("Turno de: ", turno)
-            print(deckP1)
+            #print("Turno de: ", turno)
+            #print(deckP1)
             # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
             index = int(input("Ficha[0,5][Signos,Colores]: "))
             ficha = deckP1[index]
-            print(ficha)
+            #rint(ficha)
             # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Fila: "))
             j = int(input("Columna: "))
@@ -206,15 +235,15 @@ def juego():
                 listaPosicionesPlays.append([i, j])
 
             # PREGUNTA SI YA QUIERE ACABAR EL TURNO
-            print(deckP1)
-            print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
-            print("Posiciones: ", listaPosicionesPlays)
+            #print(deckP1)
+            #print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
+            #print("Posiciones: ", listaPosicionesPlays)
             finish = int(input("Desea terminar turno(0,1): "))
             if  finish == 1:
                 play = puntuacion(listaJugadas, listaPosicionesPlays)
-                print("Tu turno fue de  +", play)
+                #print("Tu turno fue de  +", play)
                 p1 = p1 + play
-                print("P#", turno, " llevas ", p1, " puntos!")
+                #print("P#", turno, " llevas ", p1, " puntos!")
                 deckP1 = agregaNuevasFichas(deckP1)  # AGREGA FICHAS AL DECK
                 turno = 2
                 listaJugadas = []
@@ -222,18 +251,18 @@ def juego():
 
         elif turno == 2:
             # PRINTS DE TABLEROS
-            print("Signos:")
+            #print("Signos:")
             mostrar(signosTablero)
-            print("Colores:")
+            #print("Colores:")
             mostrar(coloresTablero)
-            print("Cantidad de Fichas: ", cont)
+            #print("Cantidad de Fichas: ", cont)
             # PRINTS SIN IMPORTANCIA
-            print("Turno de: ", turno)
-            print(deckP2)
+            #print("Turno de: ", turno)
+            #print(deckP2)
             # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
             index = int(input("Ficha[0,5][Signos,Colores]: "))
             ficha = deckP2[index]
-            print(ficha)
+            #print(ficha)
             # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Fila: "))
             j = int(input("Columna: "))
@@ -250,15 +279,15 @@ def juego():
                 listaPosicionesPlays.append([i, j])
 
             # PREGUNTA SI YA QUIERE ACABAR EL TURNO
-            print(deckP2)
-            print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
-            print("Posiciones: ", listaPosicionesPlays)
+            #print(deckP2)
+            #print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
+            #print("Posiciones: ", listaPosicionesPlays)
             finish = int(input("Desea terminar turno(0,1): "))
             if finish == 1:
                 play = puntuacion(listaJugadas, listaPosicionesPlays)
-                print("Tu turno fue de  +", play)
+                #print("Tu turno fue de  +", play)
                 p2 = p2 + play
-                print("P#", turno, " llevas ", p2, " puntos!")
+                #print("P#", turno, " llevas ", p2, " puntos!")
                 deckP2 = agregaNuevasFichas(deckP2)  # AGREGA FICHAS AL DECK
                 turno = 3
                 listaJugadas = []
@@ -266,18 +295,18 @@ def juego():
 
         elif turno == 3:
             # PRINTS DE TABLEROS
-            print("Signos:")
+            #print("Signos:")
             mostrar(signosTablero)
-            print("Colores:")
+            #print("Colores:")
             mostrar(coloresTablero)
-            print("Cantidad de Fichas: ", cont)
+            #print("Cantidad de Fichas: ", cont)
             # PRINTS SIN IMPORTANCIA
-            print("Turno de: ", turno)
-            print(deckP3)
+            #print("Turno de: ", turno)
+            #print(deckP3)
             # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
             index = int(input("Ficha[0,5][Signos,Colores]: "))
             ficha = deckP3[index]
-            print(ficha)
+            #print(ficha)
             # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Fila: "))
             j = int(input("Columna: "))
@@ -294,15 +323,15 @@ def juego():
                 listaPosicionesPlays.append([i, j])
 
             # PREGUNTA SI YA QUIERE ACABAR EL TURNO
-            print(deckP3)
-            print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
-            print("Posiciones: ", listaPosicionesPlays)
+            #print(deckP3)
+            #print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
+            #print("Posiciones: ", listaPosicionesPlays)
             finish = int(input("Desea terminar turno(0,1): "))
             if finish == 1:
                 play = puntuacion(listaJugadas, listaPosicionesPlays)
-                print("Tu turno fue de  +", play)
+                #print("Tu turno fue de  +", play)
                 p3 = p3 + play
-                print("P#", turno, " llevas ", p3, " puntos!")
+                #print("P#", turno, " llevas ", p3, " puntos!")
                 deckP3 = agregaNuevasFichas(deckP3)  # AGREGA FICHAS AL DECK
                 listaJugadas = []
                 listaPosicionesPlays = []
@@ -461,9 +490,9 @@ def revisarTableroAbajo(matrizColores):
 #    una ficha entonces retorna True, en otro caso retorna False
 def revisarTableroIzquierda(matrizColores):
 
-    for j in range(0, len(matrizColores[0])):  # Revisa la columna 3
+    for i in range(0, len(matrizColores)):  # Revisa la columna 3
 
-        if matrizColores[6][j] != 8:
+        if matrizColores[i][6] != 8:
             return True
     return False
 
@@ -1384,6 +1413,7 @@ def gui():
                         columnas = columnas - 13
                         columnasInicio = columnasInicio - 13
 
+
         if turn == 1:
             print("Turno 1")
             game_loop(1)
@@ -1449,16 +1479,23 @@ def game_loop(turno):
                 lastP1 = 0
                 return
             play = maxPuntuaciones(validas)[0]  # Jugada con el mayor Puntaje
+            print("Jugada Seleccionada")
             #print(play, "P1")
             fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
             deckP1 = eliminadorFichasDeck(deckP1, fichasTurno)  # Elimina las fichas del deck
+            print("2")
             colocadorFichas(play)  # Coloca las fichas en el tablero
+            print("3")
             deckP1 = agregaNuevasFichas(deckP1)  # Agrega nuevas fichas al deck
+            print("4")
             posiciones = listaPosiciones_FichasAux(play, 1)  # Lista de Posiciones (Necesaria para Puntaciones)
+            print("5")
             puntos = puntuacion(play, posiciones)  # Calcula los puntos de la jugada
+            print("6")
             p1 = p1 + puntos  # Suma los puntos
             lastP1 = puntos
             # reloj.tick(1)
+            print("Turno Finalizado")
             return
         # JUGADOR P2
         if turno == 2:
@@ -1469,6 +1506,7 @@ def game_loop(turno):
                 lastP2 = 0
                 return
             play = maxPuntuaciones(validas)[0]  # Jugada con el mayor Puntaje
+            print("Jugada Seleccionada")
             fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
             deckP2 = eliminadorFichasDeck(deckP2, fichasTurno)  # Elimina las fichas del deck
             colocadorFichas(play)  # Coloca las fichas en el tablero
@@ -1482,20 +1520,30 @@ def game_loop(turno):
         # JUGADOR P3
         if turno == 3: # Inteligente
             if deckP3 == []:
+                print("Lol")
                 return
             validas = buscarSoluciones(coloresTablero, signosTablero, deckP3)
+            print("kik")
             if not validas:
                 lastP3 = 0
                 return
             play = maxPuntuaciones_AI(validas)
+            print("Jugada Seleccionada")
             fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
+            print("1")
             deckP3 = eliminadorFichasDeck(deckP3, fichasTurno)  # Elimina las fichas del deck
+            print("2")
             colocadorFichas(play)  # Coloca las fichas en el tablero
+            print("3")
             deckP3 = agregaNuevasFichas(deckP3)  # Agrega nuevas fichas al deck
+            print("4")
             posiciones = listaPosiciones_FichasAux(play, 1)  # Lista de Posiciones (Necesaria para Puntaciones)
+            print("5")
             puntos = puntuacion(play, posiciones)  # Calcula los puntos de la jugada
+            print("6")
             p3 = p3 + puntos  # Suma los puntos
             lastP3 = puntos
+            print("Turno Finalizado")
             return
 
 
@@ -1520,6 +1568,7 @@ def maxPuntuaciones(jugadas):
 
     i = max(listaPuntajes)                                  # Busca el puntaje mayor
     index = listaPuntajes.index(i)                          # Busca el index del puntaje maximo
+    print("PRUEBA MAX PUNT")
     jugadaMax = jugadas[index]                              # Jugada Maxima
     #print(listaPuntajes,i)
     #print(jugadaMax)
@@ -1596,6 +1645,7 @@ def game_loop_2(turno):
             lastP1 = 0
             return
         play = maxPuntuaciones(validas)[0]  # Jugada con el mayor Puntaje
+        print("Jugada Seleccionada")
         # print(play, "P1")
         fichasTurno = listaPosiciones_FichasAux(play, 0)        # Crea una lista con las fichas utilizadas
         deckP1 = eliminadorFichasDeck(deckP1, fichasTurno)      # Elimina las fichas del deck
@@ -1605,7 +1655,7 @@ def game_loop_2(turno):
         puntos = puntuacion(play,posiciones)                    # Calcula los puntos de la jugada
         p1 = p1 + puntos                                        # Suma los puntos
         lastP1 = puntos
-        #reloj.tick(1)
+        print("Turno Finalizado")
         return
     # JUGADOR P2
     if turno == 2:
@@ -1616,6 +1666,7 @@ def game_loop_2(turno):
             lastP2 = 0
             return
         play = maxPuntuaciones(validas)[0]  # Jugada con el mayor Puntaje
+        print("Jugada Seleccionada")
         # print(play, "P2")
         fichasTurno = listaPosiciones_FichasAux(play, 0)            # Crea una lista con las fichas utilizadas
         deckP2 = eliminadorFichasDeck(deckP2, fichasTurno)          # Elimina las fichas del deck
@@ -1625,7 +1676,7 @@ def game_loop_2(turno):
         puntos = puntuacion(play, posiciones)                       # Calcula los puntos de la jugada
         p2 = p2 + puntos                                            # Suma los puntos
         lastP2 = puntos
-        #reloj.tick(1)
+
         return
         # JUGADOR P3
     if turno == 3: # Inteligente
@@ -1634,6 +1685,7 @@ def game_loop_2(turno):
         if not play:
             lastP3 = 0
             return
+        print("Jugada Seleccionada")
         fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
         deckP3 = eliminadorFichasDeck(deckP3, fichasTurno)  # Elimina las fichas del deck
         colocadorFichas(play)  # Coloca las fichas en el tablero
@@ -1642,7 +1694,7 @@ def game_loop_2(turno):
         puntos = puntuacion(play, posiciones)  # Calcula los puntos de la jugada
         p3 = p3 + puntos  # Suma los puntos
         lastP3 = puntos
-        # reloj.tick(1)
+        print("Turno Finalizado")
         return
 
 # INTELIGENCIA
@@ -1674,20 +1726,26 @@ def maxPuntuaciones_AI(jugadas):
 
     # Si hay varias jugadas con el mismo puntaje
     validas = buscarPosicionesValidas(signosTablero)
+    print("Validas")
     listaSemiQWirkles = buscarSemiQwirkle(signosTablero,coloresTablero,validas)      # Posiciones del Semi-QWirkle y las casillas a los lados
+    print("SemiQWirkle")
     extremos = listaSemiQWirkles[0]
     semiQWirkles = listaSemiQWirkles[1]
     #TMP BEST PLAYS
     bestPlayTmp = bestPlays
-
-    while len(bestPlays) != 1:
+    #print(len(bestPlays))
+    while bestPlays:
+        print("loop")
         if esQWirkle(jugada):                                          # Retorna un QWirkle
+            #print("QWirkle")
             return bestPlays[0]
         elif esSemiQWirkle_Extremos(jugada,semiQWirkles):           # Verifica si existe una jugada con semi-qwirkle
             bestPlays = bestPlays[1:]
         elif esSemiQWirkle_Extremos(jugada,extremos):               # Verifca que no juegue en los extremos
+            #print("Extremo")
             return bestPlays[0]
-
+        else:
+            bestPlays = bestPlays[1:]
     #AGREGAR SELECCIONAR RANDOM
 
     return bestPlayTmp[0]
@@ -1702,9 +1760,9 @@ def maxPuntuaciones_AI(jugadas):
 def esQWirkle(jugada):
     for ficha in jugada:
         if puntuacion([ficha],[]) > 5 :
-            return False
+            return True
     else:
-        return True
+        return False
 
 # AUXILIAR
 # E: Una jugada
@@ -1718,18 +1776,6 @@ def esSemiQWirkle_Extremos(jugada,QWList):
             return True
     else:
         return False
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #juego()
