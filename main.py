@@ -6,9 +6,9 @@ import random
 import itertools
 
 pygame.init()
-#Turno
+# Turno
 turn = 1
-#RANGOS TABLERO
+# RANGOS TABLERO
 filas = 12
 filasInicio = 0
 
@@ -20,7 +20,7 @@ p1 = 0
 p2 = 0
 p3 = 0
 
-#ULTIMOS TURNOS
+# ULTIMOS TURNOS
 lastP1 = 0
 lastP2 = 0
 lastP3 = 0
@@ -28,16 +28,19 @@ lastP3 = 0
 # Contador de Fichas
 cont = 108
 
+
 # E: Dos ints
 # S: Una Matriz
 # D:Crea una matriz con la cantidad de C y F que se le pase
-def generadorMatriz(filas,columnas):
+def generadorMatriz(filas, columnas):
     M = []
     for i in range(columnas):
         columna = [8]*filas
         M.append(columna)
 
     return M
+
+
 # TABLERO COLORES
 coloresTablero = generadorMatriz(13, 13)
 # TABLERO SIGNOS
@@ -57,13 +60,14 @@ fichas = [[1, 2, 3, 4, 5, 6],
           [1, 2, 3, 4, 5, 6]]
 
 
-
 # FICHAS YA USADAS O EN POSECION DE LOS JUGADORES
 fichasUsadas = []
 # VARIABLES GLOBALES DE LOS DECKS DE CADA JUGADOR
 deckP1 = []
 deckP2 = []
 deckP3 = []
+
+
 # PRINT DEL TABLERO
 # E: Una matriz
 # S: No tiene
@@ -75,6 +79,8 @@ def mostrar(tablero):
             print(tablero[i][j], end=' ')
         print()
     print()
+
+
 # SELECTOR DE FICHAS DE CADA JUGADOR--------------------------------------------------------
 # E: No tiene
 # S: No tiene
@@ -87,15 +93,16 @@ def seleccionadorDeFichas():
     deckP1 = seleccionadorDeFichasAux()
     deckP2 = seleccionadorDeFichasAux()
     deckP3 = seleccionadorDeFichasAux()
-    #print(deckP1)
+    # print(deckP1)
     cont = cont - 18
+
+
 # Selector Auxiliar
 # E: Una lista de
 # S: No tiene
 # D: Selecciona las fichas del deck
-
 def seleccionadorDeFichasAux():
-    #print(fichas)
+    # print(fichas)
     global fichasUsadas
     global fichas
     # Contador que crea el deck del player (6)
@@ -118,12 +125,14 @@ def seleccionadorDeFichasAux():
 
     return deck
 
+
 def randomFicha():
     for i in range(len(fichas)):
         for j in range(len(fichas[0])):
             if fichas[i][j] != 0:
-                return [j,i]
+                return [j, i]
     return []
+
 
 # AUXILIAR PARA ENCONTAR SI UNA FICHA YA FUE USADA
 # E: Una lista
@@ -131,14 +140,14 @@ def randomFicha():
 # D: Verifica la cantidad de veces que se ha usado una ficha
 def fichaFinder(lista):
     i = 0
-    cont = 0
+    contador = 0
     if not fichasUsadas:
         return 0
     while i < len(fichasUsadas):
         if lista == fichasUsadas[i]:
-            cont += 1
+            contador += 1
         i += 1
-    return cont
+    return contador
 
 
 # AGREGA FICHAS A DECK
@@ -155,9 +164,9 @@ def agregaNuevasFichas(deck):
         i = random.randint(0, 5)
         # COLOR
         j = random.randint(0, 5)
-        #print(i,j)
+        # print(i,j)
         if fichaFinder([j, i]) == 3 and fichas[i][j] != 0:
-            #print("1 if")
+            # print("1 if")
             fichas[i][j] = 0
             newFicha = randomFicha()
             deck.append(newFicha)
@@ -166,15 +175,16 @@ def agregaNuevasFichas(deck):
 
         # Verifica si la ficha ya fue utilizada, si no la agrega al deck
         elif fichas[i][j] != 0 and fichaFinder([j, i]) != 3:
-            #print("2 if")
+            # print("2 if")
             deck.append([j, i])
             fichasUsadas.append([j, i])
             if fichaFinder([j, i]) == 3:
                 fichas[i][j] = 0
             cont -= 1
 
-        #print(deck)
+        # print(deck)
     return deck
+
 
 # ---------------------------------------------------------------------------------------
 # JUEGO
@@ -207,24 +217,24 @@ def juego():
 
         if turno == 1:
             # PRINTS DE TABLEROS
-            #print("Signos:")
+            # print("Signos:")
             mostrar(signosTablero)
-            #print("Colores:")
+            # print("Colores:")
             mostrar(coloresTablero)
-            #print("Cantidad de Fichas: ", cont)
+            # print("Cantidad de Fichas: ", cont)
             # PRINTS SIN IMPORTANCIA
             # print("Permutaciones: ",list(itertools.permutations(deckP1)))
-            #print("Turno de: ", turno)
-            #print(deckP1)
+            # print("Turno de: ", turno)
+            # print(deckP1)
             # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
             index = int(input("Ficha[0,5][Signos,Colores]: "))
             ficha = deckP1[index]
-            #rint(ficha)
+            # rint(ficha)
             # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Fila: "))
             j = int(input("Columna: "))
             # VALIDACIONES DE LA JUGADA
-            if verificarJugadaValida(ficha,[i,j],coloresTablero,signosTablero):
+            if verificarJugadaValida(ficha, [i, j], coloresTablero, signosTablero):
                 # PONE LA FICHA EN LOS TABLEROS
                 coloresTablero[i][j] = ficha[1]
                 signosTablero[i][j] = ficha[0]
@@ -235,15 +245,15 @@ def juego():
                 listaPosicionesPlays.append([i, j])
 
             # PREGUNTA SI YA QUIERE ACABAR EL TURNO
-            #print(deckP1)
-            #print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
-            #print("Posiciones: ", listaPosicionesPlays)
+            # print(deckP1)
+            # print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
+            # print("Posiciones: ", listaPosicionesPlays)
             finish = int(input("Desea terminar turno(0,1): "))
-            if  finish == 1:
+            if finish == 1:
                 play = puntuacion(listaJugadas, listaPosicionesPlays)
-                #print("Tu turno fue de  +", play)
+                # print("Tu turno fue de  +", play)
                 p1 = p1 + play
-                #print("P#", turno, " llevas ", p1, " puntos!")
+                # print("P#", turno, " llevas ", p1, " puntos!")
                 deckP1 = agregaNuevasFichas(deckP1)  # AGREGA FICHAS AL DECK
                 turno = 2
                 listaJugadas = []
@@ -251,18 +261,18 @@ def juego():
 
         elif turno == 2:
             # PRINTS DE TABLEROS
-            #print("Signos:")
+            # print("Signos:")
             mostrar(signosTablero)
-            #print("Colores:")
+            # print("Colores:")
             mostrar(coloresTablero)
-            #print("Cantidad de Fichas: ", cont)
+            # print("Cantidad de Fichas: ", cont)
             # PRINTS SIN IMPORTANCIA
-            #print("Turno de: ", turno)
-            #print(deckP2)
+            # print("Turno de: ", turno)
+            # print(deckP2)
             # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
             index = int(input("Ficha[0,5][Signos,Colores]: "))
             ficha = deckP2[index]
-            #print(ficha)
+            # print(ficha)
             # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Fila: "))
             j = int(input("Columna: "))
@@ -279,15 +289,15 @@ def juego():
                 listaPosicionesPlays.append([i, j])
 
             # PREGUNTA SI YA QUIERE ACABAR EL TURNO
-            #print(deckP2)
-            #print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
-            #print("Posiciones: ", listaPosicionesPlays)
+            # print(deckP2)
+            # print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
+            # print("Posiciones: ", listaPosicionesPlays)
             finish = int(input("Desea terminar turno(0,1): "))
             if finish == 1:
                 play = puntuacion(listaJugadas, listaPosicionesPlays)
-                #print("Tu turno fue de  +", play)
+                # print("Tu turno fue de  +", play)
                 p2 = p2 + play
-                #print("P#", turno, " llevas ", p2, " puntos!")
+                # print("P#", turno, " llevas ", p2, " puntos!")
                 deckP2 = agregaNuevasFichas(deckP2)  # AGREGA FICHAS AL DECK
                 turno = 3
                 listaJugadas = []
@@ -295,18 +305,18 @@ def juego():
 
         elif turno == 3:
             # PRINTS DE TABLEROS
-            #print("Signos:")
+            # print("Signos:")
             mostrar(signosTablero)
-            #print("Colores:")
+            # print("Colores:")
             mostrar(coloresTablero)
-            #print("Cantidad de Fichas: ", cont)
+            # print("Cantidad de Fichas: ", cont)
             # PRINTS SIN IMPORTANCIA
-            #print("Turno de: ", turno)
-            #print(deckP3)
+            # print("Turno de: ", turno)
+            # print(deckP3)
             # ESCOGE LA FICHA DEL DECK DEL JUGADOR. EL INDEX ES LA POSICION DE LA FICHA EN EL DECK
             index = int(input("Ficha[0,5][Signos,Colores]: "))
             ficha = deckP3[index]
-            #print(ficha)
+            # print(ficha)
             # POSICION DONDE LA QUIERE COLOCAR EN LA MATRIZ
             i = int(input("Fila: "))
             j = int(input("Columna: "))
@@ -323,15 +333,15 @@ def juego():
                 listaPosicionesPlays.append([i, j])
 
             # PREGUNTA SI YA QUIERE ACABAR EL TURNO
-            #print(deckP3)
-            #print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
-            #print("Posiciones: ", listaPosicionesPlays)
+            # print(deckP3)
+            # print("JUGADAS[POSICION,FICHA]: ", listaJugadas)
+            # print("Posiciones: ", listaPosicionesPlays)
             finish = int(input("Desea terminar turno(0,1): "))
             if finish == 1:
                 play = puntuacion(listaJugadas, listaPosicionesPlays)
-                #print("Tu turno fue de  +", play)
+                # print("Tu turno fue de  +", play)
                 p3 = p3 + play
-                #print("P#", turno, " llevas ", p3, " puntos!")
+                # print("P#", turno, " llevas ", p3, " puntos!")
                 deckP3 = agregaNuevasFichas(deckP3)  # AGREGA FICHAS AL DECK
                 listaJugadas = []
                 listaPosicionesPlays = []
@@ -358,10 +368,10 @@ def isBoardEmpty(M):
 # S: Un numero
 # D: Revisa la jugada de acuerdo a las fichas y a la posicion en la que la puso.
 def puntuacion(jugada,jugadasPos):
-    #print("CORRIDA============================================================================")
+    # print("CORRIDA============================================================================")
     puntos = 0
 
-    listSumas = [] # Lista que guarda
+    listSumas = []  # Lista que guarda
 
     # JUGADAS[POSICION,FICHA]
     if not jugada:
@@ -371,7 +381,7 @@ def puntuacion(jugada,jugadasPos):
         return puntuacionAux(jugada[0])
 
     while jugada:
-        #print("JUGADA: ",jugada[0])
+        # print("JUGADA: ",jugada[0])
         verPuntos = puntuacionAux(jugada[0],jugadasPos)
         listSumas .append(verPuntos)
         puntos = puntos + verPuntos
@@ -382,8 +392,9 @@ def puntuacion(jugada,jugadasPos):
             puntos += 1
         listSumas = listSumas[1:]
 
-    #puntos += puntuacionAux(jugada[0])
+    # puntos += puntuacionAux(jugada[0])
     return puntos
+
 
 def puntuacionAux_Last(jugada):
     return
@@ -394,15 +405,15 @@ def puntuacionAux_Last(jugada):
 # D: Suma los puntos de cada jugada
 
 
-def puntuacionAux(jugada,jugadaPos = []):
+def puntuacionAux(jugada, jugadaPos=[]):
     # CAMBIE FICHA [POS,FICHA]
     # print("Puntuacion Aux: ", jugada)
-    i = jugada[1][0] #FILAS
-    j = jugada[1][1] #COLUMNAS
-    ficha = jugada[0] #FICHA
+    i = jugada[1][0]  # FILAS
+    j = jugada[1][1]  # COLUMNAS
+    ficha = jugada[0]  # FICHA
     puntos = 1
 
-    #AXUILIARES
+    # AXUILIARES
 
     aux1 = i
     aux2 = j
@@ -414,7 +425,7 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux2 += 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
-            #print("+1: Columna Derecha", signosTablero[i][aux2], coloresTablero[i][aux2])
+            # print("+1: Columna Derecha", signosTablero[i][aux2], coloresTablero[i][aux2])
             if not ([i,aux2] in jugadaPos):
                 counter += 1
             aux2 += 1
@@ -424,18 +435,18 @@ def puntuacionAux(jugada,jugadaPos = []):
 
         puntos += counter
 
-    #print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
+    # print("IZQ: ", signosTablero[i][j - 1], coloresTablero[i][j - 1],ficha)
     if coloresTablero[i][j - 1] == ficha[1] or signosTablero[i][j - 1] == ficha[0]:
-        #print("#2: Columna Izquierda",signosTablero[i][j - 1],coloresTablero[i][j - 1])
+        # print("#2: Columna Izquierda",signosTablero[i][j - 1],coloresTablero[i][j - 1])
 
         aux2 -= 1
         counter = 0
         while coloresTablero[i][aux2] == ficha[1] or signosTablero[i][aux2] == ficha[0]:
-            #print("+1: Columna Izquierda",signosTablero[i][aux2],coloresTablero[i][aux2])
+            # print("+1: Columna Izquierda",signosTablero[i][aux2],coloresTablero[i][aux2])
             if not ([i, aux2] in jugadaPos):
                 counter += 1
             aux2 -= 1
-        #print(counter)
+        # print(counter)
         if counter == 5:
             counter += 6
         puntos += counter
@@ -446,7 +457,7 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux1 += 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
-            #print("+1 Fila Abajo: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
+            # print("+1 Fila Abajo: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
             if not ([aux1, j] in jugadaPos):
                 counter += 1
             aux1 += 1
@@ -460,7 +471,7 @@ def puntuacionAux(jugada,jugadaPos = []):
         aux1 -= 1
         counter = 0
         while coloresTablero[aux1][j] == ficha[1] or signosTablero[aux1][j] == ficha[0]:
-            #print("+1 Fila Arriba: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
+            # print("+1 Fila Arriba: ", signosTablero[aux1][j], coloresTablero[aux1][j], ficha)
             if not ([aux1, j] in jugadaPos):
                 counter += 1
             aux1 -= 1
@@ -887,7 +898,7 @@ def buscarPosicionesValidas(matrizSignos):
 def buscarSemiQwirkle(matrizSignos, matrizColores, posicionesValidas):
 
     semiQwirkles = []
-    casillasExtremos = [] # Contendra las casillas donde se puede jugar en un extremo
+    casillasExtremos = []  # Contendra las casillas donde se puede jugar en un extremo
     casillasSemiQwirkle = []  # Contendra las casillas donde se puede regalar un Qwirkle
 
     for posicion in posicionesValidas:
@@ -896,7 +907,6 @@ def buscarSemiQwirkle(matrizSignos, matrizColores, posicionesValidas):
         if posicionExtremo(posicion, posicionesValidas):
             casillasExtremos += [posicion]
 
-
         if len(semi) > 4:
             semiQwirkles += [semi]
 
@@ -904,7 +914,7 @@ def buscarSemiQwirkle(matrizSignos, matrizColores, posicionesValidas):
 
         casillasSemiQwirkle += [semi[0]]
 
-    fullLista = [casillasExtremos]+ [casillasSemiQwirkle] # Lista con extremos y QWirkles
+    fullLista = [casillasExtremos] + [casillasSemiQwirkle]  # Lista con extremos y QWirkles
 
     return fullLista
 
@@ -1008,6 +1018,7 @@ def posicionExtremo(posicion, posValidas):
 
         return True
 
+
 # E: ficha = [simbolo, color], posicion = [i, j], dos matrices del tablero
 # S: booleano. True si es valido poner la ficha en la poscion dada, False en caso contrario
 # D: Recibe una ficha, una posicion donde se quiere poner la ficha y las matrices del tablero
@@ -1026,7 +1037,6 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
     colorIzquierda = True
     simboloDerecha = True
     colorDerecha = True
-
 
     if posicion[0] >= len(matrizSignos) or posicion[1] >= len(matrizSignos[0]):
 
@@ -1079,7 +1089,6 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
         if matrizSignos[i][j - 1] == ficha[0] and matrizSignos[i][j + 1] != ficha[0]:
 
             return False
-
 
     # Parche 2 arriba
     if matrizSignos[i + 1][j] != 8 and matrizSignos[i - 1][j] != 8:
@@ -1225,7 +1234,7 @@ def verificarJugadaValida(ficha, posicion, matrizColores, matrizSignos):
             else:
                 aux2 -= 1
 
-    #print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
+    # print("CA:", colorArriba, " or ", "SA:", simboloArriba, " and ", "CD:", colorDerecha, " or ", "SD:", simboloDerecha, " and ", "CI:", colorIzquierda, " or ", "SI:", simboloIzquierda, " and ", "CAB:", colorAbajo, " or ", "SAB:", simboloAbajo)
     if (colorArriba or simboloArriba) and (colorDerecha or simboloDerecha) and (colorAbajo or simboloAbajo) and (colorIzquierda or simboloIzquierda):
 
         return True
@@ -1255,13 +1264,13 @@ coloresTablero =[[8, 8, 8, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                  [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]]
 """
 
-#mano = [[4, 0], [2, 0]]
-#pos = [3, 0]
+# mano = [[4, 0], [2, 0]]
+# pos = [3, 0]
 
-#validas = buscarPosicionesValidas(signosTablero)
-#buscarSemiQwirkle(signosTablero, coloresTablero, validas)
-#buscarSoluciones(coloresTablero, signosTablero, mano)
-#print(analizarSemiQwirkle(pos, signosTablero, coloresTablero))
+# validas = buscarPosicionesValidas(signosTablero)
+# buscarSemiQwirkle(signosTablero, coloresTablero, validas)
+# buscarSoluciones(coloresTablero, signosTablero, mano)
+# print(analizarSemiQwirkle(pos, signosTablero, coloresTablero))
 
 
 # GUI
@@ -1270,7 +1279,7 @@ coloresTablero =[[8, 8, 8, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8],
 bg = pygame.image.load('bg.png')
 # VACIO
 vacio = pygame.image.load("vacio.png")
-#Boton Pausa
+# Boton Pausa
 p = pygame.image.load("p.png")
 # Crea la ventana
 qwirkle = pygame.display.set_mode((1300,800))
@@ -1310,7 +1319,7 @@ def texto_aux(texto, fuente, color):
 def texto(x, y, texto, tamano, color):
     font = pygame.font.SysFont("Minecraft", tamano)
     superficie, rectangulo = texto_aux(texto, font, color)
-    rectangulo.center = ((x), (y))
+    rectangulo.center = (x, y)
     qwirkle.blit(superficie, rectangulo)
 
 
@@ -1327,6 +1336,7 @@ def mostrarDecks(x, y, deck):
         if cont == 3:
             x = xAux
             y = y + 55
+
 
 # MOSTRAR TABLERO
 def tableroJuegoGUI():
@@ -1359,6 +1369,7 @@ def tableroJuegoMatriz_GUI_AUX(num):
         num = num - 13
     return num
 
+
 # FUNCION DEL JUEGO
 def gui():
     global filas
@@ -1372,23 +1383,23 @@ def gui():
     # pygame.init()
     play = True
     while play:
-        #print("FilasI: ",filasInicio, "FilasF: ", filas)
-        #print("ColumnasI: ", columnasInicio, "ColumnasF: ", columnas)
+        # print("FilasI: ",filasInicio, "FilasF: ", filas)
+        # print("ColumnasI: ", columnasInicio, "ColumnasF: ", columnas)
         qwirkle.blit(bg, (0, 0))
         texto(1000, 30, "Total Fichas: " + str (cont), 30, blanco)
-        #p1
+        # p1
         texto(870, 100, "P#1:", 25, blanco)
         texto(1050, 100, "Ultimo turno P#1:", 20, blanco)
         texto(1170, 100, str(lastP1), 35, blanco)
         texto(930, 100, str(p1), 25, blanco)
         mostrarDecks(980, 120, deckP1)
-        #p2
+        # p2
         texto(870, 250, "P#2:", 25, blanco)
         texto(1050, 250, "Ultimo turno P#2:", 20, blanco)
         texto(1170, 250, str(lastP2), 35, blanco)
         texto(930, 250, str(p2), 25, blanco)
         mostrarDecks(980, 280, deckP2)
-        #p3
+        # p3
         texto(870, 400, "P#3:", 25, blanco)
         texto(1050, 400, "Ultimo turno P#3:", 20, blanco)
         texto(1170, 400, str(lastP3), 35, blanco)
@@ -1406,7 +1417,7 @@ def gui():
                     game_loop_2(2)
                 elif event.key == pygame.K_3:
                     game_loop_2(3)
-                #BOTONES INDICES
+                # BOTONES INDICES
                 elif event.key == pygame.K_UP:
                     if filasInicio != 0:
                         filas = filas - 13
@@ -1446,26 +1457,26 @@ def gui():
             turn = 1
         """
         if cont == 0 and deckP1 == deckP2 == deckP3 == []:
-            winner = max(p1,p2,p3)
+            winner = max(p1, p2, p3)
             if winner == p1:
-                texto(1050, 600, "El ganador es el jugador #1" , 30, blanco)
+                texto(1050, 600, "El ganador es el jugador #1", 30, blanco)
             if winner == p2:
-                texto(1050, 600, "El ganador es el jugador #2" , 30, blanco)
+                texto(1050, 600, "El ganador es el jugador #2", 30, blanco)
             if winner == p3:
-                texto(1050, 600, "El ganador es el jugador #3" , 30, blanco)
+                texto(1050, 600, "El ganador es el jugador #3", 30, blanco)
             turn = 0
         pygame.display.update()
         reloj.tick(1)
 
-#E: Un int con el turno
-#S: No tiene
-#D:
 
+# E: Un int con el turno
+# S: No tiene
+# D:
 def game_loop(turno):
     # Variables Globales
     global signosTablero
     global coloresTablero
-    #mostrar(signosTablero)
+    # mostrar(signosTablero)
     # PUNTAJES
     global p1
     global p2
@@ -1474,12 +1485,12 @@ def game_loop(turno):
     global deckP2
     global deckP1
     global deckP3
-    #ultimos turnos
+    # ultimos turnos
     global lastP1
     global lastP2
     global lastP3
     game = True
-    #Condicion Extender Tablero
+    # Condicion Extender Tablero
     matrices = checkExtenderTablero(coloresTablero, signosTablero)
     signosTablero = matrices[0]
     coloresTablero = matrices[1]
@@ -1493,23 +1504,23 @@ def game_loop(turno):
                 lastP1 = 0
                 return
             play = maxPuntuaciones(validas)[0]  # Jugada con el mayor Puntaje
-            #print("Jugada Seleccionada")
-            #print(play, "P1")
+            # print("Jugada Seleccionada")
+            # print(play, "P1")
             fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
             deckP1 = eliminadorFichasDeck(deckP1, fichasTurno)  # Elimina las fichas del deck
-            #print("2")
+            # print("2")
             colocadorFichas(play)  # Coloca las fichas en el tablero
-            #print("3")
+            # print("3")
             deckP1 = agregaNuevasFichas(deckP1)  # Agrega nuevas fichas al deck
-            #print("4")
+            # print("4")
             posiciones = listaPosiciones_FichasAux(play, 1)  # Lista de Posiciones (Necesaria para Puntaciones)
-            #print("5")
+            # print("5")
             puntos = puntuacion(play, posiciones)  # Calcula los puntos de la jugada
-            #print("6")
+            # print("6")
             p1 = p1 + puntos  # Suma los puntos
             lastP1 = puntos
             # reloj.tick(1)
-            #print("Turno Finalizado")
+            # print("Turno Finalizado")
             return
         # JUGADOR P2
         if turno == 2:
@@ -1544,17 +1555,17 @@ def game_loop(turno):
             play = maxPuntuaciones_AI(validas)
             print("Jugada Seleccionada")
             fichasTurno = listaPosiciones_FichasAux(play, 0)  # Crea una lista con las fichas utilizadas
-            #print("1")
+            # print("1")
             deckP3 = eliminadorFichasDeck(deckP3, fichasTurno)  # Elimina las fichas del deck
-            #print("2")
+            # print("2")
             colocadorFichas(play)  # Coloca las fichas en el tablero
-            #print("3")
+            # print("3")
             deckP3 = agregaNuevasFichas(deckP3)  # Agrega nuevas fichas al deck
-            #print("4")
+            # print("4")
             posiciones = listaPosiciones_FichasAux(play, 1)  # Lista de Posiciones (Necesaria para Puntaciones)
-            #print("5")
+            # print("5")
             puntos = puntuacion(play, posiciones)  # Calcula los puntos de la jugada
-            #print("6")
+            # print("6")
             p3 = p3 + puntos  # Suma los puntos
             lastP3 = puntos
             print("Turno Finalizado")
@@ -1564,15 +1575,15 @@ def game_loop(turno):
 # JUGADAS CON PUNTUACIONES
 # E: Una lista con todas las jugadas
 # S: La jugada con el maximo de puntos
-# D: Recibe la lista con las jugadas del backtracking, calcula la puntuacion de cada una y luego selecciona la que tiene mayor puntaje
-
+# D: Recibe la lista con las jugadas del backtracking
+#    calcula la puntuacion de cada una y luego selecciona la que tiene mayor puntaje
 def maxPuntuaciones(jugadas):
 
-    listaPuntajes = []                                       # Lista que guarda las puntuaciones de cada jugada
-    #print(jugadas)
-    for jugada in jugadas:                                   # Loop para recorrer las jugadas
-        #print("Jugada: ",jugada)
-        posiciones = listaPosiciones_FichasAux(jugada,1)     # Lista de las posiciones de las fichas a poner en la jugada (Necesario para funcion puntuacion)
+    listaPuntajes = []                                      # Lista que guarda las puntuaciones de cada jugada
+    # print(jugadas)
+    for jugada in jugadas:                                  # Loop para recorrer las jugadas
+        # print("Jugada: ",jugada)
+        posiciones = listaPosiciones_FichasAux(jugada, 1)   # Lista de las posiciones de las fichas a poner en la jugada (Necesario para funcion puntuacion)
         # print(posiciones)
         puntajes = puntuacion(jugada,posiciones)            # Calcula los puntos de las fichas a poner
         listaPuntajes.append(puntajes)                      # Agrega a lista con los puntajes de las jugadas recibidas
@@ -1582,17 +1593,17 @@ def maxPuntuaciones(jugadas):
 
     i = max(listaPuntajes)                                  # Busca el puntaje mayor
     index = listaPuntajes.index(i)                          # Busca el index del puntaje maximo
-    #print("PRUEBA MAX PUNT")
+    # print("PRUEBA MAX PUNT")
     jugadaMax = jugadas[index]                              # Jugada Maxima
-    #print(listaPuntajes,i)
-    #print(jugadaMax)
-    return [jugadaMax,i]
+    # print(listaPuntajes,i)
+    # print(jugadaMax)
+    return [jugadaMax, i]
 
-#Auxiliar
+
+# Auxiliar
 # E: Una lista
 # S: Una lista
 # D: Agarra las posiciones en las que se ponen las fichas
-
 def listaPosiciones_FichasAux(jugadas,i):
     newList = []
     for elem in jugadas:
@@ -1616,13 +1627,13 @@ def colocadorFichas(jugada):
         coloresTablero[i][j] = ficha[0][1]
     return
 
+
 # ELIMINADOR DE FICHAS DEL DECK
 # E: Un deck, una lista con las fichas usadas
 # S: Un deck sin las fichas
 # D: Elimina las fichas del deck principal
-
-def eliminadorFichasDeck(deck,fichas):
-    #print(deck,fichas)
+def eliminadorFichasDeck(deck, fichas):
+    # print(deck,fichas)
     for ficha in fichas:
         deck.remove(ficha)
     return deck
@@ -1632,7 +1643,7 @@ def game_loop_2(turno):
     # Variables Globales
     global signosTablero
     global coloresTablero
-    #mostrar(signosTablero)
+    # mostrar(signosTablero)
     # PUNTAJES
     global p1
     global p2
@@ -1641,11 +1652,11 @@ def game_loop_2(turno):
     global deckP2
     global deckP1
     global deckP3
-    #ultimos turnos
+    # ultimos turnos
     global lastP1
     global lastP2
     global lastP3
-    #Condicion Extender Tablero
+    # Condicion Extender Tablero
     matrices = checkExtenderTablero(coloresTablero, signosTablero)
     signosTablero = matrices[0]
     coloresTablero = matrices[1]
@@ -1711,19 +1722,19 @@ def game_loop_2(turno):
         print("Turno Finalizado")
         return
 
+
 # INTELIGENCIA
 # AUXILIAR
 # E: Una lista con las jugadas validas
 # S: Una lista con las jugadas con mayor puntaje
 # D: Recibe una lista con las jugadas que obtienen mayores puntos y luego detecta cuales son las mayores
-
 def maxPuntuaciones_AI(jugadas):
 
     # Si no hay fichas que poner me pone la me retorna vacio
     if not jugadas:
         return []
 
-    #-----------------------AI-----------------------
+    # -----------------------AI-----------------------
     tmp = maxPuntuaciones(jugadas)
     bestPlays = []                                  # LISTA PARA JUGADAS CON MAYOR PUNTAJE
     bestPlay = tmp[0]                               # PUNTAJE DE LAS JUGADAS MAS ALTAS
@@ -1740,37 +1751,35 @@ def maxPuntuaciones_AI(jugadas):
 
     # Si hay varias jugadas con el mismo puntaje
     validas = buscarPosicionesValidas(signosTablero)
-    #print("Validas")
-    listaSemiQWirkles = buscarSemiQwirkle(signosTablero,coloresTablero,validas)      # Posiciones del Semi-QWirkle y las casillas a los lados
-    #print("SemiQWirkle")
+    # print("Validas")
+    listaSemiQWirkles = buscarSemiQwirkle(signosTablero, coloresTablero, validas)      # Posiciones del Semi-QWirkle y las casillas a los lados
+    # print("SemiQWirkle")
     extremos = listaSemiQWirkles[0]
     semiQWirkles = listaSemiQWirkles[1]
-    #TMP BEST PLAYS
+    # TMP BEST PLAYS
     bestPlayTmp = bestPlays
-    #print(len(bestPlays))
+    # print(len(bestPlays))
     while bestPlays:
-        #print("loop")
+        # print("loop")
         if esQWirkle(jugada):                                          # Retorna un QWirkle
-            #print("QWirkle")
+            # print("QWirkle")
             return bestPlays[0]
         elif esSemiQWirkle_Extremos(jugada,semiQWirkles):           # Verifica si existe una jugada con semi-qwirkle
             bestPlays = bestPlays[1:]
         elif esSemiQWirkle_Extremos(jugada,extremos):               # Verifca que no juegue en los extremos
-            #print("Extremo")
+            # print("Extremo")
             return bestPlays[0]
         else:
             bestPlays = bestPlays[1:]
-    #AGREGAR SELECCIONAR RANDOM
+    # AGREGAR SELECCIONAR RANDOM
 
     return bestPlayTmp[0]
-
 
 
 # AUXILIAR
 # E: Una jugada
 # S: Un true
 # D: Verifica si la jugada completa un qwirkle o no con el contador
-
 def esQWirkle(jugada):
     for ficha in jugada:
         if puntuacion([ficha],[]) > 5 :
@@ -1778,11 +1787,11 @@ def esQWirkle(jugada):
     else:
         return False
 
+
 # AUXILIAR
 # E: Una jugada
 # S: Un true
 # D: Verifica si la jugada casi completa un qwirkle o no con el contador
-
 def esSemiQWirkle_Extremos(jugada,QWList):
     for ficha in jugada:
         pos = ficha[1]
@@ -1792,6 +1801,6 @@ def esSemiQWirkle_Extremos(jugada,QWList):
         return False
 
 
-#juego()
+# juego()
 gui()
 
